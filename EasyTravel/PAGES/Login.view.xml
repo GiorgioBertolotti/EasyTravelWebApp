@@ -1,0 +1,18 @@
+﻿<mvc:View 
+  controllerName="sap.ui.easytravel.login.Login" 
+  xmlns="sap.m" 
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:h="http://www.w3.org/1999/xhtml"
+  height="100%">
+  <VBox 
+    alignItems="Center"
+    justifyContent="Center"
+    height="100%">
+    <h:div
+      id="imglogo"
+      class="myLogo"></h:div>
+    <Panel>
+      <Button text="Press Me!"/>
+    </Panel>
+  </VBox>
+</mvc:View>

@@ -1,0 +1,38 @@
+﻿.myLogo{
+    width: 300px;
+    height: 200px;
+    background-image: url(../Images/logo.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+#loginPage header{
+    display:none !important;
+}
+.sapMBarContainer {
+    background: #b71c1c !important;
+}
+.sapMTitle{
+    color: white !important;
+    font-family: Calibri;
+    font-size: 25px !important;
+    font-weight: bold !important;
+}
+.sapMPageHeader::before{
+    content: "";
+    position: absolute;
+    width: 100%;
+    top: 0;
+    border-top: 0.25rem solid #b71c1c;
+    z-index: 7;
+}
+.sapUiBodyBackground, .sapUIBody, .sapUiGlobalBackgroundColor{
+    background: url(../Images/backgroundlogin.png) no-repeat center center fixed !important;
+    -webkit-background-size: cover !important;
+    -moz-background-size: cover !important;
+    -o-background-size: cover !important;
+    background-size: cover !important;
+}
+.sapMPanelBGTranslucent{
+    background-color: rgba(255,255,255,0.6);
+}

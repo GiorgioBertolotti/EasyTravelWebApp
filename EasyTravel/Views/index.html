@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="it" lang="it">
+<head>
+    <system.webServer>
+        <modules>
+            <remove name="UrlRoutingModule-4.0" />
+            <add name="UrlRoutingModule-4.0" type="System.Web.Routing.UrlRoutingModule" preCondition="" />
+        </modules>
+    </system.webServer>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
+    <title>EasyTravel</title>
+    <link type="text/css" href="../Content/site.css" rel="stylesheet">
+    <link type="image/x-icon" href="../Scripts/resources/sap/ui/core/mimes/logo/txtonly_16x16.ico" rel="shortcut icon">
+    <link type="image/x-icon" href="../Scripts/resources/sap/ui/core/mimes/logo/txtonly_16x16.ico" rel="icon">
+    <script id="sap-ui-bootstrap"
+            src="/../Scripts/resources/sap-ui-core.js"
+            data-sap-ui-libs="sap.ui.commons,sap.ui.table,sap.ui.ux3,sap.m"
+            data-sap-ui-theme="sap_bluecrystal"
+            data-sap-ui-xx-bindingSyntax="complex"
+            data-sap-ui-resourceroots='{
+            "sap.ui.easytravel.login": "../PAGES"
+        }'>
+    </script>
+    <script>
+			var oDemokit;
+			sap.ui.getCore().attachInit(function () {
+			    var app = new sap.m.App("myApp", {
+			        initialPage: "loginPage"
+			    });
+			    var loginPage = new sap.m.Page("loginPage", {
+			        title: "Login",
+			        showNavButton: false,
+			        content: new sap.ui.core.ComponentContainer({
+			            name: "sap.ui.easytravel.login", height: "100%"
+			        })
+			    });
+			    var homePage = new sap.m.Page("page2", {
+			        title: "Hello Page 2",
+			        showNavButton: true,
+			        navButtonPress: function () {
+			            // go back to the previous page
+			            app.back();
+			        }
+			    });
+			    app.addPage(loginPage).addPage(homePage);
+			    app.placeAt("content");
+			});
+    </script>
+</head>
+<body class="sapUiBody" role="application">
+    <div id="content"></div>
+</body>
+</html>
