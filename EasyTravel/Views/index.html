@@ -21,7 +21,8 @@
             data-sap-ui-xx-bindingSyntax="complex"
             data-sap-ui-resourceroots='{
             "sap.ui.easytravel.login": "../PAGES",
-            "sap.ui.easytravel.register": "../PAGES"
+            "sap.ui.easytravel.register": "../PAGES",
+            "sap.ui.easytravel.home": "../PAGES"
         }'>
     </script>
     <script>
@@ -62,7 +63,13 @@
 			            name: "sap.ui.easytravel.register", height: "100%"
 			        })
 			    });
-			    app.addPage(loginPage).addPage(registerPage);
+			    var homePage = new sap.m.Page("homePage", {
+			        title: "Home",
+			        content: new sap.ui.core.ComponentContainer({
+			            name: "sap.ui.easytravel.home", height: "100%"
+			        })
+			    });
+			    app.addPage(loginPage).addPage(registerPage).addPage(homePage);
 			    app.placeAt("content");
 			});
     </script>

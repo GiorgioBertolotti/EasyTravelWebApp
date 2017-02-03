@@ -1,0 +1,14 @@
+﻿<mvc:View
+ controllerName="sap.ui.easytravel.home.Home"
+ xmlns="sap.m"
+ xmlns:mvc="sap.ui.core.mvc"
+ xmlns:h="http://www.w3.org/1999/xhtml"
+ height="100%">
+  <VBox
+    alignItems="Center"
+    height="100%">
+    <Panel
+      width="300px">
+    </Panel>
+  </VBox>
+</mvc:View>

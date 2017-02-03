@@ -68,12 +68,21 @@ namespace EasyTravel.Models
                     values["api_data"] = JsonConvert.SerializeObject(new { mobile=mobile,password=pass });
                     var response = client.UploadValues(model.IP, values);
                     var responseString = Encoding.Default.GetString(response);
-                    dynamic user = JsonConvert.DeserializeObject(responseString);
-                    loggedUser.Name = user.Name;
-                    loggedUser.Surname = user.Surname;
-                    loggedUser.Mobile = user.Mobile;
-                    loggedUser.Range = user.Range;
-                    loggedUser.Image = user.Image;
+                    dynamic result = JsonConvert.DeserializeObject(responseString);
+                    if (!(bool)result.IsError)
+                    {
+                        loggedUser = new User();
+                        loggedUser.Name = result.Message[0].Name.Value;
+                        loggedUser.Surname = result.Message[0].Surname.Value;
+                        loggedUser.Mobile = result.Message[0].Mobile.Value;
+                        loggedUser.Range = Convert.ToInt32(result.Message[0].Range.Value);
+                        loggedUser.Image = Encoding.Default.GetBytes(result.Message[0].Image.Value);
+                    }
+                    else
+                    {
+                        model.isError = true;
+                        model.errorMessage = result.Message;
+                    }
                 }
             }
             catch (Exception e)

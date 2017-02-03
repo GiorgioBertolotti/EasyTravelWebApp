@@ -16,12 +16,14 @@
         id="txtMobile"
         type="Tel"
         width="268px"
-        placeholder="Numero di telefono" />
+        placeholder="Numero di telefono"
+        value="3290358217"/>
       <Input
         id="txtPassword"
         type="Password"
         width="268px"
-        placeholder="Password" />
+        placeholder="Password"
+        value="prova"/>
       <Button
         id="btnLogin"
         width="268px"
@@ -29,5 +31,4 @@
         press="onBtnLogin"/>
     </Panel>
   </VBox>
-  
 </mvc:View>

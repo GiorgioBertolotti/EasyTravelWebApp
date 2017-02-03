@@ -98,8 +98,8 @@
             if (data.isError) {
                 sap.m.MessageToast.show(data.errorMessage);
             } else {
-                sap.m.MessageToast.show("Login OK");
-
+                var app = sap.ui.getCore().byId("EasyTravel");
+                app.to("homePage");
             }
             sap.ui.core.BusyIndicator.hide();
             oModel.detachRequestCompleted(sap.ui.controller("sap.ui.easytravel.login.Login").onLoginComplete);

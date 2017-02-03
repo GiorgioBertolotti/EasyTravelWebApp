@@ -8,6 +8,12 @@
     background-repeat: no-repeat;
     background-position: 50% 50%;
 }
+#homePage header {
+    background: #b71c1c !important;
+}
+#homePage section {
+    margin-top: 60px !important;
+}
 #loginPage header{
     display:none !important;
 }

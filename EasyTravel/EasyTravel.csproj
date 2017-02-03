@@ -114,10 +114,12 @@
     <Content Include="Images\backgroundlogin.png" />
     <Content Include="Images\logo.png" />
     <Content Include="PAGES\Component.js" />
+    <Content Include="PAGES\Home.controller.js" />
     <Content Include="PAGES\Login.controller.js" />
     <Content Include="PAGES\Login.view.xml" />
     <Content Include="PAGES\Register.controller.js" />
     <Content Include="PAGES\Register.view.xml" />
+    <Content Include="PAGES\Home.view.xml" />
     <Content Include="scripts\ai.0.15.0-build58334.js" />
     <Content Include="scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="scripts\md5.js" />
