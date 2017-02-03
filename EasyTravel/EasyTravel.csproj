@@ -116,6 +116,8 @@
     <Content Include="PAGES\Component.js" />
     <Content Include="PAGES\Login.controller.js" />
     <Content Include="PAGES\Login.view.xml" />
+    <Content Include="PAGES\Register.controller.js" />
+    <Content Include="PAGES\Register.view.xml" />
     <Content Include="scripts\ai.0.15.0-build58334.js" />
     <Content Include="scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="scripts\resources\jquery-sap-dbg.js" />
@@ -5697,10 +5699,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -7412,6 +7421,11 @@
     <Content Include="scripts\resources\sap\uxap\themes\sap_hcb\library.less" />
     <Content Include="scripts\resources\sap\uxap\themes\sap_hcb\library.source.less" />
     <Content Include="scripts\resources\sap\uxap\themes\sap_hcb\resources.json" />
+    <Content Include="Content\Settings.json" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -7421,8 +7435,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

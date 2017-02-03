@@ -19,13 +19,14 @@
             data-sap-ui-theme="sap_bluecrystal"
             data-sap-ui-xx-bindingSyntax="complex"
             data-sap-ui-resourceroots='{
-            "sap.ui.easytravel.login": "../PAGES"
+            "sap.ui.easytravel.login": "../PAGES",
+            "sap.ui.easytravel.register": "../PAGES"
         }'>
     </script>
     <script>
 			var oDemokit;
 			sap.ui.getCore().attachInit(function () {
-			    var app = new sap.m.App("myApp", {
+			    var app = new sap.m.App("EasyTravel", {
 			        initialPage: "loginPage"
 			    });
 			    var loginPage = new sap.m.Page("loginPage", {
@@ -33,17 +34,34 @@
 			        showNavButton: false,
 			        content: new sap.ui.core.ComponentContainer({
 			            name: "sap.ui.easytravel.login", height: "100%"
+			        }),
+                    showFooter: true,
+                    footer: new sap.m.Toolbar({
+                        id:"footerLogin",
+                        width: "100%",
+                        height: "5%",
+                        design: "Solid",
+                        content: [new sap.m.Label({
+                            text: "Non hai un account? "
+                        }), new sap.m.Link({
+                            text: "Registrati",
+                            press: [sap.ui.controller("sap.ui.easytravel.login.Login").onBtnRegister, sap.ui.controller("sap.ui.easytravel.login.Login")]
+                        }), new sap.m.Button({
+                            id: "BtnIP",
+                            icon: "sap-icon://internet-browser",
+                            press: [sap.ui.controller("sap.ui.easytravel.login.Login").onBtnIP, sap.ui.controller("sap.ui.easytravel.login.Login")]
+                        })]
+                    })
+			    });
+			    var registerPage = new sap.m.Page("registerPage", {
+			        title: "Registrazione",
+			        showNavButton: true,
+			        navButtonPress: [sap.ui.controller("sap.ui.easytravel.register.Register").onBtnBack, sap.ui.controller("sap.ui.easytravel.register.Register")],
+			        content: new sap.ui.core.ComponentContainer({
+			            name: "sap.ui.easytravel.register", height: "100%"
 			        })
 			    });
-			    var homePage = new sap.m.Page("page2", {
-			        title: "Hello Page 2",
-			        showNavButton: true,
-			        navButtonPress: function () {
-			            // go back to the previous page
-			            app.back();
-			        }
-			    });
-			    app.addPage(loginPage).addPage(homePage);
+			    app.addPage(loginPage).addPage(registerPage);
 			    app.placeAt("content");
 			});
     </script>

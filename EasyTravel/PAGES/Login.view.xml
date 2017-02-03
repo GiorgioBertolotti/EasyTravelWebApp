@@ -6,13 +6,27 @@
   height="100%">
   <VBox 
     alignItems="Center"
-    justifyContent="Center"
     height="100%">
     <h:div
       id="imglogo"
       class="myLogo"></h:div>
-    <Panel>
-      <Button text="Press Me!"/>
+    <Panel
+      width="300px">
+      <Input
+        id="txtMobile"
+        type="Tel"
+        width="268px"
+        placeholder="Numero di telefono" />
+      <Input
+        id="txtPassword"
+        type="Password"
+        width="268px"
+        placeholder="Password" />
+      <Button
+        id="btnLogin"
+        width="268px"
+        text="Accedi"/>
     </Panel>
   </VBox>
+  
 </mvc:View>

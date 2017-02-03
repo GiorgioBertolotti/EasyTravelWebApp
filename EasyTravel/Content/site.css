@@ -1,6 +1,8 @@
 ﻿.myLogo{
     width: 300px;
-    height: 200px;
+    height: 80px;
+    margin-top: 60px;
+    margin-bottom: 60px;
     background-image: url(../Images/logo.png);
     background-size: contain;
     background-repeat: no-repeat;
@@ -9,8 +11,30 @@
 #loginPage header{
     display:none !important;
 }
-.sapMBarContainer {
+#loginPage footer{
+    opacity: 0.6;
+}
+#loginPage footer label{
+    margin-left: auto !important;
+    color: black !important;
+}
+#loginPage footer a{
+    margin-right: auto !important;
+    color: #b71c1c !important;
+}
+#registerPage header {
     background: #b71c1c !important;
+}
+#registerPage section {
+    margin-top: 60px !important;
+}
+:not(.sapMBtnDisabled)>.sapMBtnDefault.sapMBtnInner.sapMBtnActive{
+    background-color: #ad1c1c !important;
+    border-color: #ad1c1c !important;
+}
+.myDialog h1{
+    font-weight: normal !important;
+    color: #333333 !important;
 }
 .sapMTitle{
     color: white !important;
@@ -35,4 +59,8 @@
 }
 .sapMPanelBGTranslucent{
     background-color: rgba(255,255,255,0.6);
+}
+.sapMPanelContent:not(.sapMPanelBGTransparent) {
+    border: 0px !important;
+    border-radius: 5px !important;
 }

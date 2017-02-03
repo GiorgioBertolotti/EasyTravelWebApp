@@ -39,3 +39,44 @@ D:\user-pc\Documents\Visual Studio 2015\Projects\EasyTravel\EasyTravel\bin\Syste
 D:\user-pc\Documents\Visual Studio 2015\Projects\EasyTravel\EasyTravel\obj\Debug\EasyTravel.csprojResolveAssemblyReference.cache
 D:\user-pc\Documents\Visual Studio 2015\Projects\EasyTravel\EasyTravel\obj\Debug\EasyTravel.dll
 D:\user-pc\Documents\Visual Studio 2015\Projects\EasyTravel\EasyTravel\obj\Debug\EasyTravel.pdb
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\ApplicationInsights.config
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\roslyn\csc.exe
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\roslyn\Microsoft.CodeAnalysis.dll
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\roslyn\Microsoft.CSharp.Core.targets
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\roslyn\Microsoft.VisualBasic.Core.targets
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\roslyn\System.Collections.Immutable.dll
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\roslyn\System.Reflection.Metadata.dll
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\roslyn\vbc.exe
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\roslyn\VBCSCompiler.exe
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\roslyn\VBCSCompiler.exe.config
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\EasyTravel.dll.config
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\EasyTravel.dll
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\EasyTravel.pdb
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\Microsoft.AI.Agent.Intercept.dll
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\Microsoft.AI.DependencyCollector.dll
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\Microsoft.AI.PerfCounterCollector.dll
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\Microsoft.AI.ServerTelemetryChannel.dll
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\Microsoft.AI.Web.dll
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\Microsoft.AI.WindowsServer.dll
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\Microsoft.ApplicationInsights.dll
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\Newtonsoft.Json.dll
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\System.Net.Http.Formatting.dll
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\System.Web.Http.dll
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\System.Web.Http.WebHost.dll
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\Microsoft.AI.DependencyCollector.xml
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\Microsoft.AI.ServerTelemetryChannel.xml
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\Microsoft.AI.Web.xml
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\Microsoft.AI.WindowsServer.xml
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\Microsoft.ApplicationInsights.xml
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\Newtonsoft.Json.xml
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\System.Net.Http.Formatting.xml
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\System.Web.Http.xml
+E:\Scuola\EasyTravelWebApp\EasyTravel\bin\System.Web.Http.WebHost.xml
+E:\Scuola\EasyTravelWebApp\EasyTravel\obj\Debug\EasyTravel.csprojResolveAssemblyReference.cache
+E:\Scuola\EasyTravelWebApp\EasyTravel\obj\Debug\EasyTravel.dll
+E:\Scuola\EasyTravelWebApp\EasyTravel\obj\Debug\EasyTravel.pdb
