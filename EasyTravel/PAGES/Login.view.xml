@@ -25,7 +25,8 @@
       <Button
         id="btnLogin"
         width="268px"
-        text="Accedi"/>
+        text="Accedi"
+        press="onBtnLogin"/>
     </Panel>
   </VBox>
   

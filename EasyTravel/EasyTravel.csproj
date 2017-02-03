@@ -120,6 +120,7 @@
     <Content Include="PAGES\Register.view.xml" />
     <Content Include="scripts\ai.0.15.0-build58334.js" />
     <Content Include="scripts\ai.0.15.0-build58334.min.js" />
+    <Content Include="scripts\md5.js" />
     <Content Include="scripts\resources\jquery-sap-dbg.js" />
     <Content Include="scripts\resources\jquery-sap.js" />
     <Content Include="scripts\resources\jquery.sap.act-dbg.js" />
@@ -5703,6 +5704,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
