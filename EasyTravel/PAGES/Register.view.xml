@@ -1,0 +1,49 @@
+﻿<mvc:View
+ controllerName="sap.ui.easytravel.register.Register"
+ xmlns="sap.m"
+ xmlns:mvc="sap.ui.core.mvc"
+ xmlns:h="http://www.w3.org/1999/xhtml"
+ height="100%">
+  <VBox
+    alignItems="Center"
+    height="100%">
+    <Panel
+      width="300px">
+      <Input
+        id="txtName"
+        type="Text"
+        width="268px"
+        placeholder="Nome" />
+      <Input
+        id="txtSurname"
+        type="Text"
+        width="268px"
+        placeholder="Cognome" />
+      <Input
+        id="txtEmail"
+        type="Email"
+        width="268px"
+        placeholder="E-mail" />
+      <Input
+        id="txtMobile"
+        type="Tel"
+        width="268px"
+        placeholder="Numero di telefono" />
+      <Input
+        id="txtPassword"
+        type="Password"
+        width="268px"
+        placeholder="Password" />
+      <Input
+        id="txtConfirm"
+        type="Password"
+        width="268px"
+        placeholder="Conferma password" />
+      <Button
+        id="btnRegister"
+        width="268px"
+        text="Registrati"/>
+    </Panel>
+  </VBox>
+
+</mvc:View>
