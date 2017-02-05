@@ -1,18 +1,110 @@
-﻿.myLogo{
-    width: 300px;
-    height: 80px;
-    margin-top: 60px;
-    margin-bottom: 60px;
-    background-image: url(../Images/logo.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-}
-#homePage header {
+﻿#homePage header {
     background: #b71c1c !important;
+    border-bottom: 1px solid black;
+    z-index:2;
 }
-#homePage section {
-    margin-top: 60px !important;
+#homePage header label {
+    color: white !important;
+    font-family: Calibri;
+    font-size: 25px !important;
+    font-weight: bold !important;
+    text-shadow: 1px 1px 1px black !important;
+    width:30%;
+    text-align:center !important;
+    position:absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+#homePage .sapTntNavLIItem {
+    background: #7b0808;
+    border-bottom: 1px solid black;
+    text-shadow: 1px 1px 1px black;
+}
+#homePage .sapTntNavLIItem:hover {
+    background: #900000;
+}
+#homePage .sapTntNavLIItemSelected .sapTntNavLIItem {
+    background: #5d0c0c !important;
+}
+#homePage .sapTntSideNavigation{
+    background-color: #900000 !important;
+    border-right:1px solid black;
+}
+#homePage .sapTntNavLIGroup>.sapUiIcon {
+    color: #cecece !important;
+}
+#homePage .sapTntNavLIText {
+    color: white !important;
+}
+#homePage #homePage-intHeader{
+    display:none !important;
+}
+#homePage .sapTntToolPageMain header{
+    display:none !important;
+}
+:not(.sapMBtnDisabled)>.sapMBtnTransparent.sapMBtnActive{
+    background-color: #5d0c0c !important;
+    border-color: #5d0c0c !important;
+}
+.sapMPage>.sapMPageHeader + section, .sapMPage>.sapMPageSubHeader + section, .sapMPage>.sapMPageHeader + .sapUiHiddenPlaceholder + section{
+    top:0px !important;
+}
+@media (max-width: 800px) {
+    .myLogo{
+        width: 300px;
+        height: 80px;
+        margin-top: 60px;
+        margin-bottom: 60px;
+        background-image: url(../Images/logo.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+    }
+    .myPanel1, .myPanel2, .myPanel3{
+        width:85% !important;
+        margin: auto;
+        float: none !important;
+    }
+    .myPanel1{
+        margin-top: 4%;
+    }
+    #homePage .sapTntToolPageMain section{
+        position: static !important;
+    }
+    #homePage .sapTntToolPageMain section section{
+        padding:1% !important;
+        float:left;
+    }
+    .page1{
+        overflow-x:auto !important;
+    }
+}
+@media (min-width: 801px) {
+    .myLogo{
+        width: 300px;
+        height: 80px;
+        margin-top: 60px;
+        margin-bottom: 60px;
+        background-image: url(../Images/logo.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+    }
+    .myPanel1, .myPanel2{
+        width:47% !important;
+    }
+    .myPanel3{
+        width:96% !important;
+    }
+    #homePage .sapTntToolPageMain section{
+        position: static !important;
+        padding:1% !important;
+        float:left;
+    }
+}
+#loginPage .sapMBtnIcon {
+    color: #666 !important;
 }
 #loginPage header{
     display:none !important;
@@ -41,12 +133,18 @@
 .myDialog h1{
     font-weight: normal !important;
     color: #333333 !important;
+    text-shadow: none !important;
+}
+.sapMBtnIcon {
+    color: #fff !important;
+    text-shadow:none !important;
 }
 .sapMTitle{
     color: white !important;
     font-family: Calibri;
     font-size: 25px !important;
     font-weight: bold !important;
+    text-shadow: 1px 1px 1px black !important;
 }
 .sapMPageHeader::before{
     content: "";

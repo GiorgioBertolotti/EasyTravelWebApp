@@ -77,6 +77,43 @@ namespace EasyTravel.Models
                         loggedUser.Mobile = result.Message[0].Mobile.Value;
                         loggedUser.Range = Convert.ToInt32(result.Message[0].Range.Value);
                         loggedUser.Image = Encoding.Default.GetBytes(result.Message[0].Image.Value);
+                        model.isError = false;
+                        model.errorMessage = "";
+                    }
+                    else
+                    {
+                        model.isError = true;
+                        model.errorMessage = result.Message;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                model.isError = true;
+                model.errorMessage = e.Message;
+            }
+            OUTModel = model;
+            return;
+        }
+        public void logout(out LoginModel OUTModel, string mobile)
+        {
+            LoginModel model = this;
+            try
+            {
+                //LOGIN
+                using (var client = new WebClient())
+                {
+                    model.getIP(out model);
+                    var values = new NameValueCollection();
+                    values["api_method"] = "logoutUser";
+                    values["api_data"] = JsonConvert.SerializeObject(new { mobile = mobile });
+                    var response = client.UploadValues(model.IP, values);
+                    var responseString = Encoding.Default.GetString(response);
+                    dynamic result = JsonConvert.DeserializeObject(responseString);
+                    if (!(bool)result.IsError)
+                    {
+                        model.isError = false;
+                        model.errorMessage = result.Message;
                     }
                     else
                     {

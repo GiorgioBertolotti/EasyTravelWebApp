@@ -1,14 +1,111 @@
 ﻿<mvc:View
- controllerName="sap.ui.easytravel.home.Home"
- xmlns="sap.m"
- xmlns:mvc="sap.ui.core.mvc"
- xmlns:h="http://www.w3.org/1999/xhtml"
- height="100%">
-  <VBox
-    alignItems="Center"
-    height="100%">
-    <Panel
-      width="300px">
-    </Panel>
-  </VBox>
+  controllerName="sap.ui.easytravel.home.Home"
+  xmlns="sap.m"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:tnt="sap.tnt"
+  xmlns:html="http://www.w3.org/1999/xhtml"
+  height="100%">
+  <tnt:ToolPage id="toolPage">
+    <tnt:header>
+      <tnt:ToolHeader>
+        <Button id="sideNavigationToggleButton"
+						icon="sap-icon://menu2"
+						type="Transparent"
+						press="onToggleMenu">
+          <layoutData>
+            <OverflowToolbarLayoutData priority="NeverOverflow" />
+          </layoutData>
+        </Button>
+        <ToolbarSpacer />
+        <Label text="Home">
+          <layoutData>
+            <OverflowToolbarLayoutData priority="High" />
+          </layoutData>
+        </Label>
+        <ToolbarSpacer />
+      </tnt:ToolHeader>
+    </tnt:header>
+    <tnt:sideContent>
+      <tnt:SideNavigation expanded="true"
+								itemSelect="onItemSelect">
+        <tnt:NavigationList items="{path: '/navigation'}">
+          <tnt:NavigationListItem text="{title}"
+											icon="{icon}"
+											enabled="{enabled}"
+											expanded="{expanded}"
+											items="{items}"
+											key="{key}">
+            <tnt:NavigationListItem text="{title}"
+												key="{key}"
+												enabled="{enabled}">
+            </tnt:NavigationListItem>
+          </tnt:NavigationListItem>
+        </tnt:NavigationList>
+      </tnt:SideNavigation>
+    </tnt:sideContent>
+    <tnt:mainContents>
+      <NavContainer id="pageContainer">
+        <pages>
+          <Page id="detailMain" class="page1">
+            <content>
+              <Panel
+                class="myPanel1">
+                <Input
+                  id="txtMobile"
+                  type="Tel"
+                  placeholder="Numero di telefono"
+                  value="3290358217"/>
+                <Input
+                  id="txtPassword"
+                  type="Password"
+                  placeholder="Password"
+                  value="prova"/>
+                <Button
+                  id="btnLogin"
+                  text="Accedi"
+                  width="100%"
+                  press="onBtnLogin"/>
+              </Panel>
+              <Panel
+                class="myPanel2">
+                <Input
+                  id="gg"
+                  type="Tel"
+                  placeholder="Numero di telefono"
+                  value="3290358217"/>
+                <Input
+                  id="txtPasggsword"
+                  type="Password"
+                  placeholder="Password"
+                  value="prova"/>
+                <Button
+                  id="btngLogin"
+                  text="Accedi"
+                  width="100%"
+                  press="onBtnLogin"/>
+              </Panel>
+              <Panel
+                class="myPanel3">
+                <Input
+                  id="gag"
+                  type="Tel"
+                  placeholder="Numero di telefono"
+                  value="3290358217"/>
+                <Input
+                  id="txtPaasggsword"
+                  type="Password"
+                  placeholder="Password"
+                  value="prova"/>
+                <Button
+                  id="btngsLogin"
+                  text="Accedi"
+                  width="100%"
+                  press="onBtnLogin"/>
+              </Panel>
+            </content>
+          </Page>
+        </pages>
+      </NavContainer>
+    </tnt:mainContents>
+  </tnt:ToolPage>
 </mvc:View>
