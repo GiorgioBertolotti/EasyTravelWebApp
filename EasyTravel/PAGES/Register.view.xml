@@ -42,7 +42,8 @@
       <Button
         id="btnRegister"
         width="268px"
-        text="Registrati"/>
+        text="Registrati"
+        press="onBtnRegister"/>
     </Panel>
   </VBox>
 

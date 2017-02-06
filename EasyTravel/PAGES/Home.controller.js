@@ -16,7 +16,7 @@
             switch (key) {
                 case "logout": {
                     var oModel = sap.ui.getCore().getModel("user");
-                    var mobile = oModel.getData().loggedUser.Mobile;
+                    var mobile = oModel.getData().Mobile;
                     oModel.attachRequestSent(function () {
                         sap.ui.core.BusyIndicator.show();
                     });

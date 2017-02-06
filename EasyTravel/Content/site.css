@@ -1,6 +1,6 @@
 ﻿#homePage header {
     background: #b71c1c !important;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #500d0d;
     z-index:2;
 }
 #homePage header label {
@@ -17,19 +17,19 @@
     margin: auto;
 }
 #homePage .sapTntNavLIItem {
-    background: #7b0808;
-    border-bottom: 1px solid black;
+    background: #900000;
+    border-bottom: 1px solid #500d0d;
     text-shadow: 1px 1px 1px black;
 }
 #homePage .sapTntNavLIItem:hover {
-    background: #900000;
+    background: #7b0808;
 }
 #homePage .sapTntNavLIItemSelected .sapTntNavLIItem {
     background: #5d0c0c !important;
 }
 #homePage .sapTntSideNavigation{
     background-color: #900000 !important;
-    border-right:1px solid black;
+    /*border-right:1px solid black;*/
 }
 #homePage .sapTntNavLIGroup>.sapUiIcon {
     color: #cecece !important;
