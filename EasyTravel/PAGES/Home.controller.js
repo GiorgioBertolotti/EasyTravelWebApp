@@ -52,6 +52,7 @@
             if (data.isError) {
                 sap.m.MessageToast.show(data.errorMessage);
             } else {
+                sap.ui.controller("sap.ui.easytravel.login.Login").eraseCookie("authenticationToken");
                 var app = sap.ui.getCore().byId("EasyTravel");
                 app.to("loginPage");
             }

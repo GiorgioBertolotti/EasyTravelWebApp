@@ -62,7 +62,6 @@ namespace EasyTravel.Controllers
         {
             try
             {
-                //LOGIN
                 using (var client = new WebClient())
                 {
                     string json = File.ReadAllText(System.Web.HttpContext.Current.Server.MapPath("~/Content/Settings.json"));
@@ -82,6 +81,51 @@ namespace EasyTravel.Controllers
                         loggedUser.Mobile = result.Message[0].Mobile.Value;
                         loggedUser.Range = Convert.ToInt32(result.Message[0].Range.Value);
                         loggedUser.Image = Encoding.Default.GetBytes(result.Message[0].Image.Value);
+                        loggedUser.Token = result.Message[0].Token.Value;
+                        this.isError = false;
+                        this.errorMessage = "";
+                    }
+                    else
+                    {
+                        this.isError = true;
+                        this.errorMessage = result.Message;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.isError = true;
+                this.errorMessage = e.Message;
+            }
+            string ret = JsonConvert.SerializeObject(loggedUser);
+            return ret;
+        }
+
+        [HttpGet]
+        public string loginWithToken(string token)
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    string json = File.ReadAllText(System.Web.HttpContext.Current.Server.MapPath("~/Content/Settings.json"));
+                    dynamic jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+                    string IPtmp = jsonObj["ip"];
+                    var values = new NameValueCollection();
+                    values["api_method"] = "loginWToken";
+                    values["api_data"] = JsonConvert.SerializeObject(new { token = token });
+                    var response = client.UploadValues(IPtmp, values);
+                    var responseString = Encoding.Default.GetString(response);
+                    dynamic result = JsonConvert.DeserializeObject(responseString);
+                    if (!(bool)result.IsError)
+                    {
+                        loggedUser = new User();
+                        loggedUser.Name = result.Message[0].Name.Value;
+                        loggedUser.Surname = result.Message[0].Surname.Value;
+                        loggedUser.Mobile = result.Message[0].Mobile.Value;
+                        loggedUser.Range = Convert.ToInt32(result.Message[0].Range.Value);
+                        loggedUser.Image = Encoding.Default.GetBytes(result.Message[0].Image.Value);
+                        loggedUser.Token = token;
                         this.isError = false;
                         this.errorMessage = "";
                     }

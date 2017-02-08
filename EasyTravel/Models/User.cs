@@ -12,5 +12,6 @@ namespace EasyTravel.Models
         public string Mobile { get; set; }
         public int Range { get; set; }
         public byte[] Image { get; set; }
+        public string Token { get; set; }
     }
 }
