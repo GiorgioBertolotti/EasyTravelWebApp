@@ -22,7 +22,18 @@
             <OverflowToolbarLayoutData priority="High" />
           </layoutData>
         </Label>
-        <ToolbarSpacer />
+        <tnt:ToolHeaderUtilitySeparator />
+        <ToolbarSpacer>
+          <layoutData>
+            <OverflowToolbarLayoutData priority="NeverOverflow" minWidth="20px" />
+          </layoutData>
+        </ToolbarSpacer>
+        <ImageContent
+          id="imgProfile"
+		      src="../Images/ic_user.png"
+		      description="Profile image"
+		      press="onBtnProfileImg">
+        </ImageContent>
       </tnt:ToolHeader>
     </tnt:header>
     <tnt:sideContent>

@@ -112,7 +112,9 @@
     <Content Include="Content\site.css" />
     <Content Include="Global.asax" />
     <Content Include="Images\backgroundlogin.png" />
+    <Content Include="Images\ic_user.png" />
     <Content Include="Images\logo.png" />
+    <Content Include="Images\profileimage.jpg" />
     <Content Include="PAGES\Component.js" />
     <Content Include="PAGES\Home.controller.js" />
     <Content Include="PAGES\Login.controller.js" />
@@ -7426,6 +7428,7 @@
     <Content Include="scripts\resources\sap\uxap\themes\sap_hcb\library.source.less" />
     <Content Include="scripts\resources\sap\uxap\themes\sap_hcb\resources.json" />
     <Content Include="Content\Settings.json" />
+    <Content Include="PAGES\MenuItemEventing.fragment.xml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

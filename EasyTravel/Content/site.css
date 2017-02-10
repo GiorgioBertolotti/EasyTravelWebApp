@@ -16,6 +16,9 @@
     right: 0;
     margin: auto;
 }
+#homePage header .sapMImageContent{
+    width:45px;
+}
 #homePage .sapTntNavLIItem {
     background: #900000;
     border-bottom: 1px solid #500d0d;
@@ -79,6 +82,12 @@
     .page1{
         overflow-x:auto !important;
     }
+    #homePage div img {
+        position: absolute;
+        right: 4px;
+        max-height: 40px !important;
+        top: 8px !important;
+    }
 }
 @media (min-width: 801px) {
     .myLogo{
@@ -101,6 +110,12 @@
         position: static !important;
         padding:1% !important;
         float:left;
+    }
+    #homePage div img {
+        position: absolute;
+        right: 4px;
+        max-height: 40px !important;
+        top: 10px !important;
     }
 }
 #loginPage .sapMBtnIcon {

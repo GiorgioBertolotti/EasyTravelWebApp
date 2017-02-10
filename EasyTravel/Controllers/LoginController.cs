@@ -9,6 +9,8 @@ using EasyTravel.Models;
 using Newtonsoft.Json;
 using System.Text;
 using System.Collections.Specialized;
+using System.Drawing;
+using System.Drawing.Imaging;
 namespace EasyTravel.Controllers
 {
     public class LoginController : ApiController
@@ -81,6 +83,21 @@ namespace EasyTravel.Controllers
                         loggedUser.Mobile = result.Message[0].Mobile.Value;
                         loggedUser.Range = Convert.ToInt32(result.Message[0].Range.Value);
                         loggedUser.Image = Encoding.Default.GetBytes(result.Message[0].Image.Value);
+                        if (loggedUser.Image != null)
+                        {
+                            StringBuilder sbText = new StringBuilder(result.Message[0].Image.Value, result.Message[0].Image.Value.Length);
+                            sbText.Replace("\r\n", String.Empty); sbText.Replace(" ", String.Empty);
+                            Byte[] bitmapData = Convert.FromBase64String(sbText.ToString());
+                            MemoryStream streamBitmap = new MemoryStream(bitmapData);
+                            Bitmap bitImage = new Bitmap((Bitmap)Image.FromStream(streamBitmap));
+                            bitImage = (Bitmap)Models.User.CropToCircle(bitImage, ColorTranslator.FromHtml("#b71c1c"));
+                            bitImage.Save(System.Web.HttpContext.Current.Server.MapPath("~/Images/profileimage.jpg"), ImageFormat.Jpeg);
+                            loggedUser.isImg = true;
+                        }
+                        else
+                        {
+                            loggedUser.isImg = false;
+                        }
                         loggedUser.Token = result.Message[0].Token.Value;
                         this.isError = false;
                         this.errorMessage = "";
@@ -125,6 +142,21 @@ namespace EasyTravel.Controllers
                         loggedUser.Mobile = result.Message[0].Mobile.Value;
                         loggedUser.Range = Convert.ToInt32(result.Message[0].Range.Value);
                         loggedUser.Image = Encoding.Default.GetBytes(result.Message[0].Image.Value);
+                        if (loggedUser.Image != null)
+                        {
+                            StringBuilder sbText = new StringBuilder(result.Message[0].Image.Value, result.Message[0].Image.Value.Length);
+                            sbText.Replace("\r\n", String.Empty); sbText.Replace(" ", String.Empty);
+                            Byte[] bitmapData = Convert.FromBase64String(sbText.ToString());
+                            MemoryStream streamBitmap = new MemoryStream(bitmapData);
+                            Bitmap bitImage = new Bitmap((Bitmap)Image.FromStream(streamBitmap));
+                            bitImage = (Bitmap)Models.User.CropToCircle(bitImage, ColorTranslator.FromHtml("#b71c1c"));
+                            bitImage.Save(System.Web.HttpContext.Current.Server.MapPath("~/Images/profileimage.jpg"), ImageFormat.Jpeg);
+                            loggedUser.isImg = true;
+                        }
+                        else
+                        {
+                            loggedUser.isImg = false;
+                        }
                         loggedUser.Token = token;
                         this.isError = false;
                         this.errorMessage = "";
