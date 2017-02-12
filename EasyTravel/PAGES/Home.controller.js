@@ -3,7 +3,7 @@
    "sap/m/MessageToast"
 ], function (Controller, MessageToast) {
     "use strict";
-    var oView, isMenuOpened;
+    var oView;
     return Controller.extend("sap.ui.easytravel.home.Home", {
         onInit: function () {
             oView = this.getView();
@@ -28,7 +28,10 @@
                     oModel.attachRequestSent(function () {
                         sap.ui.core.BusyIndicator.show();
                     });
-                    var input_data = { "mobile": mobile };
+                    var input_data = {
+                        "mobile": mobile,
+                        "token": sap.ui.controller("sap.ui.easytravel.login.Login").readCookie("authenticationToken")
+                    };
                     oModel.loadData("api/Home/logoutUser", input_data);
                     oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.home.Home").onLogoutComplete);
                     break;
@@ -37,48 +40,34 @@
         },
         onBtnProfileImg: function (oEvent) {
             var oButton = oEvent.getSource();
-            if (isMenuOpened) {
-                if (!this._menu) {
-                    this._menu = sap.ui.xmlfragment(
-                        "sap.ui.easytravel.home.MenuItemEventing",
-                        this
-                    );
-                    this.getView().addDependent(this._menu);
-                }
-                var eDock = sap.ui.core.Popup.Dock;
-                this._menu.close();
-                isMenuOpened = false;
-            } else {
-                if (!this._menu) {
-                    this._menu = sap.ui.xmlfragment(
-                        "sap.ui.easytravel.home.MenuItemEventing",
-                        this
-                    );
-                    this.getView().addDependent(this._menu);
-                }
-                var eDock = sap.ui.core.Popup.Dock;
-                this._menu.open(this._bKeyboard, oButton, eDock.BeginTop, eDock.BeginBottom, oButton);
-                isMenuOpened = true;
+            if (!this._menu) {
+                this._menu = sap.ui.xmlfragment(
+                    "sap.ui.easytravel.home.MenuItemEventing",
+                    this
+                );
+                this.getView().addDependent(this._menu);
             }
+            var eDock = sap.ui.core.Popup.Dock;
+            this._menu.open(this._bKeyboard, oButton, eDock.BeginTop, eDock.BeginBottom, oButton);
         },
         handleMenuItemPress: function (oEvent) {
             switch (oEvent.getParameter("item").getText()) {
                 case "Visualizza profilo": {
-                    isMenuOpened = false;
                     break;
                 }
                 case "Impostazioni": {
-                    isMenuOpened = false;
                     break;
                 }
                 case "Logout": {
-                    isMenuOpened = false; 
                     var oModel = sap.ui.getCore().getModel("user");
                     var mobile = oModel.getData().Mobile;
                     oModel.attachRequestSent(function () {
                         sap.ui.core.BusyIndicator.show();
                     });
-                    var input_data = { "mobile": mobile };
+                    var input_data = {
+                        "mobile": mobile,
+                        "token": sap.ui.controller("sap.ui.easytravel.login.Login").readCookie("authenticationToken")
+                    };
                     oModel.loadData("api/Home/logoutUser", input_data);
                     oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.home.Home").onLogoutComplete);
                     break;

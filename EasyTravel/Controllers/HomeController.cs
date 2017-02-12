@@ -16,18 +16,17 @@ namespace EasyTravel.Controllers
         public bool isError { get; set; }
         public string errorMessage { get; set; }
         [HttpGet]
-        public string logoutUser(string mobile)
+        public string logoutUser(string mobile, string token)
         {
             try
             {
-                //LOGIN
                 using (var client = new WebClient())
                 {
                     string getipres = (new LoginController()).getIP();
                     dynamic jsonobj = JsonConvert.DeserializeObject(getipres);
                     var values = new NameValueCollection();
                     values["api_method"] = "logoutUser";
-                    values["api_data"] = JsonConvert.SerializeObject(new { mobile = mobile });
+                    values["api_data"] = JsonConvert.SerializeObject(new { mobile = mobile, token = token });
                     var response = client.UploadValues(jsonobj.IP.Value, values);
                     var responseString = Encoding.Default.GetString(response);
                     dynamic result = JsonConvert.DeserializeObject(responseString);
