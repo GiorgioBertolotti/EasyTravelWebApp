@@ -29,7 +29,7 @@
           </layoutData>
         </ToolbarSpacer>
         <ImageContent
-          id="imgProfile"
+          id="imgProfileMini"
 		      src="../Images/ic_user.png"
 		      description="Profile image"
 		      press="onBtnProfileImg">
@@ -57,7 +57,7 @@
     <tnt:mainContents>
       <NavContainer id="pageContainer">
         <pages>
-          <Page id="detailMain" class="page1">
+          <Page id="detailMain" class="myPage">
             <content>
               <Panel
                 class="myPanel1">
@@ -112,6 +112,37 @@
                   text="Accedi"
                   width="100%"
                   press="onBtnLogin"/>
+              </Panel>
+            </content>
+          </Page>
+          <Page id="detailProfile" class="myPage">
+            <content>
+              <Panel
+                class="myPanelProfile">
+                <ImageContent
+                  class="myProfileImage"
+                  id="imgProfile"
+                  src="../Images/ic_user.png"
+                  description="Profile image">
+                </ImageContent>
+                <Label
+                  class="myProfileLabel"
+                  width="100%"
+                  textAlign="Center"
+                  id="lblNome"
+                  text="NOME"/>
+                <Label
+                  class="myProfileLabel"
+                  width="100%"
+                  textAlign="Center"
+                  id="lblCognome"
+                  text="COGNOME"/>
+                <Label
+                  class="myProfileLabel"
+                  width="100%"
+                  textAlign="Center"
+                  id="lblMobile"
+                  text="NUMERO TELEFONO"/>
               </Panel>
             </content>
           </Page>

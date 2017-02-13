@@ -16,6 +16,27 @@
     right: 0;
     margin: auto;
 }
+.myProfileImage{
+    position:static;
+    height:200px;
+    width:200px;
+    margin:auto;
+    margin-top:15px;
+    margin-bottom:15px;
+}
+.myProfileImage img{
+    position:static;
+    height:200px;
+    width:200px;
+    margin:auto;
+    max-height:none;
+    border: 1px solid black;
+}
+.myProfileLabel{
+    color:black;
+    margin-top: 5px;
+    font-size: 12pt;
+}
 #homePage header .sapMImageContent{
     width:45px;
 }
@@ -72,6 +93,12 @@
     .myPanel1{
         margin-top: 4%;
     }
+    .myPanelProfile{
+        width:85% !important;
+        margin: auto;
+        margin-top: 4%;
+        float: none !important;
+    }
     #homePage .sapTntToolPageMain section{
         position: static !important;
     }
@@ -79,10 +106,10 @@
         padding:1% !important;
         float:left;
     }
-    .page1{
+    .myPage{
         overflow-x:auto !important;
     }
-    #homePage div img {
+    #homePage header div img {
         position: absolute;
         right: 4px;
         max-height: 40px !important;
@@ -106,12 +133,18 @@
     .myPanel3{
         width:96% !important;
     }
+    .myPanelProfile{
+        margin-top: 4%;
+        width:85% !important;
+        margin: auto;
+        float: none !important;
+    }
     #homePage .sapTntToolPageMain section{
         position: static !important;
         padding:1% !important;
         float:left;
     }
-    #homePage div img {
+    #homePage header div img {
         position: absolute;
         right: 4px;
         max-height: 40px !important;

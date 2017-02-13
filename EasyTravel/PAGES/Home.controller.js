@@ -15,13 +15,22 @@
             sap.ui.controller("sap.ui.easytravel.home.Home")._setToggleButtonTooltip(!sap.ui.Device.system.desktop);
             var oModel = sap.ui.getCore().getModel("user");
             if (oModel.getData().isImg) {
-                var profileimg = oView.byId("imgProfile");
-                profileimg.setSrc("../Images/profileimage.jpg?" + new Date().getTime());
+                var profileimg = oView.byId("imgProfileMini");
+                profileimg.setSrc("../Images/profileimagemini.jpg?" + new Date().getTime());
             }
+            var viewId = oView.getId();
+            sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--detailMain");
+            oView.byId("toolPage").setSideExpanded(false);
         },
         onItemSelect: function (oEvent) {
             var key = oEvent.getParameter('item').getKey();
             switch (key) {
+                case "home": {
+                    var item = oEvent.getParameter('item');
+                    var viewId = this.getView().getId();
+                    sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--detailMain");
+                    break;
+                }
                 case "logout": {
                     var oModel = sap.ui.getCore().getModel("user");
                     var mobile = oModel.getData().Mobile;
@@ -53,6 +62,17 @@
         handleMenuItemPress: function (oEvent) {
             switch (oEvent.getParameter("item").getText()) {
                 case "Visualizza profilo": {
+                    var oModel = sap.ui.getCore().getModel("user");
+                    oView.byId("lblNome").setText(oModel.getData().Name);
+                    oView.byId("lblCognome").setText(oModel.getData().Surname);
+                    oView.byId("lblMobile").setText(oModel.getData().Mobile);
+                    var item = oEvent.getParameter('item');
+                    var viewId = this.getView().getId();
+                    sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--detailProfile");
+                    if (oModel.getData().isImg) {
+                        var profileimg = oView.byId("imgProfile");
+                        profileimg.setSrc("../Images/profileimage.jpg?" + new Date().getTime());
+                    }
                     break;
                 }
                 case "Impostazioni": {
