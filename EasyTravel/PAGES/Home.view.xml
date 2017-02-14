@@ -119,6 +119,11 @@
             <content>
               <Panel
                 class="myPanelProfile">
+                <Button id="floatingImageButton"
+                    icon="sap-icon://edit"
+                    type="Transparent"
+                    class="myFABEditImage"
+                    press="onEditImage" />
                 <ImageContent
                   class="myProfileImage"
                   id="imgProfile"
@@ -143,6 +148,14 @@
                   textAlign="Center"
                   id="lblMobile"
                   text="NUMERO TELEFONO"/>
+              </Panel>
+            </content>
+          </Page>
+          <Page id="detailSettings" class="myPage">
+            <content>
+              <Panel
+                class="myPanelSettings">
+                
               </Panel>
             </content>
           </Page>

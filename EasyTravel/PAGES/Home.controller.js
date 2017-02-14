@@ -22,6 +22,9 @@
             sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--detailMain");
             oView.byId("toolPage").setSideExpanded(false);
         },
+        onEditImage: function () {
+            sap.m.MessageToast.show("aaa");
+        },
         onItemSelect: function (oEvent) {
             var key = oEvent.getParameter('item').getKey();
             switch (key) {

@@ -1,4 +1,7 @@
-﻿#homePage header {
+﻿.sapMBtnInner {
+    outline:none !important;
+}
+#homePage header {
     background: #b71c1c !important;
     border-bottom: 1px solid #500d0d;
     z-index:2;
@@ -37,8 +40,43 @@
     margin-top: 5px;
     font-size: 12pt;
 }
+.myFABEditImage{
+    background-color:#cf0000;
+    width:40px;
+    height:40px;
+    border-radius:100%;
+    background:#cf0000;
+    border:none;
+    outline:none;
+    color:#FFF;
+    font-size:36px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    transition:.3s;  
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    padding:0px;
+    position: absolute;
+    top: 220px;
+    outline:none !important;
+    /* Firefox */
+    left: -moz-calc(50% + 80px);
+    /* WebKit */
+    left: -webkit-calc(50% + 80px);
+    /* Opera */
+    left: -o-calc(50% + 80px);
+    /* Standard */
+    left: calc(50% + 80px);
+}
+.myFABEditImage .sapMBtnHoverable:hover{
+    border-radius:100%;
+    outline:none !important;
+}
+.myFABEditImage .sapMBtnActive{
+    border-radius:100%;
+    outline:none !important;
+}
 #homePage header .sapMImageContent{
     width:45px;
+    outline:none !important;
 }
 #homePage .sapTntNavLIItem {
     background: #900000;
@@ -93,7 +131,7 @@
     .myPanel1{
         margin-top: 4%;
     }
-    .myPanelProfile{
+    .myPanelProfile, .myPanelSettings{
         width:85% !important;
         margin: auto;
         margin-top: 4%;
@@ -133,9 +171,9 @@
     .myPanel3{
         width:96% !important;
     }
-    .myPanelProfile{
+    .myPanelProfile, .myPanelSettings{
         margin-top: 4%;
-        width:85% !important;
+        width:50% !important;
         margin: auto;
         float: none !important;
     }
