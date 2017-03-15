@@ -97,6 +97,46 @@
                 }
             }
         },
+        onTilePress: function (oEvent) {
+            var id = oEvent.getParameter("id");
+            var name = "Zoom";
+            var src = "";
+            if (id.includes("tile1")) {
+                name = "Home";
+                src = "../Images/slide1.jpg";
+            }
+            if (id.includes("tile2")){
+                name = "Destinazione";
+                src = "../Images/slide2.jpg";
+            }
+            if (id.includes("tile3")){
+                name = "Passaggio";
+                src = "../Images/slide3.jpg";
+            }
+            if (id.includes("tile4")){
+                name = "Mappa";
+                src = "../Images/slide4.jpg";
+            }
+            var dialog = new sap.m.Dialog({
+                title: name,
+                content: new sap.m.Image({
+                    src: src,
+                    id: "myimagedialog"
+                }),
+                beginButton: new sap.m.Button({
+                    text: 'OK',
+                    press: function () {
+                        dialog.close();
+                    }
+                }),
+                afterClose: function () {
+                    dialog.destroy();
+                }
+            });
+            dialog.addStyleClass("myDialog");
+            dialog.open();
+            document.getElementById("myimagedialog").className += " myImageDialog";
+        },
         onToggleMenu: function () {
             var viewId = this.getView().getId();
             var toolPage = sap.ui.getCore().byId(viewId + "--toolPage");

@@ -61,57 +61,110 @@
             <content>
               <Panel
                 class="myPanel1">
-                <Input
-                  id="txtMobile"
-                  type="Tel"
-                  placeholder="Numero di telefono"
-                  value="3290358217"/>
-                <Input
-                  id="txtPassword"
-                  type="Password"
-                  placeholder="Password"
-                  value="prova"/>
-                <Button
-                  id="btnLogin"
-                  text="Accedi"
+                <Label
+                  class="myTitleLabel"
                   width="100%"
-                  press="onBtnLogin"/>
+                  textAlign="Left"
+                  text="About Easy Travel."/>
+                <Label
+                  class="myProfileLabel"
+                  width="100%"
+                  textAlign="Left"
+                  text="Easy Travel è un progetto avviato nel mese di Luglio 2016 da Giorgio Bertolotti."/>
+                <Label
+                  class="myProfileLabel"
+                  width="100%"
+                  textAlign="Left"
+                  text="Nato come applicazione da sviluppare durante uno stage estivo è poi continuato a crescere fino a diventare anche
+                  applicazione web per essere disponibile all'uso anche senza bisogno di installare l'applicazione."/>
+                <Label
+                  class="myProfileLabel"
+                  width="100%"
+                  textAlign="Left"
+                  text="Easy Travel vuole rendere più semplice l'organizzazione dei trasporti tra amici e sconosciuti."/>
               </Panel>
               <Panel
                 class="myPanel2">
-                <Input
-                  id="gg"
-                  type="Tel"
-                  placeholder="Numero di telefono"
-                  value="3290358217"/>
-                <Input
-                  id="txtPasggsword"
-                  type="Password"
-                  placeholder="Password"
-                  value="prova"/>
-                <Button
-                  id="btngLogin"
-                  text="Accedi"
+                <Label
+                  class="myTitleLabel"
                   width="100%"
-                  press="onBtnLogin"/>
+                  textAlign="Left"
+                  text="About Me."/>
+                <Label
+                  class="myProfileLabel"
+                  width="100%"
+                  textAlign="Left"
+                  text="Giorgio Bertolotti, sviluppatore di Easy Travel è uno studente dell'ITIS G.Marconi di Dalmine nato nel 1998."/>
+                <Label
+                  class="myProfileLabel"
+                  width="100%"
+                  textAlign="Left"
+                  text="Inizia a sviluppare Easy Travel durante uno stage nell'estate tra il quarto e quinto anno di scuola superiore per poi riprendere il progetto
+                  durante l'ultimo anno e decidere di portarlo come progetto per la tesina di maturità."/>
               </Panel>
               <Panel
                 class="myPanel3">
-                <Input
-                  id="gag"
-                  type="Tel"
-                  placeholder="Numero di telefono"
-                  value="3290358217"/>
-                <Input
-                  id="txtPaasggsword"
-                  type="Password"
-                  placeholder="Password"
-                  value="prova"/>
-                <Button
-                  id="btngsLogin"
-                  text="Accedi"
+                <Label
+                  class="myTitleLabel"
                   width="100%"
-                  press="onBtnLogin"/>
+                  textAlign="Left"
+                  text="About Android App."/>
+                <GenericTile
+                  id="tile1"
+                  backgroundImage="Images/slide1.png"
+                  frameType="TwoByOne" press="onTilePress">
+                  <tileContent>
+                    <TileContent footer="HomePage">
+                      <content>
+                        <NewsContent
+                          contentText="La HomePage dell'applicazione mostra il profilo utente.">
+                        </NewsContent>
+                      </content>
+                    </TileContent>
+                  </tileContent>
+                </GenericTile>
+                <GenericTile
+                  id="tile2"
+                  backgroundImage="Images/slide2.png"
+                  frameType="TwoByOne" press="onTilePress">
+                  <tileContent>
+                    <TileContent footer="Destinazione">
+                      <content>
+                        <NewsContent
+                          contentText="L'applicazione consente la scelta della destinazione tramite Google Maps.">
+                        </NewsContent>
+                      </content>
+                    </TileContent>
+                  </tileContent>
+                </GenericTile>
+                <GenericTile
+                  id="tile3"
+                  backgroundImage="Images/slide3.png"
+                  frameType="TwoByOne" press="onTilePress">
+                  <tileContent>
+                    <TileContent footer="Dare passaggi">
+                      <content>
+                        <NewsContent
+                          contentText="Scelta delle azioni da eseguire su un utente che chiede un passaggio.">
+                        </NewsContent>
+                      </content>
+                    </TileContent>
+                  </tileContent>
+                </GenericTile>
+                <GenericTile
+                  id="tile4"
+                  backgroundImage="Images/slide4.png"
+                  frameType="TwoByOne" press="onTilePress">
+                  <tileContent>
+                    <TileContent footer="Mappa">
+                      <content>
+                        <NewsContent
+                          contentText="Mappa per la visualizzazione di tutti gli utenti attivi entro il proprio raggio.">
+                        </NewsContent>
+                      </content>
+                    </TileContent>
+                  </tileContent>
+                </GenericTile>
               </Panel>
             </content>
           </Page>
