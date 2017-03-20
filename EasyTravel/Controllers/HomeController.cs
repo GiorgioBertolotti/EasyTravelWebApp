@@ -50,5 +50,40 @@ namespace EasyTravel.Controllers
             string ret = JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
             return ret;
         }
+        [HttpPost]
+        public string editImage(EditImage model)
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    string getipres = (new LoginController()).getIP();
+                    dynamic jsonobj = JsonConvert.DeserializeObject(getipres);
+                    var values = new NameValueCollection();
+                    values["api_method"] = "setImage";
+                    values["api_data"] = JsonConvert.SerializeObject(new { mobile = model.Mobile, img = model.Image });
+                    var response = client.UploadValues(jsonobj.IP.Value, values);
+                    var responseString = Encoding.Default.GetString(response);
+                    dynamic result = JsonConvert.DeserializeObject(responseString);
+                    if (!(bool)result.IsError)
+                    {
+                        this.isError = false;
+                        this.errorMessage = result.Message;
+                    }
+                    else
+                    {
+                        this.isError = true;
+                        this.errorMessage = result.Message;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.isError = true;
+                this.errorMessage = e.Message;
+            }
+            string ret = JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
+            return ret;
+        }
     }
 }

@@ -172,11 +172,10 @@
             <content>
               <Panel
                 class="myPanelProfile">
-                <Button id="floatingImageButton"
-                    icon="sap-icon://edit"
-                    type="Transparent"
-                    class="myFABEditImage"
-                    press="onEditImage" />
+                <html:div class="myFABEditImage btn btn-primary">
+                    <html:img src="../Images/edit.png" alt="Edit" />
+                    <html:input id="imagePicker" type="file" class="upload" onchange="sap.ui.controller('sap.ui.easytravel.home.Home').onEditImage()" />
+                </html:div>
                 <ImageContent
                   class="myProfileImage"
                   id="imgProfile"

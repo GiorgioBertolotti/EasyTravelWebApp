@@ -23,7 +23,45 @@
             oView.byId("toolPage").setSideExpanded(false);
         },
         onEditImage: function () {
-            sap.m.MessageToast.show("aaa");
+            var viewId = oView.getId();
+            var imgpicker = document.getElementById(viewId + "--imagePicker");
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var img = new Image();
+                img.onload = function () {
+                    var perferedWidth = 300;
+                    var ratio = perferedWidth / img.width;
+                    var canvas = $("<canvas>")[0];
+                    canvas.width = img.width * ratio;
+                    canvas.height = img.height * ratio;
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    var oModel = sap.ui.getCore().getModel("user");
+                    oModel.attachRequestSent(function () {
+                        sap.ui.core.BusyIndicator.show();
+                    });
+                    var input_data = {
+                        "Mobile": oModel.getData().Mobile,
+                        "Image": canvas.toDataURL("image/png")
+                    };
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/Home/editImage',
+                        data: input_data,
+                        success: function (response) {
+                            location.reload();
+                        },
+                        error: function (response) {
+                            console.log('Error: ', error);
+                        }
+                    })
+                };
+                img.src = e.target.result;
+            };
+            reader.onerror = function (error) {
+                console.log('Error: ', error);
+            };
+            reader.readAsDataURL(imgpicker.files[0]);
         },
         onItemSelect: function (oEvent) {
             var key = oEvent.getParameter('item').getKey();

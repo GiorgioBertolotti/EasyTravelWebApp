@@ -31,4 +31,9 @@ namespace EasyTravel.Models
             return dstImage;
         }
     }
+    public class EditImage
+    {
+        public string Mobile { get; set; }
+        public string Image { get; set; }
+    }
 }

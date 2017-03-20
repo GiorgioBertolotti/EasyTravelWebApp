@@ -36,7 +36,6 @@ D:\user-pc\Documents\Visual Studio 2015\Projects\EasyTravel\EasyTravel\bin\Newto
 D:\user-pc\Documents\Visual Studio 2015\Projects\EasyTravel\EasyTravel\bin\System.Net.Http.Formatting.xml
 D:\user-pc\Documents\Visual Studio 2015\Projects\EasyTravel\EasyTravel\bin\System.Web.Http.xml
 D:\user-pc\Documents\Visual Studio 2015\Projects\EasyTravel\EasyTravel\bin\System.Web.Http.WebHost.xml
-D:\user-pc\Documents\Visual Studio 2015\Projects\EasyTravel\EasyTravel\obj\Debug\EasyTravel.csprojResolveAssemblyReference.cache
 D:\user-pc\Documents\Visual Studio 2015\Projects\EasyTravel\EasyTravel\obj\Debug\EasyTravel.dll
 D:\user-pc\Documents\Visual Studio 2015\Projects\EasyTravel\EasyTravel\obj\Debug\EasyTravel.pdb
 E:\Scuola\EasyTravelWebApp\EasyTravel\bin\ApplicationInsights.config
@@ -80,3 +79,4 @@ E:\Scuola\EasyTravelWebApp\EasyTravel\bin\System.Web.Http.WebHost.xml
 E:\Scuola\EasyTravelWebApp\EasyTravel\obj\Debug\EasyTravel.csprojResolveAssemblyReference.cache
 E:\Scuola\EasyTravelWebApp\EasyTravel\obj\Debug\EasyTravel.dll
 E:\Scuola\EasyTravelWebApp\EasyTravel\obj\Debug\EasyTravel.pdb
+D:\user-pc\Documents\Visual Studio 2015\Projects\EasyTravel\EasyTravel\obj\Debug\EasyTravel.csprojResolveAssemblyReference.cache

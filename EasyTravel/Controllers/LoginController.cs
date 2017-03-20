@@ -86,8 +86,9 @@ namespace EasyTravel.Controllers
                         if (loggedUser.Image != null)
                         {
                             StringBuilder sbText = new StringBuilder(result.Message[0].Image.Value, result.Message[0].Image.Value.Length);
-                            sbText.Replace("\r\n", String.Empty); sbText.Replace(" ", String.Empty);
-                            Byte[] bitmapData = Convert.FromBase64String(sbText.ToString());
+                            sbText.Replace("\r\n", String.Empty);
+                            sbText.Replace(" ", String.Empty);
+                            Byte[] bitmapData = Convert.FromBase64String(sbText.ToString().Replace("data:image/png;base64,", String.Empty));
                             MemoryStream streamBitmap = new MemoryStream(bitmapData);
                             Bitmap bitImage = new Bitmap((Bitmap)Image.FromStream(streamBitmap));
                             bitImage.Save(System.Web.HttpContext.Current.Server.MapPath("~/Images/profileimage.jpg"), ImageFormat.Jpeg);
@@ -147,7 +148,7 @@ namespace EasyTravel.Controllers
                         {
                             StringBuilder sbText = new StringBuilder(result.Message[0].Image.Value, result.Message[0].Image.Value.Length);
                             sbText.Replace("\r\n", String.Empty); sbText.Replace(" ", String.Empty);
-                            Byte[] bitmapData = Convert.FromBase64String(sbText.ToString());
+                            Byte[] bitmapData = Convert.FromBase64String(sbText.ToString().Replace("data:image/png;base64,", String.Empty));
                             MemoryStream streamBitmap = new MemoryStream(bitmapData);
                             Bitmap bitImage = new Bitmap((Bitmap)Image.FromStream(streamBitmap));
                             bitImage.Save(System.Web.HttpContext.Current.Server.MapPath("~/Images/profileimage.jpg"), ImageFormat.Jpeg);
