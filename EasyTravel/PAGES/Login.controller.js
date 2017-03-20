@@ -116,7 +116,6 @@
                 }
                 var app = sap.ui.getCore().byId("EasyTravel");
                 app.to("homePage");
-                sap.ui.controller("sap.ui.easytravel.home.Home").initializeItems();
             }
             sap.ui.core.BusyIndicator.hide();
             oModel.detachRequestCompleted(sap.ui.controller("sap.ui.easytravel.login.Login").onLoginComplete);
@@ -131,7 +130,6 @@
             } else {
                 var app = sap.ui.getCore().byId("EasyTravel");
                 app.to("homePage");
-                sap.ui.controller("sap.ui.easytravel.home.Home").initializeItems();
             }
             sap.ui.core.BusyIndicator.hide();
             oModel.detachRequestCompleted(sap.ui.controller("sap.ui.easytravel.login.Login").onLoginTokenComplete);

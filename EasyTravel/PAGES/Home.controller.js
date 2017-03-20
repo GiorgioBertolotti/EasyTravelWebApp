@@ -19,7 +19,21 @@
                 profileimg.setSrc("../Images/profileimagemini.jpg?" + new Date().getTime());
             }
             var viewId = oView.getId();
-            sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--detailMain");
+            var ppc = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie("ProfilePicChanged");
+            if (ppc) {
+                var oModel = sap.ui.getCore().getModel("user");
+                oView.byId("lblNome").setText(oModel.getData().Name);
+                oView.byId("lblCognome").setText(oModel.getData().Surname);
+                oView.byId("lblMobile").setText(oModel.getData().Mobile);
+                sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--detailProfile");
+                if (oModel.getData().isImg) {
+                    var profileimg = oView.byId("imgProfile");
+                    profileimg.setSrc("../Images/profileimage.jpg?" + new Date().getTime());
+                }
+                var ppc = sap.ui.controller("sap.ui.easytravel.login.Login").eraseCookie("ProfilePicChanged");
+            }
+            else
+                sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--detailMain");
             oView.byId("toolPage").setSideExpanded(false);
         },
         onEditImage: function () {
@@ -49,6 +63,7 @@
                         url: '/api/Home/editImage',
                         data: input_data,
                         success: function (response) {
+                            sap.ui.controller("sap.ui.easytravel.login.Login").createCookie('ProfilePicChanged', true, 1);
                             location.reload();
                         },
                         error: function (response) {
@@ -107,7 +122,6 @@
                     oView.byId("lblNome").setText(oModel.getData().Name);
                     oView.byId("lblCognome").setText(oModel.getData().Surname);
                     oView.byId("lblMobile").setText(oModel.getData().Mobile);
-                    var item = oEvent.getParameter('item');
                     var viewId = this.getView().getId();
                     sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--detailProfile");
                     if (oModel.getData().isImg) {
