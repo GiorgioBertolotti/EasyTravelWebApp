@@ -207,7 +207,21 @@
             <content>
               <Panel
                 class="myPanelSettings">
-                
+                <Label
+                  class="myProfileLabel"
+                  width="100%"
+                  textAlign="Center"
+                  text="NOME"/>
+                <Label
+                  class="myProfileLabel"
+                  width="100%"
+                  textAlign="Center"
+                  text="COGNOME"/>
+                <Label
+                  class="myProfileLabel"
+                  width="100%"
+                  textAlign="Center"
+                  text="NUMERO TELEFONO"/>
               </Panel>
             </content>
           </Page>

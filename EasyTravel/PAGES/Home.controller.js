@@ -43,6 +43,7 @@
             reader.onload = function (e) {
                 var img = new Image();
                 img.onload = function () {
+                    //RIDUCO LE DIMENSIONI DELL'IMMAGINE E LA QUALITA'
                     var perferedWidth = 300;
                     var ratio = perferedWidth / img.width;
                     var canvas = $("<canvas>")[0];
@@ -51,12 +52,10 @@
                     var ctx = canvas.getContext("2d");
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                     var oModel = sap.ui.getCore().getModel("user");
-                    oModel.attachRequestSent(function () {
-                        sap.ui.core.BusyIndicator.show();
-                    });
+                    //PASSO IL BASE64 DELL'IMMAGINE IN jpeg
                     var input_data = {
                         "Mobile": oModel.getData().Mobile,
-                        "Image": canvas.toDataURL("image/png")
+                        "Image": canvas.toDataURL("image/jpeg")
                     };
                     $.ajax({
                         type: 'POST',
@@ -69,7 +68,7 @@
                         error: function (response) {
                             console.log('Error: ', error);
                         }
-                    })
+                    });
                 };
                 img.src = e.target.result;
             };
@@ -131,6 +130,9 @@
                     break;
                 }
                 case "Impostazioni": {
+                    var oModel = sap.ui.getCore().getModel("user");
+                    var viewId = this.getView().getId();
+                    sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--detailSettings");
                     break;
                 }
                 case "Logout": {
