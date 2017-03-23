@@ -1,6 +1,7 @@
 ﻿<mvc:View
   controllerName="sap.ui.easytravel.home.Home"
   xmlns="sap.m"
+  xmlns:l="sap.ui.layout"
   xmlns:mvc="sap.ui.core.mvc"
   xmlns:tnt="sap.tnt"
   xmlns:html="http://www.w3.org/1999/xhtml"
@@ -207,21 +208,81 @@
             <content>
               <Panel
                 class="myPanelSettings">
-                <Label
-                  class="myProfileLabel"
+                <html:table width="100%" style="margin-top:15px;">
+                  <html:tr>
+                    <html:td style="width:30%">
+                      <Label
+                        class="myProfileLabel"
+                        width="100%"
+                        textAlign="Center"
+                        text="Range:"/>
+                    </html:td>
+                    <html:td style="width:70%">
+                      <Slider
+                        id="rangePicker"
+                        value="50" width="100%"
+				                min="0" max="100"
+				                showAdvancedTooltip="true"
+				                showHandleTooltip="false" />
+                    </html:td>
+                  </html:tr>
+                  <html:tr>
+                    <html:td style="width:30%">
+                      <Label
+                        class="myProfileLabel"
+                        width="100%"
+                        textAlign="Center"
+                        text="Password vecchia:"/>
+                    </html:td>
+                    <html:td style="width:70%">
+                      <Input
+                        id="txtOldPassword"
+                        type="Text"
+                        width="100%"
+                        placeholder="Password vecchia"/>
+                    </html:td>
+                  </html:tr>
+                  <html:tr>
+                    <html:td style="width:30%">
+                      <Label
+                        class="myProfileLabel"
+                        width="100%"
+                        textAlign="Center"
+                        text="Password nuova:"/>
+                    </html:td>
+                    <html:td style="width:30%">
+                      <Input
+                        id="txtNewPassword"
+                        type="Text"
+                        width="100%"
+                        placeholder="Password nuova"/>
+                    </html:td>
+                  </html:tr>
+                  <html:tr>
+                    <html:td style="width:30%">
+                      <Label
+                        class="myProfileLabel"
+                        width="100%"
+                        textAlign="Center"
+                        text="Conferma password:"/>
+                    </html:td>
+                    <html:td style="width:30%">
+                      <Input
+                        id="txtConfirmPassword"
+                        type="Text"
+                        width="100%"
+                        placeholder="Conferma password"/>
+                    </html:td>
+                  </html:tr>
+                </html:table>
+                <Button
+                  id="btnSaveSettings"
                   width="100%"
-                  textAlign="Center"
-                  text="NOME"/>
-                <Label
-                  class="myProfileLabel"
-                  width="100%"
-                  textAlign="Center"
-                  text="COGNOME"/>
-                <Label
-                  class="myProfileLabel"
-                  width="100%"
-                  textAlign="Center"
-                  text="NUMERO TELEFONO"/>
+                  text="Salva"
+                  press="onBtnSave"/>
+                <l:VerticalLayout 
+                  id="stripcontainer"
+                  width="100%" />
               </Panel>
             </content>
           </Page>

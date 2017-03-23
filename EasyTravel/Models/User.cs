@@ -36,4 +36,10 @@ namespace EasyTravel.Models
         public string Mobile { get; set; }
         public string Image { get; set; }
     }
+    public class EditPassword
+    {
+        public string Mobile { get; set; }
+        public string OldPassword { get; set; }
+        public string NewPassword { get; set; }
+    }
 }

@@ -36,6 +36,56 @@
                 sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--detailMain");
             oView.byId("toolPage").setSideExpanded(false);
         },
+        onBtnSave: function () {
+            var oModel = sap.ui.getCore().getModel("user");
+            var mobile = oModel.getData().Mobile;
+            var rangepicker = oView.byId("rangePicker").getValue();
+            var oldpwd = oView.byId("txtOldPassword").getValue();
+            var newpwd = oView.byId("txtNewPassword").getValue();
+            var confirm = oView.byId("txtConfirmPassword").getValue();
+            if (rangepicker != oModel.getData().Range) {
+                oModel = new sap.ui.model.json.JSONModel();
+                sap.ui.getCore().setModel(oModel, "range");
+                oModel.attachRequestSent(function () {
+                    sap.ui.core.BusyIndicator.show();
+                });
+                var input_data = { "mobile": mobile, "range": rangepicker };
+                oModel.loadData("api/Home/editRange", input_data);
+                oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.home.Home").onEditRangeComplete);
+            }
+            if (newpwd == confirm) {
+                var md5old = CryptoJS.MD5(oldpwd).toString();
+                var md5new = CryptoJS.MD5(newpwd).toString();
+                var input_data = {
+                    "Mobile": mobile,
+                    "OldPassword": md5old,
+                    "NewPassword": md5new
+                };
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/Home/editPassword',
+                    data: input_data,
+                    success: function (response) {
+                        var json = JSON.parse(response);
+                        var strip = new sap.m.MessageStrip({
+                            text: json.errorMessage,
+                            type: "Success",
+                            showIcon: true,
+                            showCloseButton: true
+                        });
+                        var viewId = oView.getId();
+                        strip.placeAt(viewId + "--stripcontainer");
+                        setTimeout(function () {
+                            strip.close();
+                        }, 3000);
+
+                    },
+                    error: function (response) {
+                        console.log('Error: ', error);
+                    }
+                });
+            }
+        },
         onEditImage: function () {
             var viewId = oView.getId();
             var imgpicker = document.getElementById(viewId + "--imagePicker");
@@ -133,6 +183,7 @@
                     var oModel = sap.ui.getCore().getModel("user");
                     var viewId = this.getView().getId();
                     sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--detailSettings");
+                    oView.byId("rangePicker").setValue(oModel.getData().Range);
                     break;
                 }
                 case "Logout": {
@@ -222,6 +273,49 @@
             }
             sap.ui.core.BusyIndicator.hide();
             oModel.detachRequestCompleted(sap.ui.controller("sap.ui.easytravel.home.Home").onLogoutComplete);
+        },
+        onEditRangeComplete: function () {
+            sap.ui.core.BusyIndicator.hide();
+            var oModel = sap.ui.getCore().getModel("range");
+            var data = JSON.parse(oModel.getData());
+            oModel.setData(data);
+            if (data.isError) {
+                sap.m.MessageToast.show(data.errorMessage);
+            } else {
+                var strip = new sap.m.MessageStrip({
+                    text: "Range modificato",
+                    type: "Success",
+                    showIcon: true,
+                    showCloseButton: true
+                });
+                var viewId = oView.getId();
+                strip.placeAt(viewId + "--stripcontainer");
+                setTimeout(function () {
+                    strip.close();
+                }, 3000);
+            }
+            sap.ui.core.BusyIndicator.hide();
+            oModel.detachRequestCompleted(sap.ui.controller("sap.ui.easytravel.home.Home").onEditRangeComplete);
+        },
+        onEditPasswordComplete: function () {
+            sap.ui.core.BusyIndicator.hide();
+            var oModel = sap.ui.getCore().getModel("password");
+            var data = JSON.parse(oModel.getData());
+            oModel.setData(data);
+            if (data.isError) {
+                sap.m.MessageToast.show(data.errorMessage);
+            } else {
+                var strip = new sap.m.MessageStrip({
+                    text: data.errorMessage,
+                    type: "Success",
+                    showIcon: true,
+                    showCloseButton: true
+                });
+                var viewId = oView.getId();
+                strip.placeAt(viewId + "--stripcontainer");
+            }
+            sap.ui.core.BusyIndicator.hide();
+            oModel.detachRequestCompleted(sap.ui.controller("sap.ui.easytravel.home.Home").onEditPasswordComplete);
         },
         model: new sap.ui.model.json.JSONModel(),
         data: {
