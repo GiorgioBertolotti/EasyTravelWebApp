@@ -57,7 +57,9 @@
     </tnt:sideContent>
     <tnt:mainContents>
       <NavContainer id="pageContainer">
+        <!-- PAGINE -->
         <pages>
+          <!-- HOME -->
           <Page id="detailMain" class="myPage">
             <content>
               <Panel
@@ -169,6 +171,13 @@
               </Panel>
             </content>
           </Page>
+          <!-- CHIEDI PASSAGGIO / AUTOSTOPPISTA -->
+          <Page id="detailAutostop" class="myPage">
+            <content>
+              <html:div id="map" class="myMap"></html:div>
+            </content>
+          </Page>
+          <!-- PROFILO UTENTE -->
           <Page id="detailProfile" class="myPage">
             <content>
               <Panel
@@ -204,6 +213,7 @@
               </Panel>
             </content>
           </Page>
+          <!-- IMPOSTAZIONI -->
           <Page id="detailSettings" class="myPage">
             <content>
               <Panel

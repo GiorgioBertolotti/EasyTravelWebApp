@@ -19,6 +19,10 @@
     right: 0;
     margin: auto;
 }
+.myMap{
+    overflow: visible !important;
+    position:static !important;
+}
 .myProfileImage{
     position:static;
     height:200px;

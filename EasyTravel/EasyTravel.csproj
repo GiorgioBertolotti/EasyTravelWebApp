@@ -7441,6 +7441,7 @@
     <Content Include="scripts\resources\sap\uxap\themes\sap_hcb\resources.json" />
     <Content Include="Content\Settings.json" />
     <Content Include="PAGES\MenuItemEventing.fragment.xml" />
+    <None Include="Properties\PublishProfiles\EasyTravel.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

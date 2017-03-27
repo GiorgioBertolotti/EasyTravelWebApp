@@ -130,9 +130,52 @@
                 case "home": {
                     if (oView.byId("toolPage").getSideExpanded())
                         oView.byId("toolPage").toggleSideContentMode();
-                    var item = oEvent.getParameter('item');
                     var viewId = this.getView().getId();
                     sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--detailMain");
+                    break;
+                }
+                case "autostoppista": {
+                    if (oView.byId("toolPage").getSideExpanded())
+                        oView.byId("toolPage").toggleSideContentMode();
+                    var viewId = this.getView().getId();
+                    sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--detailAutostop");
+                    var position = { lat: 0, lng: 0 };
+                    var options = {
+                        enableHighAccuracy: true,
+                        timeout: 4000,
+                        maximumAge: 0
+                    };
+                    function success(pos) {
+                        var crd = pos.coords;
+                        position.lat = crd.latitude;
+                        position.lng = crd.longitude;
+                        var viewId = oView.getId();
+                        var map = new google.maps.Map(document.getElementById(viewId + '--map'), {
+                            zoom: 4,
+                            center: position
+                        });
+                        var marker = new google.maps.Marker({
+                            position: position,
+                            map: map
+                        });
+                    };
+                    function error(err) {
+                        sap.m.MessageToast.show(err.message);
+                        var viewId = this.getView().getId();
+                        var map = new google.maps.Map(document.getElementById(viewId + '--map'), {
+                            zoom: 4,
+                            center: position
+                        });
+                        var marker = new google.maps.Marker({
+                            position: position,
+                            map: map
+                        });
+                    };
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(success, error, options);
+                    } else {
+                        sap.m.MessageToast.show("Geolocation is not supported by this browser");
+                    }
                     break;
                 }
                 case "logout": {
