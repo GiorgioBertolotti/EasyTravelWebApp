@@ -220,10 +220,10 @@
                     <html:td style="width:70%">
                       <Slider
                         id="rangePicker"
-                        value="50" width="100%"
-				                min="0" max="100"
+                        value="0"
+				                min="1" max="100"
 				                showAdvancedTooltip="true"
-				                showHandleTooltip="false" />
+				                showHandleTooltip="true" />
                     </html:td>
                   </html:tr>
                   <html:tr>
@@ -250,7 +250,7 @@
                         textAlign="Center"
                         text="Password nuova:"/>
                     </html:td>
-                    <html:td style="width:30%">
+                    <html:td style="width:70%">
                       <Input
                         id="txtNewPassword"
                         type="Text"
@@ -266,7 +266,7 @@
                         textAlign="Center"
                         text="Conferma password:"/>
                     </html:td>
-                    <html:td style="width:30%">
+                    <html:td style="width:70%">
                       <Input
                         id="txtConfirmPassword"
                         type="Text"

@@ -15,7 +15,7 @@ namespace EasyTravel.Controllers
 {
     public class LoginController : ApiController
     {
-        public User loggedUser { get; set; }
+        public static User loggedUser { get; set; }
         public string IP { get; set; }
         public bool isError { get; set; }
         public string errorMessage { get; set; }
@@ -108,6 +108,7 @@ namespace EasyTravel.Controllers
                     {
                         this.isError = true;
                         this.errorMessage = result.Message;
+                        return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
                     }
                 }
             }
@@ -115,11 +116,11 @@ namespace EasyTravel.Controllers
             {
                 this.isError = true;
                 this.errorMessage = e.Message;
+                return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
             }
             string ret = JsonConvert.SerializeObject(loggedUser);
             return ret;
         }
-
         [HttpGet]
         public string loginWithToken(string token)
         {
@@ -168,6 +169,7 @@ namespace EasyTravel.Controllers
                     {
                         this.isError = true;
                         this.errorMessage = result.Message;
+                        return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
                     }
                 }
             }
@@ -175,6 +177,7 @@ namespace EasyTravel.Controllers
             {
                 this.isError = true;
                 this.errorMessage = e.Message;
+                return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
             }
             string ret = JsonConvert.SerializeObject(loggedUser);
             return ret;
@@ -198,6 +201,48 @@ namespace EasyTravel.Controllers
                     dynamic result = JsonConvert.DeserializeObject(responseString);
                     this.isError = (bool)result.IsError;
                     this.errorMessage = result.Message;
+                }
+            }
+            catch (Exception e)
+            {
+                this.isError = true;
+                this.errorMessage = e.Message;
+            }
+            string ret = JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
+            return ret;
+        }
+        [HttpGet]
+        public string editRange(string mobile, int range)
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    if (range != loggedUser.Range) { 
+                        string getipres = (new LoginController()).getIP();
+                        dynamic jsonobj = JsonConvert.DeserializeObject(getipres);
+                        var values = new NameValueCollection();
+                        values["api_method"] = "setRange";
+                        values["api_data"] = JsonConvert.SerializeObject(new { mobile = mobile, range = range });
+                        var response = client.UploadValues(jsonobj.IP.Value, values);
+                        var responseString = Encoding.Default.GetString(response);
+                        dynamic result = JsonConvert.DeserializeObject(responseString);
+                        if (!(bool)result.IsError)
+                        {
+                            loggedUser.Range = range;
+                            this.isError = false;
+                            this.errorMessage = result.Message;
+                        }
+                        else
+                        {
+                            this.isError = true;
+                            this.errorMessage = result.Message;
+                        }
+                    }else
+                    {
+                        this.isError = true;
+                        this.errorMessage = "Il range è uguale";
+                    }
                 }
             }
             catch (Exception e)

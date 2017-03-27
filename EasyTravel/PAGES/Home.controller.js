@@ -43,17 +43,15 @@
             var oldpwd = oView.byId("txtOldPassword").getValue();
             var newpwd = oView.byId("txtNewPassword").getValue();
             var confirm = oView.byId("txtConfirmPassword").getValue();
-            if (rangepicker != oModel.getData().Range) {
-                oModel = new sap.ui.model.json.JSONModel();
-                sap.ui.getCore().setModel(oModel, "range");
-                oModel.attachRequestSent(function () {
-                    sap.ui.core.BusyIndicator.show();
-                });
-                var input_data = { "mobile": mobile, "range": rangepicker };
-                oModel.loadData("api/Home/editRange", input_data);
-                oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.home.Home").onEditRangeComplete);
-            }
-            if (newpwd == confirm) {
+            oModel = new sap.ui.model.json.JSONModel();
+            sap.ui.getCore().setModel(oModel, "range");
+            oModel.attachRequestSent(function () {
+                sap.ui.core.BusyIndicator.show();
+            });
+            var input_data = { "mobile": mobile, "range": rangepicker };
+            oModel.loadData("api/Login/editRange", input_data);
+            oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.home.Home").onEditRangeComplete);
+            if (newpwd == confirm && newpwd) {
                 var md5old = CryptoJS.MD5(oldpwd).toString();
                 var md5new = CryptoJS.MD5(newpwd).toString();
                 var input_data = {
@@ -78,7 +76,6 @@
                         setTimeout(function () {
                             strip.close();
                         }, 3000);
-
                     },
                     error: function (response) {
                         console.log('Error: ', error);
@@ -131,12 +128,16 @@
             var key = oEvent.getParameter('item').getKey();
             switch (key) {
                 case "home": {
+                    if (oView.byId("toolPage").getSideExpanded())
+                        oView.byId("toolPage").toggleSideContentMode();
                     var item = oEvent.getParameter('item');
                     var viewId = this.getView().getId();
                     sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--detailMain");
                     break;
                 }
                 case "logout": {
+                    if (oView.byId("toolPage").getSideExpanded())
+                        oView.byId("toolPage").toggleSideContentMode();
                     var oModel = sap.ui.getCore().getModel("user");
                     var mobile = oModel.getData().Mobile;
                     oModel.attachRequestSent(function () {
@@ -167,6 +168,8 @@
         handleMenuItemPress: function (oEvent) {
             switch (oEvent.getParameter("item").getText()) {
                 case "Visualizza profilo": {
+                    if (oView.byId("toolPage").getSideExpanded())
+                        oView.byId("toolPage").toggleSideContentMode();
                     var oModel = sap.ui.getCore().getModel("user");
                     oView.byId("lblNome").setText(oModel.getData().Name);
                     oView.byId("lblCognome").setText(oModel.getData().Surname);
@@ -180,6 +183,8 @@
                     break;
                 }
                 case "Impostazioni": {
+                    if (oView.byId("toolPage").getSideExpanded())
+                        oView.byId("toolPage").toggleSideContentMode();
                     var oModel = sap.ui.getCore().getModel("user");
                     var viewId = this.getView().getId();
                     sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--detailSettings");
@@ -187,6 +192,8 @@
                     break;
                 }
                 case "Logout": {
+                    if (oView.byId("toolPage").getSideExpanded())
+                        oView.byId("toolPage").toggleSideContentMode();
                     var oModel = sap.ui.getCore().getModel("user");
                     var mobile = oModel.getData().Mobile;
                     oModel.attachRequestSent(function () {
@@ -280,7 +287,21 @@
             var data = JSON.parse(oModel.getData());
             oModel.setData(data);
             if (data.isError) {
-                sap.m.MessageToast.show(data.errorMessage);
+                if (data.errorMessage == "Il range è uguale") {
+                    var strip = new sap.m.MessageStrip({
+                        text: data.errorMessage,
+                        type: "Warning",
+                        showIcon: true,
+                        showCloseButton: true
+                    });
+                    var viewId = oView.getId();
+                    strip.placeAt(viewId + "--stripcontainer");
+                    setTimeout(function () {
+                        strip.close();
+                    }, 3000);
+                }
+                else
+                    sap.m.MessageToast.show(data.errorMessage);
             } else {
                 var strip = new sap.m.MessageStrip({
                     text: "Range modificato",
