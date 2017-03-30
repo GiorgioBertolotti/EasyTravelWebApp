@@ -3,7 +3,7 @@
    "sap/m/MessageToast"
 ], function (Controller, MessageToast) {
     "use strict";
-    var oView;
+    var oView, marker, geocoder;
     return Controller.extend("sap.ui.easytravel.home.Home", {
         onInit: function () {
             oView = this.getView();
@@ -140,6 +140,7 @@
                     var viewId = this.getView().getId();
                     sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--detailAutostop");
                     var position = { lat: 0, lng: 0 };
+                    geocoder = new google.maps.Geocoder;
                     var options = {
                         enableHighAccuracy: true,
                         timeout: 4000,
@@ -151,12 +152,34 @@
                         position.lng = crd.longitude;
                         var viewId = oView.getId();
                         var map = new google.maps.Map(document.getElementById(viewId + '--map'), {
-                            zoom: 4,
+                            zoom: 12,
                             center: position
                         });
-                        var marker = new google.maps.Marker({
+                        marker = new google.maps.Marker({
                             position: position,
                             map: map
+                        });
+                        google.maps.event.addListener(map, "rightclick", function (event) {
+                            var latlng = { lat: event.latLng.lat(), lng: event.latLng.lng() };
+                            geocoder.geocode({ 'location': latlng }, function (results, status) {
+                                if (status === 'OK') {
+                                    if (results[1]) {
+                                        sap.m.MessageToast.show(results[1].formatted_address);
+                                    }
+                                }
+                            });
+                            marker.setMap(null);
+                            var markernew = new google.maps.Marker({
+                                position: { lat: event.latLng.lat(), lng: event.latLng.lng() },
+                                map: map
+                            });
+                            markernew.addListener('click', function () {
+                                if (oView.byId("toolPage").getSideExpanded())
+                                    oView.byId("toolPage").toggleSideContentMode();
+                                var viewId = oView.getId();
+                                sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--detailWaiting");
+                            });
+                            marker = markernew;
                         });
                     };
                     function error(err) {

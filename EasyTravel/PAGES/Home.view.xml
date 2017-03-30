@@ -177,6 +177,15 @@
               <html:div id="map" class="myMap"></html:div>
             </content>
           </Page>
+          <!-- ATTESA PASSAGGIO -->
+          <Page id="detailWaiting" class="myPage">
+            <content>
+              <Panel
+                class="myPanelProfile">
+                
+              </Panel>
+            </content>
+          </Page>
           <!-- PROFILO UTENTE -->
           <Page id="detailProfile" class="myPage">
             <content>
