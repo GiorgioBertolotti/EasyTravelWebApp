@@ -28,12 +28,13 @@
                 return;
             }
             var md5 = CryptoJS.MD5(password).toString();
+            var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
             var oModel = new sap.ui.model.json.JSONModel();
             sap.ui.getCore().setModel(oModel, "register");
             oModel.attachRequestSent(function () {
                 sap.ui.core.BusyIndicator.show();
             });
-            var input_data = { "nome": name, "cognome": surname, "mail": email, "mobile": mobile, "password": md5 };
+            var input_data = { "ip":ip,"nome": name, "cognome": surname, "mail": email, "mobile": mobile, "password": md5 };
             oModel.loadData("api/Login/registerUser", input_data);
             oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.register.Register").onRegisterComplete);
         },

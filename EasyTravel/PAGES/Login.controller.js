@@ -10,12 +10,13 @@
             oView.byId("imglogo").addStyleClass("myLogo");
             var token = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('authenticationToken');
             if (token) {
+                var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
                 var oModel = new sap.ui.model.json.JSONModel();
                 sap.ui.getCore().setModel(oModel, "user");
                 oModel.attachRequestSent(function () {
                     sap.ui.core.BusyIndicator.show();
                 });
-                var input_data = { "token": token };
+                var input_data = { "ip": ip, "token": token };
                 oModel.loadData("api/Login/loginWithToken", input_data);
                 oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.login.Login").onLoginTokenComplete);
             }
@@ -24,12 +25,13 @@
             var mobile = oView.byId("txtMobile").getValue();
             var password = oView.byId("txtPassword").getValue();
             var md5 = CryptoJS.MD5(password).toString();
+            var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
             var oModel = new sap.ui.model.json.JSONModel();
             sap.ui.getCore().setModel(oModel, "user");
             oModel.attachRequestSent(function () {
                 sap.ui.core.BusyIndicator.show();
             });
-            var input_data = { "mobile": mobile, "pass": md5 };
+            var input_data = { "ip":ip,"mobile": mobile, "pass": md5 };
             oModel.loadData("api/Login/loginUser", input_data);
             oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.login.Login").onLoginComplete);
         },
@@ -38,20 +40,7 @@
             app.to("registerPage","flip");
         },
         onBtnIP: function (oEvent) {
-            var oModel = new sap.ui.model.json.JSONModel();
-            sap.ui.getCore().setModel(oModel, "ip");
-            oModel.attachRequestSent(function () {
-                sap.ui.core.BusyIndicator.show();
-            });
-            oModel.loadData("api/Login/getIP", {});
-            oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.login.Login").onGetIPComplete);
-        },
-        onGetIPComplete: function () {
-            sap.ui.core.BusyIndicator.hide();
-            var oModel = sap.ui.getCore().getModel("ip");
-            var data = JSON.parse(oModel.getData());
-            oModel.setData(data);
-            var ip = oModel.getData().IP;
+            var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
             var dialog = new sap.m.Dialog({
                 title: "Imposta IP Server",
                 content: new sap.m.Input({
@@ -64,12 +53,8 @@
                     type: "Accept",
                     press: function (oEvent) {
                         var ip = $("#txtIP-inner").val();
-                        var input_data = { "ip": ip };
-                        oModel.attachRequestSent(function () {
-                            sap.ui.core.BusyIndicator.show();
-                        });
-                        oModel.loadData("api/Login/setIP", input_data);
-                        oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.login.Login").onSetIPComplete);
+                        sap.ui.controller("sap.ui.easytravel.login.Login").createCookie('ip', ip, 30);
+                        sap.m.MessageToast.show("L'IP è stato impostato correttamente");
                         dialog.close();
                     }
                 }),
@@ -86,20 +71,6 @@
             });
             dialog.addStyleClass("myDialog");
             dialog.open();
-            oModel.detachRequestCompleted(sap.ui.controller("sap.ui.easytravel.login.Login").onGetIPComplete);
-        },
-        onSetIPComplete: function () {
-            sap.ui.core.BusyIndicator.hide();
-            var oModel = sap.ui.getCore().getModel("ip");
-            var data = JSON.parse(oModel.getData());
-            oModel.setData(data);
-            if (data.isError) {
-                sap.m.MessageToast.show(data.errorMessage);
-            } else {
-                sap.m.MessageToast.show("L'IP è stato impostato correttamente");
-            }
-            sap.ui.core.BusyIndicator.hide();
-            oModel.detachRequestCompleted(sap.ui.controller("sap.ui.easytravel.login.Login").onSetIPComplete);
         },
         onLoginComplete: function () {
             sap.ui.core.BusyIndicator.hide();

@@ -43,18 +43,20 @@
             var oldpwd = oView.byId("txtOldPassword").getValue();
             var newpwd = oView.byId("txtNewPassword").getValue();
             var confirm = oView.byId("txtConfirmPassword").getValue();
+            var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
             oModel = new sap.ui.model.json.JSONModel();
             sap.ui.getCore().setModel(oModel, "range");
             oModel.attachRequestSent(function () {
                 sap.ui.core.BusyIndicator.show();
             });
-            var input_data = { "mobile": mobile, "range": rangepicker };
+            var input_data = { "ip":ip,"mobile": mobile, "range": rangepicker };
             oModel.loadData("api/Login/editRange", input_data);
             oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.home.Home").onEditRangeComplete);
             if (newpwd == confirm && newpwd) {
                 var md5old = CryptoJS.MD5(oldpwd).toString();
                 var md5new = CryptoJS.MD5(newpwd).toString();
                 var input_data = {
+                    "ip":ip,
                     "Mobile": mobile,
                     "OldPassword": md5old,
                     "NewPassword": md5new
@@ -98,9 +100,11 @@
                     canvas.height = img.height * ratio;
                     var ctx = canvas.getContext("2d");
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
                     var oModel = sap.ui.getCore().getModel("user");
                     //PASSO IL BASE64 DELL'IMMAGINE IN jpeg
                     var input_data = {
+                        "ip":ip,
                         "Mobile": oModel.getData().Mobile,
                         "Image": canvas.toDataURL("image/jpeg")
                     };
@@ -206,10 +210,12 @@
                         oView.byId("toolPage").toggleSideContentMode();
                     var oModel = sap.ui.getCore().getModel("user");
                     var mobile = oModel.getData().Mobile;
+                    var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
                     oModel.attachRequestSent(function () {
                         sap.ui.core.BusyIndicator.show();
                     });
                     var input_data = {
+                        "ip": ip,
                         "mobile": mobile,
                         "token": sap.ui.controller("sap.ui.easytravel.login.Login").readCookie("authenticationToken")
                     };
@@ -262,10 +268,12 @@
                         oView.byId("toolPage").toggleSideContentMode();
                     var oModel = sap.ui.getCore().getModel("user");
                     var mobile = oModel.getData().Mobile;
+                    var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
                     oModel.attachRequestSent(function () {
                         sap.ui.core.BusyIndicator.show();
                     });
                     var input_data = {
+                        "ip":ip,
                         "mobile": mobile,
                         "token": sap.ui.controller("sap.ui.easytravel.login.Login").readCookie("authenticationToken")
                     };

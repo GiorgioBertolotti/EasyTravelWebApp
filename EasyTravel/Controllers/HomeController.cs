@@ -19,18 +19,16 @@ namespace EasyTravel.Controllers
         public bool isError { get; set; }
         public string errorMessage { get; set; }
         [HttpGet]
-        public string logoutUser(string mobile, string token)
+        public string logoutUser(string ip, string mobile, string token)
         {
             try
             {
                 using (var client = new WebClient())
                 {
-                    string getipres = (new LoginController()).getIP();
-                    dynamic jsonobj = JsonConvert.DeserializeObject(getipres);
                     var values = new NameValueCollection();
                     values["api_method"] = "logoutUser";
                     values["api_data"] = JsonConvert.SerializeObject(new { mobile = mobile, token = token });
-                    var response = client.UploadValues(jsonobj.IP.Value, values);
+                    var response = client.UploadValues(ip, values);
                     var responseString = Encoding.Default.GetString(response);
                     dynamic result = JsonConvert.DeserializeObject(responseString);
                     if (!(bool)result.IsError)
@@ -59,8 +57,6 @@ namespace EasyTravel.Controllers
             {
                 using (var client = new WebClient())
                 {
-                    string getipres = (new LoginController()).getIP();
-                    dynamic jsonobj = JsonConvert.DeserializeObject(getipres);
                     //CONVERTO IL BASE64 IN IMMAGINE
                     StringBuilder sbText = new StringBuilder(model.Image, model.Image.Length);
                     sbText.Replace("\r\n", String.Empty);
@@ -82,7 +78,7 @@ namespace EasyTravel.Controllers
                     var values = new NameValueCollection();
                     values["api_method"] = "setImage";
                     values["api_data"] = JsonConvert.SerializeObject(new { mobile = model.Mobile, img = SigBase64 });
-                    var response = client.UploadValues(jsonobj.IP.Value, values);
+                    var response = client.UploadValues(model.ip, values);
                     var responseString = Encoding.Default.GetString(response);
                     dynamic result = JsonConvert.DeserializeObject(responseString);
                     if (!(bool)result.IsError)
@@ -111,12 +107,10 @@ namespace EasyTravel.Controllers
             {
                 using (var client = new WebClient())
                 {
-                    string getipres = (new LoginController()).getIP();
-                    dynamic jsonobj = JsonConvert.DeserializeObject(getipres);
                     var values = new NameValueCollection();
                     values["api_method"] = "setPassword";
                     values["api_data"] = JsonConvert.SerializeObject(new { mobile = model.Mobile, oldpwd = model.OldPassword, newpwd = model.NewPassword });
-                    var response = client.UploadValues(jsonobj.IP.Value, values);
+                    var response = client.UploadValues(model.ip, values);
                     var responseString = Encoding.Default.GetString(response);
                     dynamic result = JsonConvert.DeserializeObject(responseString);
                     if (!(bool)result.IsError)
