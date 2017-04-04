@@ -11,6 +11,10 @@
             var token = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('authenticationToken');
             if (token) {
                 var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
+                if (ip == null) {
+                    ip = "http://192.168.200.160:8080/pcws/index.php";
+                    sap.ui.controller("sap.ui.easytravel.login.Login").createCookie('ip', ip, 30);
+                }
                 var oModel = new sap.ui.model.json.JSONModel();
                 sap.ui.getCore().setModel(oModel, "user");
                 oModel.attachRequestSent(function () {
