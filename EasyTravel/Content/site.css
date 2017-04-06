@@ -282,6 +282,35 @@
 #registerPage section {
     margin-top: 60px !important;
 }
+.mySpinner {
+  width: 60px;
+  height: 60px;
+  margin: 60px;
+  animation: rotate 1.4s infinite ease-in-out, background 1.4s infinite ease-in-out alternate;
+}
+
+@keyframes rotate {
+  0% {
+    transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: perspective(120px) rotateX(-180deg) rotateY(0deg);
+  }
+  100% {
+    transform: perspective(120px) rotateX(-180deg) rotateY(-180deg);
+  }
+}
+@keyframes background {
+  0% {
+  background-color: #a30000;
+  }
+  50% {
+    background-color: #8c1a1a;
+  }
+  100% {
+    background-color: #c0392b;
+  }
+}
 :not(.sapMBtnDisabled)>.sapMBtnDefault.sapMBtnInner.sapMBtnActive{
     background-color: #ad1c1c !important;
     border-color: #ad1c1c !important;

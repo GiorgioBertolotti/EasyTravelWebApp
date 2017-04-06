@@ -182,7 +182,44 @@
             <content>
               <Panel
                 class="myPanelProfile">
-                
+                <Label
+                  class="myTitleLabel"
+                  width="100%"
+                  text="Attendi che un autista ti contatti."
+                  textAlign="Center" />
+                <html:table width="100%" style="margin-top:15px;">
+                  <html:tr>
+                    <html:td style="width:30%">
+                      <Label
+                        class="myProfileLabel"
+                        width="100%"
+                        text="Hai impostato come destinazione:"/>
+                      <Label
+                        class="myProfileLabel"
+                        width="100%"
+                        id="lblLatDest"
+                        text="LATITUDINE"/>
+                      <Label
+                        class="myProfileLabel"
+                        width="100%"
+                        id="lblLngDest"
+                        text="LONGITUDINE"/>
+                      <Label
+                        class="myProfileLabel"
+                        width="100%"
+                        id="lblGeoDest"
+                        text="DESTINAZIONE"/>
+                    </html:td>
+                    <html:td align="right">
+                      <html:div class="mySpinner"></html:div>
+                    </html:td>
+                  </html:tr>
+                </html:table>
+                <Button
+                  id="btnBackToMap"
+                  width="100%"
+                  text="Annulla"
+                  press="onBtnBackToMap"/>
               </Panel>
             </content>
           </Page>
