@@ -189,7 +189,7 @@
                   textAlign="Center" />
                 <html:table width="100%" style="margin-top:15px;">
                   <html:tr>
-                    <html:td style="width:30%">
+                    <html:td style="width:60%">
                       <Label
                         class="myProfileLabel"
                         width="100%"
@@ -220,6 +220,17 @@
                   width="100%"
                   text="Annulla"
                   press="onBtnBackToMap"/>
+              </Panel>
+            </content>
+          </Page>
+          <!-- SCELTA AUTOSTOPPISTA / AUTISTA -->
+          <Page id="detailDrivers" class="myPage">
+            <content>
+              <Panel
+                class="myPanelProfile">
+                <List 
+                  id="listAutostoppisti"
+                  noDataText="Non ci sono autostoppisti nel tuo range." />
               </Panel>
             </content>
           </Page>

@@ -11,13 +11,65 @@ using System.Text;
 using System.Collections.Specialized;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 
 namespace EasyTravel.Controllers
 {
     public class HomeController : ApiController
     {
+        public List<Autostoppista> autostoppisti;
         public bool isError { get; set; }
         public string errorMessage { get; set; }
+        [HttpGet]
+        public string getAutostoppisti(string ip, string mobile, string lat, string lon, string range)
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    var values = new NameValueCollection();
+                    values["api_method"] = "getAS";
+                    values["api_data"] = JsonConvert.SerializeObject(new { mobile = mobile, lat = lat, lon = lon, range = range });
+                    var response = client.UploadValues(ip, values);
+                    var responseString = Encoding.Default.GetString(response);
+                    dynamic result = JsonConvert.DeserializeObject(responseString);
+                    if (!(bool)result.IsError)
+                    {
+                        autostoppisti = new List<Autostoppista>();
+                        foreach (var atmp in result.Message)
+                        {
+                            Autostoppista tmp = new Autostoppista() { Name = atmp.Name, Surname = atmp.Surname, Mobile = atmp.Mobile, Range = atmp.Range, Destlat = atmp.Destlat, Destlon = atmp.Destlon, Latitude = atmp.Latitude, Longitude = atmp.Longitude, Date = atmp.Date };
+                            tmp.evaluateDestination();
+                            tmp.Image = Encoding.Default.GetBytes(atmp.Image.Value);
+                            if (tmp.Image != null && tmp.Image.Length > 0)
+                            {
+                                tmp.isImg = true;
+                            }
+                            else
+                            {
+                                tmp.isImg = false;
+                            }
+                            autostoppisti.Add(tmp);
+                        }
+                        this.isError = false;
+                        this.errorMessage = "";
+                    }
+                    else
+                    {
+                        this.isError = true;
+                        this.errorMessage = result.Message;
+                        return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.isError = true;
+                this.errorMessage = e.Message;
+                return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
+            }
+            return JsonConvert.SerializeObject(autostoppisti);
+        }
         [HttpGet]
         public string logoutUser(string ip, string mobile, string token)
         {

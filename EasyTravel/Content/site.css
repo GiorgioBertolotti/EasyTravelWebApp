@@ -192,7 +192,9 @@
         position: absolute;
         right: 4px;
         max-height: 40px !important;
-        top: 8px !important;
+        top: 12px !important;
+        border-radius: 50%;
+        background-color: #b71c1c;
     }
 }
 @media (min-width: 801px) {
@@ -256,7 +258,9 @@
         position: absolute;
         right: 4px;
         max-height: 40px !important;
-        top: 10px !important;
+        top: 12px !important;
+        border-radius: 50%;
+        background-color: #b71c1c;
     }
 }
 #loginPage .sapMBtnIcon {

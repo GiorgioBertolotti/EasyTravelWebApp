@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Text;
+
 namespace EasyTravel.Models
 {
     public class User
@@ -13,6 +15,13 @@ namespace EasyTravel.Models
         public string Mobile { get; set; }
         public int Range { get; set; }
         public byte[] Image { get; set; }
+        public string Base64
+        {
+            get
+            {
+                return Encoding.Default.GetString(this.Image);
+            }
+        }
         public bool isImg { get; set; }
         public string Token { get; set; }
         public static Image CropToCircle(Image srcImage, Color backGround)

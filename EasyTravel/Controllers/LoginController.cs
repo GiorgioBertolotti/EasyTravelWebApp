@@ -48,7 +48,6 @@ namespace EasyTravel.Controllers
                             Byte[] bitmapData = Convert.FromBase64String(sbText.ToString().Replace("data:image/jpeg;base64,", String.Empty));
                             MemoryStream streamBitmap = new MemoryStream(bitmapData);
                             Bitmap bitImage = new Bitmap((Bitmap)Image.FromStream(streamBitmap));
-                            bitImage.Save(System.Web.HttpContext.Current.Server.MapPath("~/Images/profileimage.jpg"), ImageFormat.Jpeg);
                             bitImage = (Bitmap)Models.User.CropToCircle(bitImage, ColorTranslator.FromHtml("#b71c1c"));
                             bitImage.Save(System.Web.HttpContext.Current.Server.MapPath("~/Images/profileimagemini.jpg"), ImageFormat.Jpeg);
                             loggedUser.isImg = true;
@@ -75,8 +74,7 @@ namespace EasyTravel.Controllers
                 this.errorMessage = e.Message;
                 return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
             }
-            string ret = JsonConvert.SerializeObject(loggedUser);
-            return ret;
+            return JsonConvert.SerializeObject(loggedUser);
         }
         [HttpGet]
         public string loginWithToken(string ip, string token)
@@ -101,14 +99,6 @@ namespace EasyTravel.Controllers
                         loggedUser.Image = Encoding.Default.GetBytes(result.Message[0].Image.Value);
                         if (loggedUser.Image != null && loggedUser.Image.Length>0)
                         {
-                            StringBuilder sbText = new StringBuilder(result.Message[0].Image.Value, result.Message[0].Image.Value.Length);
-                            sbText.Replace("\r\n", String.Empty); sbText.Replace(" ", String.Empty);
-                            Byte[] bitmapData = Convert.FromBase64String(sbText.ToString().Replace("data:image/jpeg;base64,", String.Empty));
-                            MemoryStream streamBitmap = new MemoryStream(bitmapData);
-                            Bitmap bitImage = new Bitmap((Bitmap)Image.FromStream(streamBitmap));
-                            bitImage.Save(System.Web.HttpContext.Current.Server.MapPath("~/Images/profileimage.jpg"), ImageFormat.Jpeg);
-                            bitImage = (Bitmap)Models.User.CropToCircle(bitImage, ColorTranslator.FromHtml("#b71c1c"));
-                            bitImage.Save(System.Web.HttpContext.Current.Server.MapPath("~/Images/profileimagemini.jpg"), ImageFormat.Jpeg);
                             loggedUser.isImg = true;
                         }
                         else
