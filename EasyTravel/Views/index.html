@@ -26,20 +26,60 @@
         }'>
     </script>
     <script>
-			var oDemokit;
-			sap.ui.getCore().attachInit(function () {
-			    var app = new sap.m.App("EasyTravel", {
-			        initialPage: "loginPage"
-			    });
-			    var loginPage = new sap.m.Page("loginPage", {
-			        title: "Login",
-			        showNavButton: false,
-			        content: new sap.ui.core.ComponentContainer({
-			            name: "sap.ui.easytravel.login", height: "100%"
-			        }),
+        function readCookie (name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0;i < ca.length;i++) {
+                var c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            }
+            return null;
+        }
+        var token = readCookie('authenticationToken');
+        if (token) {
+            var ip = readCookie('ip');
+            if (ip == null) {
+                ip = "http://192.168.200.160:8080/pcws/index.php";
+                sap.ui.controller("sap.ui.easytravel.login.Login").createCookie('ip', ip, 30);
+            }
+            var input_data = { "ip": ip, "token": token };
+            $.ajax({
+                type: 'GET',
+                url: '/api/Login/loginWithToken',
+                data: input_data,
+                success: function (response) {
+                    var oModel = new sap.ui.model.json.JSONModel();
+                    sap.ui.getCore().setModel(oModel, "user");
+                    var data = JSON.parse(response);
+                    oModel.setData(data);
+                    if (data.isError) {
+                        sap.m.MessageToast.show(data.errorMessage);
+                    } else {
+                        initSap("homePage");
+                    }
+                },
+                error: function (response) {
+                    initSap("loginPage");
+                }
+            });
+        } else {
+            initSap("loginPage");
+        }
+        function initSap(startPage) {
+            sap.ui.getCore().attachInit(function () {
+                var app = new sap.m.App("EasyTravel", {
+                    initialPage: startPage
+                });
+                var loginPage = new sap.m.Page("loginPage", {
+                    title: "Login",
+                    showNavButton: false,
+                    content: new sap.ui.core.ComponentContainer({
+                        name: "sap.ui.easytravel.login", height: "100%"
+                    }),
                     showFooter: true,
                     footer: new sap.m.Toolbar({
-                        id:"footerLogin",
+                        id: "footerLogin",
                         width: "100%",
                         height: "5%",
                         design: "Solid",
@@ -54,24 +94,25 @@
                             press: [sap.ui.controller("sap.ui.easytravel.login.Login").onBtnIP, sap.ui.controller("sap.ui.easytravel.login.Login")]
                         })]
                     })
-			    });
-			    var registerPage = new sap.m.Page("registerPage", {
-			        title: "Registrazione",
-			        showNavButton: true,
-			        navButtonPress: [sap.ui.controller("sap.ui.easytravel.register.Register").onBtnBack, sap.ui.controller("sap.ui.easytravel.register.Register")],
-			        content: new sap.ui.core.ComponentContainer({
-			            name: "sap.ui.easytravel.register", height: "100%"
-			        })
-			    });
-			    var homePage = new sap.m.Page("homePage", {
-			        title: "Home",
-			        content: new sap.ui.core.ComponentContainer({
-			            name: "sap.ui.easytravel.home", height: "100%"
-			        })
-			    });
-			    app.addPage(loginPage).addPage(registerPage).addPage(homePage);
-			    app.placeAt("content");
-			});
+                });
+                var registerPage = new sap.m.Page("registerPage", {
+                    title: "Registrazione",
+                    showNavButton: true,
+                    navButtonPress: [sap.ui.controller("sap.ui.easytravel.register.Register").onBtnBack, sap.ui.controller("sap.ui.easytravel.register.Register")],
+                    content: new sap.ui.core.ComponentContainer({
+                        name: "sap.ui.easytravel.register", height: "100%"
+                    })
+                });
+                var homePage = new sap.m.Page("homePage", {
+                    title: "Home",
+                    content: new sap.ui.core.ComponentContainer({
+                        name: "sap.ui.easytravel.home", height: "100%"
+                    })
+                });
+                app.addPage(loginPage).addPage(registerPage).addPage(homePage);
+                app.placeAt("content");
+            });
+        }
     </script>
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAG-2pwOd0xkFMke3QhqVRaIo7yMSTED3o">

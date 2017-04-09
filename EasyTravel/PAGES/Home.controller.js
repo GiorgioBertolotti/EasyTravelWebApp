@@ -27,7 +27,7 @@
                 sap.ui.core.BusyIndicator.show();
             });
             var input_data = { "ip":ip,"mobile": mobile, "range": rangepicker };
-            oModel.loadData("api/Login/editRange", input_data);
+            oModel.loadData("/api/Login/editRange", input_data);
             oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.home.Home").onEditRangeComplete);
             var errore = "";
             if (!oldpwd)
@@ -171,7 +171,7 @@
                     oView.byId("lblLatDest").setText(LatLngDest.lat());
                     oView.byId("lblLngDest").setText(LatLngDest.lng());
                     oView.byId("lblGeoDest").setText("(" + dest + ")");
-                    oView.byId("imgLoading").setSrc("../Images/loadinganimation.gif");
+                    oView.byId("imgLoading").setSrc("/../Images/loadinganimation.gif");
                 });
                 google.maps.event.addListener(map, "click", function (event) {
                     var latlng = { lat: event.latLng.lat(), lng: event.latLng.lng() };
@@ -195,7 +195,7 @@
                         oView.byId("lblLatDest").setText(LatLngDest.lat());
                         oView.byId("lblLngDest").setText(LatLngDest.lng());
                         oView.byId("lblGeoDest").setText("(" + dest + ")");
-                        oView.byId("imgLoading").setSrc("../Images/loadinganimation.gif");
+                        oView.byId("imgLoading").setSrc("/../Images/loadinganimation.gif");
                     });
                     marker = markernew;
                 });
@@ -243,7 +243,7 @@
                         "mobile": mobile,
                         "token": sap.ui.controller("sap.ui.easytravel.login.Login").readCookie("authenticationToken")
                     };
-                    oModel.loadData("api/Home/logoutUser", input_data);
+                    oModel.loadData("/api/Home/logoutUser", input_data);
                     oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.home.Home").onLogoutComplete);
                     break;
                 }
@@ -297,7 +297,7 @@
                         });
                         //var input_data = { "ip": ip, "mobile": mobile, "lat": pos.coords.latitude, "lon": pos.coords.longitude, "range": range };
                         var input_data = { "ip": ip, "mobile": mobile, "lat": "45.6424541", "lon": "9.586026", "range": range };
-                        oModel.loadData("api/Home/getAutostoppisti", input_data);
+                        oModel.loadData("/api/Home/getAutostoppisti", input_data);
                         oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.home.Home").onGetAutostoppistiComplete);
                     };
                     function error(err) {
@@ -308,7 +308,7 @@
                             sap.ui.core.BusyIndicator.show();
                         });
                         var input_data = { "ip": ip, "mobile": mobile, "lat": 0, "lon": 0, "range": range };
-                        oModel.loadData("api/Home/getAutostoppisti", input_data);
+                        oModel.loadData("/api/Home/getAutostoppisti", input_data);
                         oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.home.Home").onGetAutostoppistiComplete);
                     };
                     if (navigator.geolocation) {
@@ -454,7 +454,7 @@
                 var list = oView.byId("listAutostoppisti");
                 list.removeAllItems();
                 for (var a in data) {
-                    var img = "../Images/ic_user.png";
+                    var img = "/../Images/ic_user.png";
                     if (data[a].isImg) {
                         img = data[a].Base64.toString();
                     }
@@ -550,19 +550,19 @@
             var src = "";
             if (id.includes("tile1")) {
                 name = "Home";
-                src = "../Images/slide1.jpg";
+                src = "/../Images/slide1.jpg";
             }
             if (id.includes("tile2")) {
                 name = "Destinazione";
-                src = "../Images/slide2.jpg";
+                src = "/../Images/slide2.jpg";
             }
             if (id.includes("tile3")) {
                 name = "Passaggio";
-                src = "../Images/slide3.jpg";
+                src = "/../Images/slide3.jpg";
             }
             if (id.includes("tile4")) {
                 name = "Mappa";
-                src = "../Images/slide4.jpg";
+                src = "/../Images/slide4.jpg";
             }
             var dialog = new sap.m.Dialog({
                 title: name,

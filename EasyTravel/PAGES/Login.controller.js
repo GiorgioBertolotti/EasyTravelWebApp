@@ -21,7 +21,7 @@
                     sap.ui.core.BusyIndicator.show();
                 });
                 var input_data = { "ip": ip, "token": token };
-                oModel.loadData("api/Login/loginWithToken", input_data);
+                oModel.loadData("/api/Login/loginWithToken", input_data);
                 oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.login.Login").onLoginTokenComplete);
             }
         },
@@ -36,7 +36,7 @@
                 sap.ui.core.BusyIndicator.show();
             });
             var input_data = { "ip":ip,"mobile": mobile, "pass": md5 };
-            oModel.loadData("api/Login/loginUser", input_data);
+            oModel.loadData("/api/Login/loginUser", input_data);
             oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.login.Login").onLoginComplete);
         },
         onBtnRegister: function(oEvent){
