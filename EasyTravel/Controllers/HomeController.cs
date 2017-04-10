@@ -41,14 +41,6 @@ namespace EasyTravel.Controllers
                             Autostoppista tmp = new Autostoppista() { Name = atmp.Name, Surname = atmp.Surname, Mobile = atmp.Mobile, Range = atmp.Range, Destlat = atmp.Destlat, Destlon = atmp.Destlon, Latitude = atmp.Latitude, Longitude = atmp.Longitude, Date = atmp.Date };
                             tmp.evaluateDestination();
                             tmp.Image = Encoding.Default.GetBytes(atmp.Image.Value);
-                            if (tmp.Image != null && tmp.Image.Length > 0)
-                            {
-                                tmp.isImg = true;
-                            }
-                            else
-                            {
-                                tmp.isImg = false;
-                            }
                             autostoppisti.Add(tmp);
                         }
                         this.isError = false;

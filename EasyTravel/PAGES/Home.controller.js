@@ -136,6 +136,49 @@
         //
         // AUTOSTOPPISTA
         //
+        onPressAutostoppista: function (oEvent) {
+            var autostoppista = this.getModel().getProperty(this.getBindingContext().getPath());
+            var dialog = new sap.m.Dialog({
+                title: autostoppista.Name + " " + autostoppista.Surname,
+                content: [new sap.m.Button({
+                    text: 'Visualizza su mappa',
+                    press: function () {
+                        dialog.close();
+                    },
+                    width: "100%"
+                }), new sap.m.Button({
+                    text: 'Visualizza profilo',
+                    press: function () {
+                        dialog.close();
+                        stato = 44;
+                        sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(stato);
+                        oView.byId("lblNome").setText(autostoppista.Name);
+                        oView.byId("lblCognome").setText(autostoppista.Surname);
+                        oView.byId("lblMobile").setText(autostoppista.Mobile);
+                        var profileimg = oView.byId("imgProfile");
+                        profileimg.setSrc(autostoppista.Base64);
+                    },
+                    width: "100%"
+                }), new sap.m.Button({
+                    text: 'Contatta',
+                    press: function () {
+                        dialog.close();
+                    },
+                    width: "100%"
+                })],
+                beginButton: new sap.m.Button({
+                    text: 'Close',
+                    press: function () {
+                        dialog.close();
+                    }
+                }),
+                afterClose: function () {
+                    dialog.destroy();
+                }
+            });
+            dialog.addStyleClass("myDialog");
+            dialog.open();
+        },
         InitMap: function () {
             var position = { lat: 0, lng: 0 };
             geocoder = new google.maps.Geocoder;
@@ -259,7 +302,7 @@
                     oView.byId("rangePicker").setValue(oModel.getData().Range);
                     break;
                 }
-                case 22: {
+                case 22: case 44: {
                     detailPage = "detailProfile";
                     sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--" + detailPage);
                     break;
@@ -337,10 +380,8 @@
                     oView.byId("lblNome").setText(oModel.getData().Name);
                     oView.byId("lblCognome").setText(oModel.getData().Surname);
                     oView.byId("lblMobile").setText(oModel.getData().Mobile);
-                    if (oModel.getData().isImg) {
-                        var profileimg = oView.byId("imgProfile");
-                        profileimg.setSrc(oModel.getData().Base64);
-                    }
+                    var profileimg = oView.byId("imgProfile");
+                    profileimg.setSrc(oModel.getData().Base64);
                     break;
                 }
                 case "Impostazioni": {
@@ -417,10 +458,8 @@
             oView.setModel(this.model);
             sap.ui.controller("sap.ui.easytravel.home.Home")._setToggleButtonTooltip(!sap.ui.Device.system.desktop);
             var oModel = sap.ui.getCore().getModel("user");
-            if (oModel.getData().isImg) {
-                var profileimg = oView.byId("imgProfileMini");
-                profileimg.setSrc(oModel.getData().Base64);
-            }
+            var profileimg = oView.byId("imgProfileMini");
+            profileimg.setSrc(oModel.getData().Base64);
             var ppc = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie("ProfilePicChanged");
             if (ppc) {
                 stato = 22;
@@ -429,10 +468,8 @@
                 oView.byId("lblNome").setText(oModel.getData().Name);
                 oView.byId("lblCognome").setText(oModel.getData().Surname);
                 oView.byId("lblMobile").setText(oModel.getData().Mobile);
-                if (oModel.getData().isImg) {
-                    var profileimg = oView.byId("imgProfile");
-                    profileimg.setSrc(oModel.getData().Base64);
-                }
+                var profileimg = oView.byId("imgProfile");
+                profileimg.setSrc(oModel.getData().Base64);
                 var ppc = sap.ui.controller("sap.ui.easytravel.login.Login").eraseCookie("ProfilePicChanged");
             }
             else {
@@ -453,18 +490,15 @@
             } else {
                 var list = oView.byId("listAutostoppisti");
                 list.removeAllItems();
-                for (var a in data) {
-                    var img = "/../Images/ic_user.png";
-                    if (data[a].isImg) {
-                        img = data[a].Base64.toString();
-                    }
-                    list.addItem(new sap.m.StandardListItem({
-                        title: data[a].Name + " " + data[a].Surname,
-                        description: data[a].Destination,
-                        icon: img,
-                        type: "Active"
-                    }));
-                }
+                oModel.refresh();
+                list.bindItems("/", new sap.m.StandardListItem({
+                    title: "{Name} {Surname}",
+                    description: "{Destination}",
+                    icon: "{Base64}",
+                    type: "Active",
+                    press: sap.ui.controller("sap.ui.easytravel.home.Home").onPressAutostoppista
+                }));
+                list.setModel(oModel);
             }
             sap.ui.core.BusyIndicator.hide();
             oModel.detachRequestCompleted(sap.ui.controller("sap.ui.easytravel.home.Home").onGetAutostoppistiComplete);
@@ -571,7 +605,7 @@
                     id: "myimagedialog"
                 }),
                 beginButton: new sap.m.Button({
-                    text: 'OK',
+                    text: 'Close',
                     press: function () {
                         dialog.close();
                     }

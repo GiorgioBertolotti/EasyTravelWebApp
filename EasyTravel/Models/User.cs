@@ -5,6 +5,8 @@ using System.Web;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Text;
+using System.IO;
+using System.Drawing.Imaging;
 
 namespace EasyTravel.Models
 {
@@ -19,10 +21,20 @@ namespace EasyTravel.Models
         {
             get
             {
-                return Encoding.Default.GetString(this.Image);
+                if (this.Image == null || this.Image.Length <= 0)
+                {
+                    Image defimg = Bitmap.FromFile(HttpContext.Current.Server.MapPath("~/Images/ic_user.png"));
+                    MemoryStream ms = new MemoryStream();
+                    defimg.Save(ms, ImageFormat.Png);
+                    byte[] imageBytes = ms.ToArray();
+                    return "data:image/png;base64,"+Convert.ToBase64String(imageBytes);
+                }
+                else
+                {
+                    return Encoding.Default.GetString(this.Image);
+                }
             }
         }
-        public bool isImg { get; set; }
         public string Token { get; set; }
         public static Image CropToCircle(Image srcImage, Color backGround)
         {

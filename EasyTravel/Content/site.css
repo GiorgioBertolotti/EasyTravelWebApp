@@ -19,6 +19,9 @@
     right: 0;
     margin: auto;
 }
+.myLargeButton{
+    width:100%;
+}
 .myMap{
     overflow: visible !important;
     position:static !important;
