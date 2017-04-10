@@ -3,12 +3,12 @@
    "sap/m/MessageToast"
 ], function (Controller, MessageToast) {
     "use strict";
-    var oView, stato, isFirstMapLoad, marker, geocoder, LatLngDest;
+    var oView, stato, isFirstMapLoad, map, marker, geocoder, LatLngDest, targetAutostoppista;
+    var markers = [];
     return Controller.extend("sap.ui.easytravel.home.Home", {
         onInit: function () {
             oView = this.getView();
             sap.ui.controller("sap.ui.easytravel.home.Home").initializeItems();
-            isFirstMapLoad = true;
         },
         //
         // SETTINGS
@@ -134,8 +134,131 @@
             reader.readAsDataURL(imgpicker.files[0]);
         },
         //
+        // MAPPA GENERALE
+        //
+        InitMap2: function () {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            if (marker)
+                marker.setMap(null);
+            if (map)
+                google.maps.event.clearListeners(map, 'click');
+            if (isFirstMapLoad) {
+                var position = { lat: 0, lng: 0 };
+                geocoder = new google.maps.Geocoder;
+                var options = {
+                    enableHighAccuracy: true,
+                    timeout: 4000
+                };
+                function success(pos) {
+                    var viewId = oView.getId();
+                    if (stato == 41)
+                        position = { lat: parseFloat(targetAutostoppista.Latitude), lng: parseFloat(targetAutostoppista.Longitude) };
+                    else
+                        position = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                    map = new google.maps.Map(document.getElementById(viewId + '--map'), {
+                        zoom: 12,
+                        center: position
+                    });
+                    isFirstMapLoad = false;
+                    var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
+                    $.ajax({
+                        type: 'GET',
+                        url: '/api/Home/getActiveUsers',
+                        data: { "ip": ip },
+                        success: function (response) {
+                            var oModel = new sap.ui.model.json.JSONModel();
+                            sap.ui.getCore().setModel(oModel, "attivi");
+                            var data = JSON.parse(response);
+                            oModel.setData(data);
+                            if (data.isError) {
+                                sap.m.MessageToast.show(data.errorMessage);
+                            } else {
+                                for (var a in data) {
+                                    if (data[a].Type == 2) {
+                                        var newmarker = new google.maps.Marker({
+                                            position: { lat: parseFloat(data[a].Latitude), lng: parseFloat(data[a].Longitude) },
+                                            map: map,
+                                            icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+                                        });
+                                    } else {
+                                        var newmarker = new google.maps.Marker({
+                                            position: { lat: parseFloat(data[a].Latitude), lng: parseFloat(data[a].Longitude) },
+                                            map: map,
+                                            icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                                        });
+                                    }
+                                    markers.push(newmarker);
+                                }
+                            }
+                        },
+                        error: function (response) {
+                            console.log('Error: ', error);
+                        }
+                    });
+                };
+                function error(err) {
+                    sap.m.MessageToast.show(err.message);
+                    var viewId = oView.getId();
+                    map = new google.maps.Map(document.getElementById(viewId + '--map'), {
+                        zoom: 4,
+                        center: position
+                    });
+                };
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(success, error, options);
+                } else {
+                    error("Geolocation is not supported by this browser");
+                }
+            } else {
+                var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
+                if (stato == 41) {
+                    map.setCenter({ lat: parseFloat(targetAutostoppista.Latitude), lng: parseFloat(targetAutostoppista.Longitude) }, 5);
+                }
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/Home/getActiveUsers',
+                    data: { "ip": ip },
+                    success: function (response) {
+                        var oModel = new sap.ui.model.json.JSONModel();
+                        sap.ui.getCore().setModel(oModel, "attivi");
+                        var data = JSON.parse(response);
+                        oModel.setData(data);
+                        if (data.isError) {
+                            sap.m.MessageToast.show(data.errorMessage);
+                        } else {
+                            for (var a in data) {
+                                if (data[a].Type == 2) {
+                                    var newmarker = new google.maps.Marker({
+                                        position: { lat: parseFloat(data[a].Latitude), lng: parseFloat(data[a].Longitude) },
+                                        map: map,
+                                        icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+                                    });
+                                } else {
+                                    var newmarker = new google.maps.Marker({
+                                        position: { lat: parseFloat(data[a].Latitude), lng: parseFloat(data[a].Longitude) },
+                                        map: map,
+                                        icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                                    });
+                                }
+                                markers.push(newmarker);
+                            }
+                        }
+                    },
+                    error: function (response) {
+                        console.log('Error: ', error);
+                    }
+                });
+            }
+        },
+        //
         // AUTOSTOPPISTA
         //
+        onBackToAutostoppisti: function (oEvent) {
+            stato = 30;
+            sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(stato);
+        },
         onPressAutostoppista: function (oEvent) {
             var autostoppista = this.getModel().getProperty(this.getBindingContext().getPath());
             var dialog = new sap.m.Dialog({
@@ -144,25 +267,30 @@
                     text: 'Visualizza su mappa',
                     press: function () {
                         dialog.close();
+                        targetAutostoppista = autostoppista;
+                        sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(41);
+                        var viewId = oView.getId();
                     },
                     width: "100%"
                 }), new sap.m.Button({
                     text: 'Visualizza profilo',
                     press: function () {
                         dialog.close();
-                        stato = 44;
-                        sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(stato);
+                        sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(44);
                         oView.byId("lblNome").setText(autostoppista.Name);
                         oView.byId("lblCognome").setText(autostoppista.Surname);
                         oView.byId("lblMobile").setText(autostoppista.Mobile);
                         var profileimg = oView.byId("imgProfile");
                         profileimg.setSrc(autostoppista.Base64);
+                        var viewId = oView.getId();
+                        var btnedit = document.getElementById(viewId + '--imageEditFAB');
+                        btnedit.style.visibility = 'hidden';
                     },
                     width: "100%"
                 }), new sap.m.Button({
                     text: 'Contatta',
                     press: function () {
-                        dialog.close();
+                        sap.m.URLHelper.triggerTel(autostoppista.Mobile);
                     },
                     width: "100%"
                 })],
@@ -180,6 +308,13 @@
             dialog.open();
         },
         InitMap: function () {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            if (marker)
+                marker.setMap(null);
+            if (map)
+                google.maps.event.clearListeners(map, 'click');
             var position = { lat: 0, lng: 0 };
             geocoder = new google.maps.Geocoder;
             var options = {
@@ -192,13 +327,19 @@
                 position.lng = crd.longitude;
                 var viewId = oView.getId();
                 var dest = "";
-                var map = new google.maps.Map(document.getElementById(viewId + '--map'), {
-                    zoom: 12,
-                    center: position
-                });
+                if (isFirstMapLoad) { 
+                    map = new google.maps.Map(document.getElementById(viewId + '--map'), {
+                        zoom: 12,
+                        center: position
+                    });
+                    isFirstMapLoad = false;
+                } else {
+                    map.setCenter(position, 5);
+                }
                 marker = new google.maps.Marker({
                     position: position,
-                    map: map
+                    map: map,
+                    icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
                 });
                 geocoder.geocode({ 'location': position }, function (results, status) {
                     if (status === 'OK') {
@@ -208,8 +349,7 @@
                     }
                 });
                 marker.addListener('click', function () {
-                    stato = 31;
-                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(stato);
+                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(31);
                     LatLngDest = this.position;
                     oView.byId("lblLatDest").setText(LatLngDest.lat());
                     oView.byId("lblLngDest").setText(LatLngDest.lng());
@@ -229,11 +369,11 @@
                     marker.setMap(null);
                     var markernew = new google.maps.Marker({
                         position: latlng,
-                        map: map
+                        map: map,
+                        icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
                     });
                     markernew.addListener('click', function () {
-                        stato = 31;
-                        sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(stato);
+                        sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(31);
                         LatLngDest = this.position;
                         oView.byId("lblLatDest").setText(LatLngDest.lat());
                         oView.byId("lblLngDest").setText(LatLngDest.lng());
@@ -246,13 +386,14 @@
             function error(err) {
                 sap.m.MessageToast.show(err.message);
                 var viewId = oView.getId();
-                var map = new google.maps.Map(document.getElementById(viewId + '--map'), {
+                map = new google.maps.Map(document.getElementById(viewId + '--map'), {
                     zoom: 4,
                     center: position
                 });
                 var marker = new google.maps.Marker({
                     position: position,
-                    map: map
+                    map: map,
+                    icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
                 });
             };
             if (navigator.geolocation) {
@@ -262,8 +403,7 @@
             }
         },
         onBtnBackToMap: function (oEvent) {
-            stato = 30;
-            sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(stato);
+            sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(30);
         },
         //
         // USER INTERFACE
@@ -273,7 +413,8 @@
                 oView.byId("toolPage").toggleSideContentMode();
             var viewId = oView.getId();
             var detailPage = "detailMain";
-            switch (newstate) {
+            stato = newstate;
+            switch (stato) {
                 case 0: {
                     var oModel = sap.ui.getCore().getModel("user");
                     var mobile = oModel.getData().Mobile;
@@ -310,10 +451,7 @@
                 case 30: {
                     detailPage = "detailAutostop";
                     sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--" + detailPage);
-                    if (isFirstMapLoad) {
-                        sap.ui.controller("sap.ui.easytravel.home.Home").InitMap();
-                        isFirstMapLoad = false;
-                    }
+                    sap.ui.controller("sap.ui.easytravel.home.Home").InitMap();
                     break;
                 }
                 case 31: {
@@ -361,9 +499,10 @@
                     }
                     break;
                 }
-                case 50: {
-                    detailPage = "detailMap";
+                case 41: case 50: {
+                    detailPage = "detailAutostop";
                     sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--" + detailPage);
+                    sap.ui.controller("sap.ui.easytravel.home.Home").InitMap2();
                     break;
                 }
             }
@@ -374,24 +513,24 @@
         handleMenuItemPress: function (oEvent) {
             switch (oEvent.getParameter("item").getText()) {
                 case "Visualizza profilo": {
-                    stato = 22;
-                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(stato);
+                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(22);
                     var oModel = sap.ui.getCore().getModel("user");
                     oView.byId("lblNome").setText(oModel.getData().Name);
                     oView.byId("lblCognome").setText(oModel.getData().Surname);
                     oView.byId("lblMobile").setText(oModel.getData().Mobile);
                     var profileimg = oView.byId("imgProfile");
                     profileimg.setSrc(oModel.getData().Base64);
+                    var viewId = oView.getId();
+                    var btnedit = document.getElementById(viewId + '--imageEditFAB');
+                    btnedit.style.visibility = 'visible';
                     break;
                 }
                 case "Impostazioni": {
-                    stato = 21;
-                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(stato);
+                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(21);
                     break;
                 }
                 case "Logout": {
-                    stato = 0;
-                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(stato);
+                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(0);
                     break;
                 }
             }
@@ -400,23 +539,23 @@
             var key = oEvent.getParameter('item').getKey();
             switch (key) {
                 case "home": {
-                    stato = 20;
-                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(stato);
+                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(20);
                     break;
                 }
                 case "autostoppista": {
-                    stato = 30;
-                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(stato);
+                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(30);
                     break;
                 }
                 case "autista": {
-                    stato = 40;
-                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(stato);
+                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(40);
+                    break;
+                }
+                case "map": {
+                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(50);
                     break;
                 }
                 case "logout": {
-                    stato = 0;
-                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(stato);
+                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(0);
                     break;
                 }
             }
@@ -454,6 +593,7 @@
         // INIT
         //
         initializeItems: function () {
+            isFirstMapLoad = true;
             this.model.setData(this.data);
             oView.setModel(this.model);
             sap.ui.controller("sap.ui.easytravel.home.Home")._setToggleButtonTooltip(!sap.ui.Device.system.desktop);
@@ -462,8 +602,7 @@
             profileimg.setSrc(oModel.getData().Base64);
             var ppc = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie("ProfilePicChanged");
             if (ppc) {
-                stato = 22;
-                sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(stato);
+                sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(22);
                 var oModel = sap.ui.getCore().getModel("user");
                 oView.byId("lblNome").setText(oModel.getData().Name);
                 oView.byId("lblCognome").setText(oModel.getData().Surname);
@@ -473,8 +612,7 @@
                 var ppc = sap.ui.controller("sap.ui.easytravel.login.Login").eraseCookie("ProfilePicChanged");
             }
             else {
-                stato = 20;
-                sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(stato);
+                sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(20);
             }
         },
         //

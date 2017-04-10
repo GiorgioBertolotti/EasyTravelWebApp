@@ -18,8 +18,50 @@ namespace EasyTravel.Controllers
     public class HomeController : ApiController
     {
         public List<Autostoppista> autostoppisti;
+        public List<ActiveUser> attivi;
         public bool isError { get; set; }
         public string errorMessage { get; set; }
+        [HttpGet]
+        public string getActiveUsers(string ip)
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    var values = new NameValueCollection();
+                    values["api_method"] = "getActiveUsers";
+                    values["api_data"] = JsonConvert.SerializeObject(new {});
+                    var response = client.UploadValues(ip, values);
+                    var responseString = Encoding.Default.GetString(response);
+                    dynamic result = JsonConvert.DeserializeObject(responseString);
+                    if (!(bool)result.IsError)
+                    {
+                        attivi = new List<ActiveUser>();
+                        foreach (var atmp in result.Message)
+                        {
+                            ActiveUser tmp = new ActiveUser() { Name = atmp.Name, Surname = atmp.Surname, Mobile = atmp.Mobile, Type = atmp.Type_id, Range = atmp.Range, Latitude = atmp.Latitude, Longitude = atmp.Longitude, Date = atmp.Date };
+                            tmp.Image = Encoding.Default.GetBytes(atmp.Image.Value);
+                            attivi.Add(tmp);
+                        }
+                        this.isError = false;
+                        this.errorMessage = "";
+                    }
+                    else
+                    {
+                        this.isError = true;
+                        this.errorMessage = result.Message;
+                        return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.isError = true;
+                this.errorMessage = e.Message;
+                return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
+            }
+            return JsonConvert.SerializeObject(attivi);
+        }
         [HttpGet]
         public string getAutostoppisti(string ip, string mobile, string lat, string lon, string range)
         {

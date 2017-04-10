@@ -239,7 +239,7 @@
             <content>
               <Panel
                 class="myPanelProfile">
-                <html:div class="myFABEditImage btn btn-primary">
+                <html:div id="imageEditFAB" class="myFABEditImage btn btn-primary">
                     <html:img src="../Images/edit.png" alt="Edit" />
                     <html:input id="imagePicker" type="file" class="upload" onchange="sap.ui.controller('sap.ui.easytravel.home.Home').onEditImage()" />
                 </html:div>
