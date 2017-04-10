@@ -134,9 +134,9 @@
             reader.readAsDataURL(imgpicker.files[0]);
         },
         //
-        // MAPPA GENERALE
+        // MAPPA
         //
-        InitMap2: function () {
+        InitMap: function () {
             for (var i = 0; i < markers.length; i++) {
                 markers[i].setMap(null);
             }
@@ -144,112 +144,174 @@
                 marker.setMap(null);
             if (map)
                 google.maps.event.clearListeners(map, 'click');
-            if (isFirstMapLoad) {
-                var position = { lat: 0, lng: 0 };
-                geocoder = new google.maps.Geocoder;
-                var options = {
-                    enableHighAccuracy: true,
-                    timeout: 4000
-                };
-                function success(pos) {
-                    var viewId = oView.getId();
-                    if (stato == 41)
-                        position = { lat: parseFloat(targetAutostoppista.Latitude), lng: parseFloat(targetAutostoppista.Longitude) };
-                    else
-                        position = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+            var position = { lat: 0, lng: 0 };
+            geocoder = new google.maps.Geocoder;
+            var options = {
+                enableHighAccuracy: true,
+                timeout: 4000
+            };
+            function success(pos) {
+                if (stato == 41)
+                    position = { lat: parseFloat(targetAutostoppista.Latitude), lng: parseFloat(targetAutostoppista.Longitude) };
+                else
+                    position = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                var viewId = oView.getId();
+                if (isFirstMapLoad) {
                     map = new google.maps.Map(document.getElementById(viewId + '--map'), {
                         zoom: 12,
                         center: position
                     });
                     isFirstMapLoad = false;
-                    var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
-                    $.ajax({
-                        type: 'GET',
-                        url: '/api/Home/getActiveUsers',
-                        data: { "ip": ip },
-                        success: function (response) {
-                            var oModel = new sap.ui.model.json.JSONModel();
-                            sap.ui.getCore().setModel(oModel, "attivi");
-                            var data = JSON.parse(response);
-                            oModel.setData(data);
-                            if (data.isError) {
-                                sap.m.MessageToast.show(data.errorMessage);
-                            } else {
-                                for (var a in data) {
-                                    if (data[a].Type == 2) {
-                                        var newmarker = new google.maps.Marker({
-                                            position: { lat: parseFloat(data[a].Latitude), lng: parseFloat(data[a].Longitude) },
-                                            map: map,
-                                            icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
-                                        });
-                                    } else {
-                                        var newmarker = new google.maps.Marker({
-                                            position: { lat: parseFloat(data[a].Latitude), lng: parseFloat(data[a].Longitude) },
-                                            map: map,
-                                            icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
-                                        });
-                                    }
-                                    markers.push(newmarker);
-                                }
-                            }
-                        },
-                        error: function (response) {
-                            console.log('Error: ', error);
-                        }
-                    });
-                };
-                function error(err) {
-                    sap.m.MessageToast.show(err.message);
-                    var viewId = oView.getId();
-                    map = new google.maps.Map(document.getElementById(viewId + '--map'), {
-                        zoom: 4,
-                        center: position
-                    });
-                };
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(success, error, options);
                 } else {
-                    error("Geolocation is not supported by this browser");
+                    map.setCenter(position, 5);
                 }
-            } else {
-                var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
-                if (stato == 41) {
-                    map.setCenter({ lat: parseFloat(targetAutostoppista.Latitude), lng: parseFloat(targetAutostoppista.Longitude) }, 5);
-                }
-                $.ajax({
-                    type: 'GET',
-                    url: '/api/Home/getActiveUsers',
-                    data: { "ip": ip },
-                    success: function (response) {
-                        var oModel = new sap.ui.model.json.JSONModel();
-                        sap.ui.getCore().setModel(oModel, "attivi");
-                        var data = JSON.parse(response);
-                        oModel.setData(data);
-                        if (data.isError) {
-                            sap.m.MessageToast.show(data.errorMessage);
-                        } else {
-                            for (var a in data) {
-                                if (data[a].Type == 2) {
-                                    var newmarker = new google.maps.Marker({
-                                        position: { lat: parseFloat(data[a].Latitude), lng: parseFloat(data[a].Longitude) },
-                                        map: map,
-                                        icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
-                                    });
-                                } else {
-                                    var newmarker = new google.maps.Marker({
-                                        position: { lat: parseFloat(data[a].Latitude), lng: parseFloat(data[a].Longitude) },
-                                        map: map,
-                                        icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
-                                    });
+                switch (stato) {
+                    case 30: {
+                        marker = new google.maps.Marker({
+                            position: position,
+                            map: map,
+                            icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                        });
+                        var dest = "";
+                        geocoder.geocode({ 'location': position }, function (results, status) {
+                            if (status === 'OK') {
+                                if (results[1]) {
+                                    dest = results[1].formatted_address;
                                 }
-                                markers.push(newmarker);
                             }
-                        }
-                    },
-                    error: function (response) {
-                        console.log('Error: ', error);
+                        });
+                        marker.addListener('click', function () {
+                            sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(31);
+                            LatLngDest = this.position;
+                            oView.byId("lblLatDest").setText(LatLngDest.lat());
+                            oView.byId("lblLngDest").setText(LatLngDest.lng());
+                            oView.byId("lblGeoDest").setText("(" + dest + ")");
+                            oView.byId("imgLoading").setSrc("/../Images/loadinganimation.gif");
+                        });
+                        google.maps.event.addListener(map, "click", function (event) {
+                            var latlng = { lat: event.latLng.lat(), lng: event.latLng.lng() };
+                            geocoder.geocode({ 'location': latlng }, function (results, status) {
+                                if (status === 'OK') {
+                                    if (results[1]) {
+                                        dest = results[1].formatted_address;
+                                        sap.m.MessageToast.show(results[1].formatted_address);
+                                    }
+                                }
+                            });
+                            marker.setMap(null);
+                            var markernew = new google.maps.Marker({
+                                position: latlng,
+                                map: map,
+                                icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                            });
+                            markernew.addListener('click', function () {
+                                sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(31);
+                                LatLngDest = this.position;
+                                oView.byId("lblLatDest").setText(LatLngDest.lat());
+                                oView.byId("lblLngDest").setText(LatLngDest.lng());
+                                oView.byId("lblGeoDest").setText("(" + dest + ")");
+                                oView.byId("imgLoading").setSrc("/../Images/loadinganimation.gif");
+                            });
+                            marker = markernew;
+                        });
+                        break;
                     }
+                    case 41: {
+                        var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
+                        if (stato == 41) {
+                            map.setCenter({ lat: parseFloat(targetAutostoppista.Latitude), lng: parseFloat(targetAutostoppista.Longitude) }, 5);
+                        }
+                        $.ajax({
+                            type: 'GET',
+                            url: '/api/Home/getActiveUsers',
+                            data: { "ip": ip },
+                            success: function (response) {
+                                var oModel = new sap.ui.model.json.JSONModel();
+                                sap.ui.getCore().setModel(oModel, "attivi");
+                                var data = JSON.parse(response);
+                                oModel.setData(data);
+                                if (data.isError) {
+                                    sap.m.MessageToast.show(data.errorMessage);
+                                } else {
+                                    for (var a in data) {
+                                        if (data[a].Type == 2) {
+                                            var newmarker = new google.maps.Marker({
+                                                position: { lat: parseFloat(data[a].Latitude), lng: parseFloat(data[a].Longitude) },
+                                                map: map,
+                                                icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+                                            });
+                                        } else {
+                                            var newmarker = new google.maps.Marker({
+                                                position: { lat: parseFloat(data[a].Latitude), lng: parseFloat(data[a].Longitude) },
+                                                map: map,
+                                                icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                                            });
+                                        }
+                                        markers.push(newmarker);
+                                    }
+                                }
+                            },
+                            error: function (response) {
+                                console.log('Error: ', error);
+                            }
+                        });
+                    }
+                    case 50: {
+                        var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
+                        $.ajax({
+                            type: 'GET',
+                            url: '/api/Home/getActiveUsers',
+                            data: { "ip": ip },
+                            success: function (response) {
+                                var oModel = new sap.ui.model.json.JSONModel();
+                                sap.ui.getCore().setModel(oModel, "attivi");
+                                var data = JSON.parse(response);
+                                oModel.setData(data);
+                                if (data.isError) {
+                                    sap.m.MessageToast.show(data.errorMessage);
+                                } else {
+                                    for (var a in data) {
+                                        if (data[a].Type == 2) {
+                                            var newmarker = new google.maps.Marker({
+                                                position: { lat: parseFloat(data[a].Latitude), lng: parseFloat(data[a].Longitude) },
+                                                map: map,
+                                                icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+                                            });
+                                        } else {
+                                            var newmarker = new google.maps.Marker({
+                                                position: { lat: parseFloat(data[a].Latitude), lng: parseFloat(data[a].Longitude) },
+                                                map: map,
+                                                icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                                            });
+                                        }
+                                        markers.push(newmarker);
+                                    }
+                                }
+                            },
+                            error: function (response) {
+                                console.log('Error: ', error);
+                            }
+                        });
+                    }
+                }
+            };
+            function error(err) {
+                sap.m.MessageToast.show(err.message);
+                var viewId = oView.getId();
+                map = new google.maps.Map(document.getElementById(viewId + '--map'), {
+                    zoom: 4,
+                    center: position
                 });
+                //var marker = new google.maps.Marker({
+                //    position: position,
+                //    map: map,
+                //    icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                //});
+            };
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(success, error, options);
+            } else {
+                sap.m.MessageToast.show("Geolocation is not supported by this browser");
             }
         },
         //
@@ -276,7 +338,7 @@
                     text: 'Visualizza profilo',
                     press: function () {
                         dialog.close();
-                        sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(44);
+                        sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(42);
                         oView.byId("lblNome").setText(autostoppista.Name);
                         oView.byId("lblCognome").setText(autostoppista.Surname);
                         oView.byId("lblMobile").setText(autostoppista.Mobile);
@@ -306,101 +368,6 @@
             });
             dialog.addStyleClass("myDialog");
             dialog.open();
-        },
-        InitMap: function () {
-            for (var i = 0; i < markers.length; i++) {
-                markers[i].setMap(null);
-            }
-            if (marker)
-                marker.setMap(null);
-            if (map)
-                google.maps.event.clearListeners(map, 'click');
-            var position = { lat: 0, lng: 0 };
-            geocoder = new google.maps.Geocoder;
-            var options = {
-                enableHighAccuracy: true,
-                timeout: 4000
-            };
-            function success(pos) {
-                var crd = pos.coords;
-                position.lat = crd.latitude;
-                position.lng = crd.longitude;
-                var viewId = oView.getId();
-                var dest = "";
-                if (isFirstMapLoad) { 
-                    map = new google.maps.Map(document.getElementById(viewId + '--map'), {
-                        zoom: 12,
-                        center: position
-                    });
-                    isFirstMapLoad = false;
-                } else {
-                    map.setCenter(position, 5);
-                }
-                marker = new google.maps.Marker({
-                    position: position,
-                    map: map,
-                    icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
-                });
-                geocoder.geocode({ 'location': position }, function (results, status) {
-                    if (status === 'OK') {
-                        if (results[1]) {
-                            dest = results[1].formatted_address;
-                        }
-                    }
-                });
-                marker.addListener('click', function () {
-                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(31);
-                    LatLngDest = this.position;
-                    oView.byId("lblLatDest").setText(LatLngDest.lat());
-                    oView.byId("lblLngDest").setText(LatLngDest.lng());
-                    oView.byId("lblGeoDest").setText("(" + dest + ")");
-                    oView.byId("imgLoading").setSrc("/../Images/loadinganimation.gif");
-                });
-                google.maps.event.addListener(map, "click", function (event) {
-                    var latlng = { lat: event.latLng.lat(), lng: event.latLng.lng() };
-                    geocoder.geocode({ 'location': latlng }, function (results, status) {
-                        if (status === 'OK') {
-                            if (results[1]) {
-                                dest = results[1].formatted_address;
-                                sap.m.MessageToast.show(results[1].formatted_address);
-                            }
-                        }
-                    });
-                    marker.setMap(null);
-                    var markernew = new google.maps.Marker({
-                        position: latlng,
-                        map: map,
-                        icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
-                    });
-                    markernew.addListener('click', function () {
-                        sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(31);
-                        LatLngDest = this.position;
-                        oView.byId("lblLatDest").setText(LatLngDest.lat());
-                        oView.byId("lblLngDest").setText(LatLngDest.lng());
-                        oView.byId("lblGeoDest").setText("(" + dest + ")");
-                        oView.byId("imgLoading").setSrc("/../Images/loadinganimation.gif");
-                    });
-                    marker = markernew;
-                });
-            };
-            function error(err) {
-                sap.m.MessageToast.show(err.message);
-                var viewId = oView.getId();
-                map = new google.maps.Map(document.getElementById(viewId + '--map'), {
-                    zoom: 4,
-                    center: position
-                });
-                var marker = new google.maps.Marker({
-                    position: position,
-                    map: map,
-                    icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
-                });
-            };
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(success, error, options);
-            } else {
-                sap.m.MessageToast.show("Geolocation is not supported by this browser");
-            }
         },
         onBtnBackToMap: function (oEvent) {
             sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(30);
@@ -443,13 +410,13 @@
                     oView.byId("rangePicker").setValue(oModel.getData().Range);
                     break;
                 }
-                case 22: case 44: {
+                case 22: case 42: {
                     detailPage = "detailProfile";
                     sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--" + detailPage);
                     break;
                 }
                 case 30: {
-                    detailPage = "detailAutostop";
+                    detailPage = "detailMap";
                     sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--" + detailPage);
                     sap.ui.controller("sap.ui.easytravel.home.Home").InitMap();
                     break;
@@ -500,9 +467,9 @@
                     break;
                 }
                 case 41: case 50: {
-                    detailPage = "detailAutostop";
+                    detailPage = "detailMap";
                     sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--" + detailPage);
-                    sap.ui.controller("sap.ui.easytravel.home.Home").InitMap2();
+                    sap.ui.controller("sap.ui.easytravel.home.Home").InitMap();
                     break;
                 }
             }

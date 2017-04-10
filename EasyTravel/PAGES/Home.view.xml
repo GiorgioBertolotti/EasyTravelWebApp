@@ -172,7 +172,7 @@
             </content>
           </Page>
           <!-- CHIEDI PASSAGGIO / AUTOSTOPPISTA -->
-          <Page id="detailAutostop" class="myPage">
+          <Page id="detailMap" class="myPage">
             <content>
               <html:div id="map" class="myMap"></html:div>
             </content>

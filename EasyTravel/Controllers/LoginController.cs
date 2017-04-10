@@ -38,6 +38,7 @@ namespace EasyTravel.Controllers
                         loggedUser.Name = result.Message[0].Name.Value;
                         loggedUser.Surname = result.Message[0].Surname.Value;
                         loggedUser.Mobile = result.Message[0].Mobile.Value;
+                        loggedUser.Type = null;
                         loggedUser.Range = Convert.ToInt32(result.Message[0].Range.Value);
                         loggedUser.Image = Encoding.Default.GetBytes(result.Message[0].Image.Value);
                         loggedUser.Token = result.Message[0].Token.Value;
@@ -79,6 +80,7 @@ namespace EasyTravel.Controllers
                         loggedUser.Name = result.Message[0].Name.Value;
                         loggedUser.Surname = result.Message[0].Surname.Value;
                         loggedUser.Mobile = result.Message[0].Mobile.Value;
+                        loggedUser.Type = null;
                         loggedUser.Range = Convert.ToInt32(result.Message[0].Range.Value);
                         loggedUser.Image = Encoding.Default.GetBytes(result.Message[0].Image.Value);
                         loggedUser.Token = token;

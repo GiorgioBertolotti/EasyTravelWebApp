@@ -80,7 +80,7 @@ namespace EasyTravel.Controllers
                         autostoppisti = new List<Autostoppista>();
                         foreach (var atmp in result.Message)
                         {
-                            Autostoppista tmp = new Autostoppista() { Name = atmp.Name, Surname = atmp.Surname, Mobile = atmp.Mobile, Range = atmp.Range, Destlat = atmp.Destlat, Destlon = atmp.Destlon, Latitude = atmp.Latitude, Longitude = atmp.Longitude, Date = atmp.Date };
+                            Autostoppista tmp = new Autostoppista() { Name = atmp.Name, Surname = atmp.Surname, Mobile = atmp.Mobile, Type = 1, Range = atmp.Range, Destlat = atmp.Destlat, Destlon = atmp.Destlon, Latitude = atmp.Latitude, Longitude = atmp.Longitude, Date = atmp.Date };
                             tmp.evaluateDestination();
                             tmp.Image = Encoding.Default.GetBytes(atmp.Image.Value);
                             autostoppisti.Add(tmp);
