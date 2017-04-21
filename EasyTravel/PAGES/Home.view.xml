@@ -18,7 +18,7 @@
           </layoutData>
         </Button>
         <ToolbarSpacer />
-        <Label text="Home">
+        <Label id="lblPageTitle" text="Home">
           <layoutData>
             <OverflowToolbarLayoutData priority="High" />
           </layoutData>

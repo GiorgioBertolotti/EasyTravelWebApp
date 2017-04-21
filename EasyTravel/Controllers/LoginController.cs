@@ -37,6 +37,7 @@ namespace EasyTravel.Controllers
                         loggedUser = new User();
                         loggedUser.Name = result.Message[0].Name.Value;
                         loggedUser.Surname = result.Message[0].Surname.Value;
+                        loggedUser.Mail = result.Message[0].Mail.Value;
                         loggedUser.Mobile = result.Message[0].Mobile.Value;
                         loggedUser.Type = null;
                         loggedUser.Range = Convert.ToInt32(result.Message[0].Range.Value);
@@ -79,6 +80,7 @@ namespace EasyTravel.Controllers
                         loggedUser = new User();
                         loggedUser.Name = result.Message[0].Name.Value;
                         loggedUser.Surname = result.Message[0].Surname.Value;
+                        loggedUser.Mail = result.Message[0].Mail.Value;
                         loggedUser.Mobile = result.Message[0].Mobile.Value;
                         loggedUser.Type = null;
                         loggedUser.Range = Convert.ToInt32(result.Message[0].Range.Value);

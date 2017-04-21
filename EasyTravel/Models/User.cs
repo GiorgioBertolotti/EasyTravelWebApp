@@ -14,6 +14,7 @@ namespace EasyTravel.Models
     {
         public string Name { get; set; }
         public string Surname { get; set; }
+        public string Mail { get; set; }
         public string Mobile { get; set; }
         public int? Type { get; set; }
         public int Range { get; set; }

@@ -12,20 +12,23 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="ApplicationInsights.config">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
+    <File Include="App_Start/WebApiConfig.cs">
+      <publishTime>04/09/2017 12:33:39</publishTime>
+    </File>
     <File Include="bin/ApplicationInsights.config">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>10/04/2017 16:32:07</publishTime>
+      <publishTime>04/10/2017 16:32:07</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>10/04/2017 16:32:07</publishTime>
+      <publishTime>04/10/2017 16:32:07</publishTime>
     </File>
     <File Include="bin/EasyTravel.dll">
-      <publishTime>10/04/2017 16:30:15</publishTime>
+      <publishTime>04/10/2017 16:30:15</publishTime>
     </File>
     <File Include="bin/EasyTravel.pdb">
-      <publishTime>10/04/2017 16:30:15</publishTime>
+      <publishTime>04/10/2017 16:30:15</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -103,85 +106,94 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/site.css">
-      <publishTime>10/04/2017 08:51:49</publishTime>
+      <publishTime>04/10/2017 23:15:07</publishTime>
     </File>
     <File Include="Controllers/HomeController.cs">
-      <publishTime>07/04/2017 18:21:58</publishTime>
+      <publishTime>04/11/2017 00:01:56</publishTime>
     </File>
     <File Include="Controllers/LoginController.cs">
-      <publishTime>07/04/2017 13:38:32</publishTime>
+      <publishTime>04/11/2017 00:02:29</publishTime>
     </File>
     <File Include="Images/backgroundlogin.png">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>03/23/2017 10:04:03</publishTime>
     </File>
     <File Include="Images/edit.png">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>03/23/2017 10:04:03</publishTime>
     </File>
     <File Include="Images/ic_user.png">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>03/23/2017 10:04:03</publishTime>
     </File>
     <File Include="Images/logo.png">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>03/23/2017 10:04:03</publishTime>
     </File>
     <File Include="Images/profileimage.jpg">
-      <publishTime>07/04/2017 18:18:39</publishTime>
+      <publishTime>04/07/2017 18:18:39</publishTime>
     </File>
     <File Include="Images/profileimagemini.jpg">
-      <publishTime>07/04/2017 18:18:39</publishTime>
+      <publishTime>04/07/2017 18:18:39</publishTime>
     </File>
     <File Include="Images/slide1.jpg">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>03/23/2017 10:04:03</publishTime>
     </File>
     <File Include="Images/slide1.png">
-      <publishTime>06/04/2017 20:48:10</publishTime>
+      <publishTime>04/06/2017 20:48:10</publishTime>
     </File>
     <File Include="Images/slide2.jpg">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>03/23/2017 10:04:03</publishTime>
     </File>
     <File Include="Images/slide2.png">
-      <publishTime>06/04/2017 20:48:15</publishTime>
+      <publishTime>04/06/2017 20:48:15</publishTime>
     </File>
     <File Include="Images/slide3.jpg">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>03/23/2017 10:04:03</publishTime>
     </File>
     <File Include="Images/slide3.png">
-      <publishTime>06/04/2017 20:48:21</publishTime>
+      <publishTime>04/06/2017 20:48:21</publishTime>
     </File>
     <File Include="Images/slide4.jpg">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>03/23/2017 10:04:03</publishTime>
     </File>
     <File Include="Images/slide4.png">
-      <publishTime>06/04/2017 20:48:04</publishTime>
+      <publishTime>04/06/2017 20:48:04</publishTime>
+    </File>
+    <File Include="Models/ActiveUser.cs">
+      <publishTime>04/11/2017 00:01:11</publishTime>
+    </File>
+    <File Include="Models/Autostoppista.cs">
+      <publishTime>04/09/2017 12:33:39</publishTime>
+    </File>
+    <File Include="Models/User.cs">
+      <publishTime>04/11/2017 00:01:11</publishTime>
     </File>
     <File Include="packages.config">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="PAGES/Component.js">
-      <publishTime>09/04/2017 12:33:39</publishTime>
+      <publishTime>04/09/2017 12:33:39</publishTime>
     </File>
     <File Include="PAGES/Home.controller.js">
-      <publishTime>04/10/2017 21:31:12</publishTime>
+      <publishTime>04/10/2017 23:56:26</publishTime>
     </File>
     <File Include="PAGES/Home.view.xml">
-      <publishTime>09/04/2017 12:33:39</publishTime>
+      <publishTime>04/10/2017 23:50:05</publishTime>
     </File>
     <File Include="PAGES/Login.controller.js">
-      <publishTime>10/04/2017 15:40:18</publishTime>
+      <publishTime>04/10/2017 15:40:18</publishTime>
     </File>
     <File Include="PAGES/Login.view.xml">
-      <publishTime>09/04/2017 12:33:39</publishTime>
+      <publishTime>04/09/2017 12:33:39</publishTime>
     </File>
     <File Include="PAGES/MenuItemEventing.fragment.xml">
-      <publishTime>09/04/2017 12:33:39</publishTime>
+      <publishTime>04/09/2017 12:33:39</publishTime>
     </File>
     <File Include="PAGES/Register.controller.js">
-      <publishTime>09/04/2017 12:33:39</publishTime>
+      <publishTime>04/09/2017 12:33:39</publishTime>
     </File>
     <File Include="PAGES/Register.view.xml">
-      <publishTime>09/04/2017 12:33:39</publishTime>
+      <publishTime>04/09/2017 12:33:39</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>10/04/2017 16:32:03</publishTime>
+      <publishTime>04/10/2017 16:32:03</publishTime>
     </File>
     <File Include="scripts/ai.0.15.0-build58334.js">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -22030,10 +22042,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Views/index.html">
-      <publishTime>09/04/2017 12:33:39</publishTime>
+      <publishTime>04/09/2017 12:33:39</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/04/2017 16:31:44</publishTime>
+      <publishTime>04/10/2017 16:31:44</publishTime>
     </File>
   </ItemGroup>
 </Project>
