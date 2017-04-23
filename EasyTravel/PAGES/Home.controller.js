@@ -11,7 +11,7 @@
             sap.ui.controller("sap.ui.easytravel.home.Home").initializeItems();
         },
         //
-        // SETTINGS
+        // IMPOSTAZIONI
         //
         onBtnSave: function () {
             var oModel = sap.ui.getCore().getModel("user");
@@ -88,7 +88,7 @@
             }, 3000);
         },
         //
-        // PROFILE
+        // PROFILO
         //
         onEditImage: function () {
             var viewId = oView.getId();
@@ -163,7 +163,8 @@
                 if (isFirstMapLoad) {
                     map = new google.maps.Map(document.getElementById(viewId + '--map'), {
                         zoom: 12,
-                        center: position
+                        center: position,
+                        fullscreenControl: false
                     });
                     isFirstMapLoad = false;
                 } else {
@@ -200,7 +201,6 @@
                                 oView.byId("lblLatDest").setText(LatLngDest.lat());
                                 oView.byId("lblLngDest").setText(LatLngDest.lng());
                                 oView.byId("lblGeoDest").setText("(" + dest + ")");
-                                oView.byId("imgLoading").setSrc("/../Images/loadinganimation.gif");
                             });
                             markerdest = markernew;
                         });
@@ -301,7 +301,6 @@
                         dialog.close();
                         targetAutostoppista = autostoppista;
                         sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(41);
-                        var viewId = oView.getId();
                     },
                     width: "100%"
                 }), new sap.m.Button({
@@ -315,24 +314,37 @@
                         var profileimg = oView.byId("imgProfile");
                         profileimg.setSrc(autostoppista.Base64);
                         var viewId = oView.getId();
-                        var btnedit = document.getElementById(viewId + '--imageEditFAB');
-                        btnedit.style.visibility = 'hidden';
+                        setTimeout(function(){document.getElementById(viewId + '--btnBackToList').style.visibility = 'visible'},250);
+                        document.getElementById(viewId + '--imageEditFAB').style.visibility = 'hidden';
                     },
                     width: "100%"
-                }), new sap.m.Label({
-                    text: "Tel: "
-                }), new sap.m.Link({
-                    text: autostoppista.Mobile,
-                    press: function (oEvent) {
-                        sap.m.URLHelper.triggerTel(autostoppista.Mobile);
-                    }
-                }), new sap.m.Label({
-                    text: "; E-mail: "
-                }), new sap.m.Link({
-                    text: autostoppista.Mail,
-                    press: function (oEvent) {
-                        sap.m.URLHelper.triggerEmail(autostoppista.Mail, "Info Request");
-                    }
+                }), new sap.m.FlexBox({
+                    items: [
+                        new sap.m.FlexBox({
+                            items: [
+                                new sap.m.Label({
+                                    text: "Tel: "
+                                }),
+                                new sap.m.Link({
+                                    text: autostoppista.Mobile,
+                                    press: function (oEvent) {
+                                        sap.m.URLHelper.triggerTel(autostoppista.Mobile);
+                                    }
+                                })]
+                        }),
+                        new sap.m.FlexBox({
+                            items: [
+                                new sap.m.Label({
+                                    text: "E-mail: "
+                                }),
+                                new sap.m.Link({
+                                    text: autostoppista.Mail,
+                                    press: function (oEvent) {
+                                        sap.m.URLHelper.triggerEmail(autostoppista.Mail, "Info Request");
+                                    }
+                                })]
+                        })],
+                    direction: "Column"
                 })],
                 beginButton: new sap.m.Button({
                     text: 'Close',
@@ -380,6 +392,8 @@
                     detailPage = "detailMain";
                     sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--" + detailPage);
                     oView.byId("lblPageTitle").setText("Home");
+                    var oPage = oView.byId("detailMain");
+                    oPage.scrollTo(0, 0);
                     break;
                 }
                 case 21: {
@@ -473,8 +487,8 @@
                     var profileimg = oView.byId("imgProfile");
                     profileimg.setSrc(oModel.getData().Base64);
                     var viewId = oView.getId();
-                    var btnedit = document.getElementById(viewId + '--imageEditFAB');
-                    btnedit.style.visibility = 'visible';
+                    document.getElementById(viewId + '--btnBackToList').style.visibility = 'hidden';
+                    document.getElementById(viewId + '--imageEditFAB').style.visibility = 'visible';
                     break;
                 }
                 case "Impostazioni": {

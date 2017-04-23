@@ -249,24 +249,43 @@
                   src="../Images/ic_user.png"
                   description="Profile image">
                 </ImageContent>
-                <Label
-                  class="myProfileLabel"
+                <FlexBox
+                  direction="Column"
+                  class="myProfileText">
+                  <FlexBox>
+                    <Label
+                      class="myProfileLabel"
+                      text="Nome: "/>
+                    <Label
+                      class="myProfileLabel"
+                      id="lblNome"
+                      text="NOME"/>
+                  </FlexBox>
+                  <FlexBox>
+                    <Label
+                      class="myProfileLabel"
+                      text="Cognome: "/>
+                    <Label
+                      class="myProfileLabel"
+                      id="lblCognome"
+                      text="COGNOME"/>
+                  </FlexBox>
+                  <FlexBox>
+                    <Label
+                      class="myProfileLabel"
+                      text="Tel: "/>
+                    <Label
+                      class="myProfileLabel"
+                      id="lblMobile"
+                      text="NUMERO TELEFONO"/>
+                  </FlexBox>
+                </FlexBox>
+                <Button
+                  id="btnBackToList"
                   width="100%"
-                  textAlign="Center"
-                  id="lblNome"
-                  text="NOME"/>
-                <Label
-                  class="myProfileLabel"
-                  width="100%"
-                  textAlign="Center"
-                  id="lblCognome"
-                  text="COGNOME"/>
-                <Label
-                  class="myProfileLabel"
-                  width="100%"
-                  textAlign="Center"
-                  id="lblMobile"
-                  text="NUMERO TELEFONO"/>
+                  text="Indietro"
+                  press="onBtnBackToList"
+                  class="myHidden"/>
               </Panel>
             </content>
           </Page>

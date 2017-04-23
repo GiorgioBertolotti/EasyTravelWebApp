@@ -12,12 +12,15 @@
     font-size: 25px !important;
     font-weight: bold !important;
     text-shadow: 1px 1px 1px black !important;
-    width:30%;
+    width:80%;
     text-align:center !important;
     position:absolute;
     left: 0;
     right: 0;
     margin: auto;
+}
+.myHidden{
+    visibility:hidden;
 }
 .myLargeButton{
     width:100%;
@@ -26,21 +29,9 @@
     overflow: visible !important;
     position:static !important;
 }
-.myProfileImage{
-    position:static;
-    height:200px;
-    width:200px;
-    margin:auto;
+.myProfileText{
     margin-top:15px;
-    margin-bottom:15px;
-}
-.myProfileImage img{
-    position:static;
-    height:200px;
-    width:200px;
-    margin:auto;
-    max-height:none;
-    border: 1px solid black;
+    float:left;
 }
 .myProfileLabel{
     color:black;
@@ -53,30 +44,6 @@
     margin-top: 5px;
     font-size: 16pt;
     white-space: normal;
-}
-.myFABEditImage{
-    background-color:#cf0000;
-    width:40px;
-    height:40px;
-    border-radius:100%;
-    border:none;
-    color:#FFF;
-    font-size:36px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    transition:.3s;  
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    padding:0px;
-    position: absolute;
-    top: 220px;
-    outline:none !important;
-    /* Firefox */
-    left: -moz-calc(50% + 80px);
-    /* WebKit */
-    left: -webkit-calc(50% + 80px);
-    /* Opera */
-    left: -o-calc(50% + 80px);
-    /* Standard */
-    left: calc(50% + 80px);
 }
 .myFABEditImage img{
     width: 25px;
@@ -139,7 +106,51 @@
 .sapMPage>.sapMPageHeader + section, .sapMPage>.sapMPageSubHeader + section, .sapMPage>.sapMPageHeader + .sapUiHiddenPlaceholder + section{
     top:0px !important;
 }
+/*SMARTPHONE*/
 @media (max-width: 800px) {
+    .myProfileImage{
+        position:static;
+        height:200px;
+        width:100%;
+        margin-top:15px;
+        margin-right:15px;
+        float:left;
+    }
+    .myProfileImage img{
+        position:static;
+        height:200px;
+        width:200px;
+        max-height:none;
+        border: 1px solid black;
+        margin:auto;
+    }
+    .myFABEditImage{
+        background-color:#cf0000;
+        width:40px;
+        height:40px;
+        border-radius:100%;
+        border:none;
+        color:#FFF;
+        font-size:36px;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        transition:.3s;  
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        padding:0px;
+        position: absolute;
+        outline:none !important;
+        /* Firefox */
+        left: -moz-calc(50% + 90px);
+        top: -moz-calc(4% + 211px);
+        /* WebKit */
+        left: -webkit-calc(50% + 90px);
+        top: -webkit-calc(4% + 211px);
+        /* Opera */
+        left: -o-calc(50% + 90px);
+        top: -o-calc(4% + 211px);
+        /* Standard */
+        left: calc(50% + 90px);
+        top: calc(4% + 211px);
+    }
     .myLogo{
         width: 300px;
         height: 80px;
@@ -200,7 +211,48 @@
         background-color: #b71c1c;
     }
 }
+/*DESKTOP*/
 @media (min-width: 801px) {
+    .myProfileImage{
+        position:static;
+        height:200px;
+        width:200px;
+        margin-top:15px;
+        margin-right:15px;
+        margin-left:1px;
+        float:left;
+    }
+    .myProfileImage img{
+        position:static;
+        height:200px;
+        width:200px;
+        max-height:none;
+        border: 1px solid black;
+    }
+    .myFABEditImage{
+        background-color:#cf0000;
+        width:40px;
+        height:40px;
+        border-radius:100%;
+        border:none;
+        color:#FFF;
+        font-size:36px;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        transition:.3s;  
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        padding:0px;
+        position: absolute;
+        top: 230px;
+        outline:none !important;
+        /* Firefox */
+        left: -moz-calc(25% + 200px);
+        /* WebKit */
+        left: -webkit-calc(25% + 200px);
+        /* Opera */
+        left: -o-calc(25% + 200px);
+        /* Standard */
+        left: calc(25% + 200px);
+    }
     .myLogo{
         width: 300px;
         height: 80px;
