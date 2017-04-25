@@ -98,13 +98,24 @@
                 var img = new Image();
                 img.onload = function () {
                     //RIDUCO LE DIMENSIONI DELL'IMMAGINE E LA QUALITA'
-                    var perferedWidth = 300;
-                    var ratio = perferedWidth / img.width;
                     var canvas = $("<canvas>")[0];
-                    canvas.width = img.width * ratio;
-                    canvas.height = img.height * ratio;
+                    canvas.width = 200;
+                    canvas.height = 200;
                     var ctx = canvas.getContext("2d");
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    //CREO RIDIMENSIONAMENTO E BIANCO LATERALE
+                    ctx.beginPath();
+                    ctx.rect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = "#ffffff";
+                    ctx.fill();
+                    if (img.width == img.height) {
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    } else if (img.width > img.height) {
+                        var h = (img.height * 200) / img.width;
+                        ctx.drawImage(img, 0, (200-h)/2, 200, h);
+                    } else if (img.height > img.width) {
+                        var w = (img.width * 200) / img.height;
+                        ctx.drawImage(img, (200 - w)/2, 0, w, 200);
+                    }
                     var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
                     var oModel = sap.ui.getCore().getModel("user");
                     //PASSO IL BASE64 DELL'IMMAGINE IN jpeg
@@ -155,7 +166,7 @@
             geocoder = new google.maps.Geocoder;
             var options = {
                 enableHighAccuracy: true,
-                timeout: 4000
+                timeout: 5000
             };
             function success(pos) {
                 if (stato == 41)
@@ -169,6 +180,8 @@
                         center: position,
                         fullscreenControl: false
                     });
+                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUserPosition();
+                    setInterval(sap.ui.controller("sap.ui.easytravel.home.Home").updateUserPosition, 60000);
                     isFirstMapLoad = false;
                 } else {
                     map.setCenter(position);
@@ -183,14 +196,18 @@
                         geocoder.geocode({ 'location': position }, function (results, status) {
                             var contentString;
                             if (status === 'OK') {
-                                if (results[1]) {
+                                if (results[0]) {
                                     contentString = '<div id="content">' +
                                         '<h1 id="firstHeading" class="firstHeading">Your position.</h1>' +
-                                        '<p>'+results[1].formatted_address+'</p>' +
+                                        '<p>'+results[0].formatted_address+'</p>' +
                                         '</div>';
-                                } else {
+                                } else if (results[1]) {
+                                    contentString = '<div id="content">' +
+                                        '<h1 id="firstHeading" class="firstHeading">Your position.</h1>' +
+                                        '<p>' + results[1].formatted_address + '</p>' +
+                                        '</div>';
+                                } else
                                     contentString = "Impossibile identificare la posizione.";
-                                }
                             } else {
                                 contentString = "Impossibile identificare la posizione.";
                             }
@@ -206,7 +223,10 @@
                             var latlng = { lat: event.latLng.lat(), lng: event.latLng.lng() };
                             geocoder.geocode({ 'location': latlng }, function (results, status) {
                                 if (status === 'OK') {
-                                    if (results[1]) {
+                                    if (results[0]) {
+                                        dest = results[0].formatted_address;
+                                        sap.m.MessageToast.show(results[0].formatted_address);
+                                    } else if (results[1]) {
                                         dest = results[1].formatted_address;
                                         sap.m.MessageToast.show(results[1].formatted_address);
                                     }
@@ -327,8 +347,9 @@
                 sap.m.MessageToast.show(err.message);
                 var viewId = oView.getId();
                 map = new google.maps.Map(document.getElementById(viewId + '--map'), {
-                    zoom: 4,
-                    center: position
+                    zoom: 12,
+                    center: position,
+                    fullscreenControl: false
                 });
             };
             if (navigator.geolocation) {
@@ -339,6 +360,58 @@
         },
         onBtnBackToMap2: function () {
             sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(50);
+        },
+        updateUserPosition: function () {
+            var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
+            var oModel = sap.ui.getCore().getModel("user");
+            var mobile = oModel.getData().Mobile;
+            geocoder = new google.maps.Geocoder;
+            var options = {
+                enableHighAccuracy: true,
+                timeout: 10000
+            };
+            function success(pos) {
+                input_data = { ip:ip, mobile: mobile, Latitude: pos.coords.latitude, Longitude: pos.coords.longitude };
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/Home/updateUserPosition',
+                    data: input_data,
+                    success: function (response) {
+                        console.log('User position updated: { ip: ' + input_data.ip + ', mobile: ' + input_data.mobile + ', Latitude: ' + input_data.Latitude + ', Longitude: ' + input_data.Longitude + '}');
+                    },
+                    error: function (response) {
+                        console.log('Error: ', error);
+                    }
+                });
+                if (stato == 30) {
+                    if (markerpos)
+                        markerpos.setMap(null);
+                    markerpos = new google.maps.Marker({
+                        position: {lat:input_data.Latitude,lng:input_data.Longitude},
+                        map: map,
+                        icon: 'http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png'
+                    });
+                }
+            };
+            function error(err) {
+                input_data = { ip: ip, mobile: mobile, Latitude: 0, Longitude: 0 };
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/Home/updateUserPosition',
+                    data: input_data,
+                    success: function (response) {
+                        console.log('User position updated: { ip: ' + input_data.ip + ', mobile: ' + input_data.mobile + ', Latitude: ' + input_data.Latitude + ', Longitude: ' + input_data.Longitude + '}');
+                    },
+                    error: function (response) {
+                        console.log('Error: ', error);
+                    }
+                });
+            };
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(success, error, options);
+            } else {
+                error("");
+            }
         },
         //
         // AUTOSTOPPISTA
@@ -492,7 +565,7 @@
                     var range = oModel.getData().Range;
                     var options = {
                         enableHighAccuracy: true,
-                        timeout: 4000
+                        timeout:5000
                     };
                     function success(pos) {
                         oModel = new sap.ui.model.json.JSONModel();

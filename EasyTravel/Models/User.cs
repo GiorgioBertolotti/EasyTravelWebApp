@@ -67,4 +67,11 @@ namespace EasyTravel.Models
         public string OldPassword { get; set; }
         public string NewPassword { get; set; }
     }
+    public class UserPosition
+    {
+        public string ip { get; set; }
+        public string Mobile { get; set; }
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
+    }
 }

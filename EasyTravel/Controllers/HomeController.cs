@@ -21,6 +21,38 @@ namespace EasyTravel.Controllers
         public List<ActiveUser> attivi;
         public bool isError { get; set; }
         public string errorMessage { get; set; }
+        [HttpPost]
+        public string updateUserPosition(UserPosition model)
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    var values = new NameValueCollection();
+                    values["api_method"] = "setGPSLocation";
+                    values["api_data"] = JsonConvert.SerializeObject(new { mobile = model.Mobile, lat = model.Latitude, lon=model.Longitude,date= DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") });
+                    var response = client.UploadValues(model.ip, values);
+                    var responseString = Encoding.Default.GetString(response);
+                    dynamic result = JsonConvert.DeserializeObject(responseString);
+                    if (!(bool)result.IsError)
+                    {
+                        this.isError = false;
+                        this.errorMessage = result.Message;
+                    }
+                    else
+                    {
+                        this.isError = true;
+                        this.errorMessage = result.Message;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.isError = true;
+                this.errorMessage = e.Message;
+            }
+            return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
+        }
         [HttpGet]
         public string getActiveUsers(string ip)
         {
