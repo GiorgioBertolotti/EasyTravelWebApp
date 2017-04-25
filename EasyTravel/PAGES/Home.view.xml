@@ -283,8 +283,14 @@
                 <Button
                   id="btnBackToList"
                   width="100%"
-                  text="Indietro"
+                  text="Torna alla lista"
                   press="onBtnBackToList"
+                  class="myHidden"/>
+                <Button
+                  id="btnBackToMap2"
+                  width="100%"
+                  text="Torna alla mappa"
+                  press="onBtnBackToMap2"
                   class="myHidden"/>
               </Panel>
             </content>

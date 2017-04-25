@@ -133,6 +133,9 @@
             };
             reader.readAsDataURL(imgpicker.files[0]);
         },
+        onBtnBackToList: function () {
+            sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(40);
+        },
         //
         // MAPPA
         //
@@ -176,6 +179,27 @@
                             position: position,
                             map: map,
                             icon: 'http://maps.google.com/mapfiles/ms/micons/blue-pushpin.png'
+                        });
+                        geocoder.geocode({ 'location': position }, function (results, status) {
+                            var contentString;
+                            if (status === 'OK') {
+                                if (results[1]) {
+                                    contentString = '<div id="content">' +
+                                        '<h1 id="firstHeading" class="firstHeading">Your position.</h1>' +
+                                        '<p>'+results[1].formatted_address+'</p>' +
+                                        '</div>';
+                                } else {
+                                    contentString = "Impossibile identificare la posizione.";
+                                }
+                            } else {
+                                contentString = "Impossibile identificare la posizione.";
+                            }
+                            var infowindow = new google.maps.InfoWindow({
+                                content: contentString
+                            });
+                            markerpos.addListener('click', function () {
+                                infowindow.open(map, markerpos);
+                            });
                         });
                         var dest = "";
                         google.maps.event.addListener(map, "click", function (event) {
@@ -249,15 +273,44 @@
                                             var newmarker = new google.maps.Marker({
                                                 position: { lat: parseFloat(data[a].Latitude), lng: parseFloat(data[a].Longitude) },
                                                 map: map,
-                                                icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+                                                icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                                                customInfo: data[a]
                                             });
                                         } else {
                                             var newmarker = new google.maps.Marker({
                                                 position: { lat: parseFloat(data[a].Latitude), lng: parseFloat(data[a].Longitude) },
                                                 map: map,
-                                                icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                                                icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+                                                customInfo: data[a]
                                             });
                                         }
+                                        var boxText = document.createElement("div");
+                                        boxText.id = a;
+                                        boxText.innerHTML = '<table><tr><td rowspan="2"><img height="30px" width="30px" src="' + data[a].Base64 + '"></td><th>' + data[a].Name + ' ' + data[a].Surname + '</th></tr><tr><td>E-mail: ' + data[a].Mail + '<br>Tel: ' + data[a].Mobile + '</td></tr></table>';
+                                        //var contentString = '<div id="content" ><table><tr><td rowspan="2"><img height="30px" width="30px" src="' + data[a].Base64 + '"></td><th><a href="javascript:targetAutostoppista;" onclick="sap.ui.controller(\'sap.ui.easytravel.home.Home\').onShowUserProfile()">' + data[a].Name + ' ' + data[a].Surname + '</a></th></tr><tr><td>E-mail: ' + data[a].Mail + '<br>Tel: ' + data[a].Mobile + '</td></tr></table></div>';
+                                        var infowindow = new google.maps.InfoWindow();
+                                        google.maps.event.addListener(newmarker, 'click', (function (newmarker, boxText, infowindow) {
+                                            google.maps.event.addDomListener(boxText, 'click', (function (marker) {
+                                                return function () {
+                                                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(42);
+                                                    oView.byId("lblNome").setText(marker.customInfo.Name);
+                                                    oView.byId("lblCognome").setText(marker.customInfo.Surname);
+                                                    oView.byId("lblMobile").setText(marker.customInfo.Mobile);
+                                                    var profileimg = oView.byId("imgProfile");
+                                                    profileimg.setSrc(marker.customInfo.Base64);
+                                                    var viewId = oView.getId();
+                                                    setTimeout(function () {
+                                                        document.getElementById(viewId + '--btnBackToMap2').style.display = 'inline';
+                                                        document.getElementById(viewId + '--btnBackToList').style.display = 'none';
+                                                    }, 250);
+                                                    document.getElementById(viewId + '--imageEditFAB').style.visibility = 'hidden';
+                                                }
+                                            })(newmarker));
+                                            return function () {
+                                                infowindow.setContent(boxText);
+                                                infowindow.open(map, newmarker);
+                                            };
+                                        })(newmarker, boxText, infowindow));
                                         markers.push(newmarker);
                                     }
                                 }
@@ -283,6 +336,9 @@
             } else {
                 sap.m.MessageToast.show("Geolocation is not supported by this browser");
             }
+        },
+        onBtnBackToMap2: function () {
+            sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(50);
         },
         //
         // AUTOSTOPPISTA
@@ -314,7 +370,10 @@
                         var profileimg = oView.byId("imgProfile");
                         profileimg.setSrc(autostoppista.Base64);
                         var viewId = oView.getId();
-                        setTimeout(function(){document.getElementById(viewId + '--btnBackToList').style.visibility = 'visible'},250);
+                        setTimeout(function () {
+                            document.getElementById(viewId + '--btnBackToMap2').style.display = 'none';
+                            document.getElementById(viewId + '--btnBackToList').style.display = 'inline';
+                        }, 250);
                         document.getElementById(viewId + '--imageEditFAB').style.visibility = 'hidden';
                     },
                     width: "100%"
@@ -487,7 +546,8 @@
                     var profileimg = oView.byId("imgProfile");
                     profileimg.setSrc(oModel.getData().Base64);
                     var viewId = oView.getId();
-                    document.getElementById(viewId + '--btnBackToList').style.visibility = 'hidden';
+                    document.getElementById(viewId + '--btnBackToList').style.display = 'none';
+                    document.getElementById(viewId + '--btnBackToMap2').style.display = 'none';
                     document.getElementById(viewId + '--imageEditFAB').style.visibility = 'visible';
                     break;
                 }

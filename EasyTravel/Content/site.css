@@ -20,7 +20,8 @@
     margin: auto;
 }
 .myHidden{
-    visibility:hidden;
+    /*visibility:hidden;*/
+    display:none;
 }
 .myLargeButton{
     width:100%;
@@ -28,10 +29,6 @@
 .myMap{
     overflow: visible !important;
     position:static !important;
-}
-.myProfileText{
-    margin-top:15px;
-    float:left;
 }
 .myProfileLabel{
     color:black;
@@ -108,6 +105,14 @@
 }
 /*SMARTPHONE*/
 @media (max-width: 800px) {
+    .myProfileText{
+        margin-top: 15px;
+        border: 1px solid black;
+        float: left;
+        padding: 15px;
+        border-radius: 15px;
+        width:100%;
+    }
     .myProfileImage{
         position:static;
         height:200px;
@@ -213,6 +218,13 @@
 }
 /*DESKTOP*/
 @media (min-width: 801px) {
+    .myProfileText{
+        margin-top: 15px;
+        border: 1px solid black;
+        float: left;
+        padding: 15px;
+        border-radius: 15px;
+    }
     .myProfileImage{
         position:static;
         height:200px;
