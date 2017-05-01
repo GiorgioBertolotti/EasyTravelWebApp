@@ -74,4 +74,15 @@ namespace EasyTravel.Models
         public string Latitude { get; set; }
         public string Longitude { get; set; }
     }
+    public class UserType
+    {
+        public string ip { get; set; }
+        public string Mobile { get; set; }
+        public string Type { get; set; }
+    }
+    public class UserMobile
+    {
+        public string ip { get; set; }
+        public string Mobile { get; set; }
+    }
 }

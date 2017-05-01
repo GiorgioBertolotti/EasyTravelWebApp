@@ -27,7 +27,7 @@
                 sap.ui.core.BusyIndicator.show();
             });
             var input_data = { "ip":ip,"mobile": mobile, "range": rangepicker };
-            oModel.loadData("/api/Login/editRange", input_data);
+            oModel.loadData("/api/Home/editRange", input_data);
             oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.home.Home").onEditRangeComplete);
             var errore = "";
             if (!oldpwd)
@@ -245,6 +245,47 @@
                                 oView.byId("lblLatDest").setText(LatLngDest.lat());
                                 oView.byId("lblLngDest").setText(LatLngDest.lng());
                                 oView.byId("lblGeoDest").setText("(" + dest + ")");
+                                var oModel = sap.ui.getCore().getModel("user");
+                                var mobile = oModel.getData().Mobile;
+                                var input_data = {
+                                    "ip": ip,
+                                    "Mobile": mobile,
+                                    "Type": "Autostoppista"
+                                };
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/api/Home/setUserType',
+                                    data: input_data,
+                                    success: function (response) {
+                                        var json = JSON.parse(response);
+                                        if (json.isError) {
+                                            sap.m.MessageToast.show(json.errorMessage);
+                                        }
+                                    },
+                                    error: function (response) {
+                                        console.log('Error: ', error);
+                                    }
+                                });
+                                input_data = {
+                                    "ip": ip,
+                                    "Mobile": mobile,
+                                    "Latitude": LatLngDest.lat(),
+                                    "Longitude": LatLngDest.lng()
+                                };
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/api/Home/setUserDestination',
+                                    data: input_data,
+                                    success: function (response) {
+                                        var json = JSON.parse(response);
+                                        if (json.isError) {
+                                            sap.m.MessageToast.show(json.errorMessage);
+                                        }
+                                    },
+                                    error: function (response) {
+                                        console.log('Error: ', error);
+                                    }
+                                });
                             });
                             markerdest = markernew;
                         });
@@ -502,7 +543,75 @@
                 oView.byId("toolPage").toggleSideContentMode();
             var viewId = oView.getId();
             var detailPage = "detailMain";
+            //RIMUOVERE TIPO UTENTE E DESTINAZIONE
+            switch (stato) {
+                case 31: {
+                    if (newstate == 31)
+                        break;
+                    var oModel = sap.ui.getCore().getModel("user");
+                    var mobile = oModel.getData().Mobile;
+                    var input_data = {
+                        "ip": ip,
+                        "Mobile": mobile
+                    };
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/Home/unsetUserDestination',
+                        data: input_data,
+                        success: function (response) {
+                            var json = JSON.parse(response);
+                            if (json.isError) {
+                                sap.m.MessageToast.show(json.errorMessage);
+                            }
+                        },
+                        error: function (response) {
+                            console.log('Error: ', error);
+                        }
+                    });
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/Home/unsetUserType',
+                        data: input_data,
+                        success: function (response) {
+                            var json = JSON.parse(response);
+                            if (json.isError) {
+                                sap.m.MessageToast.show(json.errorMessage);
+                            }
+                        },
+                        error: function (response) {
+                            console.log('Error: ', error);
+                        }
+                    });
+                    break;
+                }
+                case 40: case 41: case 42: {
+                    if (newstate == 40 || newstate == 41 || newstate == 42)
+                        break;
+                    var oModel = sap.ui.getCore().getModel("user");
+                    var mobile = oModel.getData().Mobile;
+                    var input_data = {
+                        "ip": ip,
+                        "Mobile": mobile
+                    };
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/Home/unsetUserType',
+                        data: input_data,
+                        success: function (response) {
+                            var json = JSON.parse(response);
+                            if (json.isError) {
+                                sap.m.MessageToast.show(json.errorMessage);
+                            }
+                        },
+                        error: function (response) {
+                            console.log('Error: ', error);
+                        }
+                    });
+                    break;
+                }
+            }
             stato = newstate;
+            //IMPOSTARE NUOVA INTERFACCIA UTENTE
             switch (stato) {
                 case 0: {
                     var oModel = sap.ui.getCore().getModel("user");
@@ -647,6 +756,27 @@
                 }
                 case "autista": {
                     sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(40);
+                    var oModel = sap.ui.getCore().getModel("user");
+                    var mobile = oModel.getData().Mobile;
+                    var input_data = {
+                        "ip": ip,
+                        "Mobile": mobile,
+                        "Type": "Autista"
+                    };
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/Home/setUserType',
+                        data: input_data,
+                        success: function (response) {
+                            var json = JSON.parse(response);
+                            if (json.isError) {
+                                sap.m.MessageToast.show(json.errorMessage);
+                            }
+                        },
+                        error: function (response) {
+                            console.log('Error: ', error);
+                        }
+                    });
                     break;
                 }
                 case "map": {

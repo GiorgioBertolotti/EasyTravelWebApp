@@ -22,6 +22,134 @@ namespace EasyTravel.Controllers
         public bool isError { get; set; }
         public string errorMessage { get; set; }
         [HttpPost]
+        public string unsetUserType(UserMobile model)
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    var values = new NameValueCollection();
+                    values["api_method"] = "removeUser_Type";
+                    values["api_data"] = JsonConvert.SerializeObject(new { mobile = model.Mobile });
+                    var response = client.UploadValues(model.ip, values);
+                    var responseString = Encoding.Default.GetString(response);
+                    dynamic result = JsonConvert.DeserializeObject(responseString);
+                    if (!(bool)result.IsError)
+                    {
+                        this.isError = false;
+                        this.errorMessage = result.Message;
+                    }
+                    else
+                    {
+                        this.isError = true;
+                        this.errorMessage = result.Message;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.isError = true;
+                this.errorMessage = e.Message;
+            }
+            return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
+        }
+        [HttpPost]
+        public string setUserType(UserType model)
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    var values = new NameValueCollection();
+                    values["api_method"] = "User_Type";
+                    values["api_data"] = JsonConvert.SerializeObject(new { mobile = model.Mobile, Latitude = model.Type });
+                    var response = client.UploadValues(model.ip, values);
+                    var responseString = Encoding.Default.GetString(response);
+                    dynamic result = JsonConvert.DeserializeObject(responseString);
+                    if (!(bool)result.IsError)
+                    {
+                        this.isError = false;
+                        this.errorMessage = result.Message;
+                    }
+                    else
+                    {
+                        this.isError = true;
+                        this.errorMessage = result.Message;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.isError = true;
+                this.errorMessage = e.Message;
+            }
+            return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
+        }
+        [HttpPost]
+        public string unsetUserDestination(UserMobile model)
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    var values = new NameValueCollection();
+                    values["api_method"] = "removeUser_Destination";
+                    values["api_data"] = JsonConvert.SerializeObject(new { mobile = model.Mobile });
+                    var response = client.UploadValues(model.ip, values);
+                    var responseString = Encoding.Default.GetString(response);
+                    dynamic result = JsonConvert.DeserializeObject(responseString);
+                    if (!(bool)result.IsError)
+                    {
+                        this.isError = false;
+                        this.errorMessage = result.Message;
+                    }
+                    else
+                    {
+                        this.isError = true;
+                        this.errorMessage = result.Message;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.isError = true;
+                this.errorMessage = e.Message;
+            }
+            return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
+        }
+        [HttpPost]
+        public string setUserDestination(UserPosition model)
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    var values = new NameValueCollection();
+                    values["api_method"] = "User_Destination";
+                    values["api_data"] = JsonConvert.SerializeObject(new { mobile = model.Mobile, Latitude = model.Latitude, Longitude = model.Longitude });
+                    var response = client.UploadValues(model.ip, values);
+                    var responseString = Encoding.Default.GetString(response);
+                    dynamic result = JsonConvert.DeserializeObject(responseString);
+                    if (!(bool)result.IsError)
+                    {
+                        this.isError = false;
+                        this.errorMessage = result.Message;
+                    }
+                    else
+                    {
+                        this.isError = true;
+                        this.errorMessage = result.Message;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.isError = true;
+                this.errorMessage = e.Message;
+            }
+            return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
+        }
+        [HttpPost]
         public string updateUserPosition(UserPosition model)
         {
             try
@@ -249,6 +377,48 @@ namespace EasyTravel.Controllers
                 this.errorMessage = e.Message;
             }
             return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
+        }
+        [HttpGet]
+        public string editRange(string ip, string mobile, int range)
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    if (range != LoginController.loggedUser.Range)
+                    {
+                        var values = new NameValueCollection();
+                        values["api_method"] = "setRange";
+                        values["api_data"] = JsonConvert.SerializeObject(new { mobile = mobile, range = range });
+                        var response = client.UploadValues(ip, values);
+                        var responseString = Encoding.Default.GetString(response);
+                        dynamic result = JsonConvert.DeserializeObject(responseString);
+                        if (!(bool)result.IsError)
+                        {
+                            LoginController.loggedUser.Range = range;
+                            this.isError = false;
+                            this.errorMessage = result.Message;
+                        }
+                        else
+                        {
+                            this.isError = true;
+                            this.errorMessage = result.Message;
+                        }
+                    }
+                    else
+                    {
+                        this.isError = true;
+                        this.errorMessage = "Il range è uguale";
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.isError = true;
+                this.errorMessage = e.Message;
+            }
+            string ret = JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
+            return ret;
         }
     }
 }

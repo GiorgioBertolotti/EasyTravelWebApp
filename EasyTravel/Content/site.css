@@ -85,7 +85,7 @@
     /*border-right:1px solid black;*/
 }
 #homePage .sapTntNavLIGroup>.sapUiIcon {
-    color: #cecece !important;
+    color: #ffffff !important;
 }
 #homePage .sapTntNavLIText {
     color: white !important;
@@ -208,12 +208,9 @@
         overflow-x:auto !important;
     }
     #homePage header div img {
-        position: absolute;
-        right: 4px;
         max-height: 40px !important;
         top: 12px !important;
         border-radius: 50%;
-        background-color: #b71c1c;
     }
 }
 /*DESKTOP*/
@@ -322,12 +319,9 @@
         float:left;
     }
     #homePage header div img {
-        position: absolute;
-        right: 4px;
         max-height: 40px !important;
         top: 12px !important;
         border-radius: 50%;
-        background-color: #b71c1c;
     }
 }
 #loginPage .sapMBtnIcon {
@@ -397,7 +391,7 @@
 }
 .sapMTitle{
     color: white !important;
-    font-family: Calibri;
+    font-family: sans-serif;
     font-size: 25px !important;
     font-weight: bold !important;
     text-shadow: 1px 1px 1px black !important;

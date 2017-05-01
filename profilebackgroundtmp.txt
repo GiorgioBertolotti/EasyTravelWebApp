@@ -1,0 +1,28 @@
+
+
+                        function roundedImage(x, y, width, height, radius) {
+                            ctx.beginPath();
+                            ctx.moveTo(x + radius, y);
+                            ctx.lineTo(x + width - radius, y);
+                            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+                            ctx.lineTo(x + width, y + height);
+                            ctx.lineTo(x, y + height);
+                            ctx.lineTo(x, y + radius);
+                            ctx.quadraticCurveTo(x, y, x + radius, y);
+                            ctx.closePath();
+                        }
+
+                        ctx.fillStyle = '#d8d8d8';
+                        ctx.fillRect(0, 0, c.width, c.height);
+                        roundedImage(0, 0, c.width, c.height, 10);
+                        ctx.clip();
+                        ctx.drawImage(img, 0, img.height / 2, img.width, img.height / 2, 0, 0, c.width, c.height / 2);
+                        ctx.beginPath();
+                        ctx.arc(c.width / 2, c.height / 2, 100, 0, 2 * Math.PI);
+                        ctx.fillStyle = "white";
+                        ctx.fill();
+                        ctx.beginPath();
+                        ctx.arc(c.width / 2, c.height / 2, 90, 0, Math.PI * 2, true);
+                        ctx.closePath();
+                        ctx.clip();
+                        ctx.drawImage(img2, c.width / 2 - 90, c.height / 2 - 90, 180, 180);

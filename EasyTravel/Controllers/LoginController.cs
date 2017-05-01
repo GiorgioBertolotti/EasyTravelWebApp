@@ -132,45 +132,5 @@ namespace EasyTravel.Controllers
             string ret = JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
             return ret;
         }
-        [HttpGet]
-        public string editRange(string ip, string mobile, int range)
-        {
-            try
-            {
-                using (var client = new WebClient())
-                {
-                    if (range != loggedUser.Range) { 
-                        var values = new NameValueCollection();
-                        values["api_method"] = "setRange";
-                        values["api_data"] = JsonConvert.SerializeObject(new { mobile = mobile, range = range });
-                        var response = client.UploadValues(ip, values);
-                        var responseString = Encoding.Default.GetString(response);
-                        dynamic result = JsonConvert.DeserializeObject(responseString);
-                        if (!(bool)result.IsError)
-                        {
-                            loggedUser.Range = range;
-                            this.isError = false;
-                            this.errorMessage = result.Message;
-                        }
-                        else
-                        {
-                            this.isError = true;
-                            this.errorMessage = result.Message;
-                        }
-                    }else
-                    {
-                        this.isError = true;
-                        this.errorMessage = "Il range è uguale";
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                this.isError = true;
-                this.errorMessage = e.Message;
-            }
-            string ret = JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
-            return ret;
-        }
     }
 }
