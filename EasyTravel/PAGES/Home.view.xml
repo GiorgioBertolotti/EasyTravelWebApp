@@ -70,18 +70,18 @@
                   textAlign="Left"
                   text="About Easy Travel."/>
                 <Label
-                  class="myProfileLabel"
+                  class="mylabel"
                   width="100%"
                   textAlign="Left"
                   text="Easy Travel è un progetto avviato nel mese di Luglio 2016 da Giorgio Bertolotti."/>
                 <Label
-                  class="myProfileLabel"
+                  class="mylabel"
                   width="100%"
                   textAlign="Left"
                   text="Nato come applicazione da sviluppare durante uno stage estivo è poi continuato a crescere fino a diventare anche
                   applicazione web per essere disponibile all'uso anche senza bisogno di installare l'applicazione."/>
                 <Label
-                  class="myProfileLabel"
+                  class="mylabel"
                   width="100%"
                   textAlign="Left"
                   text="Easy Travel vuole rendere più semplice l'organizzazione dei trasporti tra amici e sconosciuti."/>
@@ -94,12 +94,12 @@
                   textAlign="Left"
                   text="About Me."/>
                 <Label
-                  class="myProfileLabel"
+                  class="mylabel"
                   width="100%"
                   textAlign="Left"
                   text="Giorgio Bertolotti, sviluppatore di Easy Travel è uno studente dell'ITIS G.Marconi di Dalmine nato nel 1998."/>
                 <Label
-                  class="myProfileLabel"
+                  class="mylabel"
                   width="100%"
                   textAlign="Left"
                   text="Inizia a sviluppare Easy Travel durante uno stage nell'estate tra il quarto e quinto anno di scuola superiore per poi riprendere il progetto
@@ -181,7 +181,7 @@
           <Page id="detailWaiting" class="myPage">
             <content>
               <Panel
-                class="myPanelProfile">
+                class="myPanelSettings">
                 <Label
                   class="myTitleLabel"
                   width="100%"
@@ -191,21 +191,21 @@
                   <html:tr>
                     <html:td style="width:60%">
                       <Label
-                        class="myProfileLabel"
+                        class="mylabel"
                         width="100%"
                         text="Hai impostato come destinazione:"/>
                       <Label
-                        class="myProfileLabel"
+                        class="mylabel"
                         width="100%"
                         id="lblLatDest"
                         text="LATITUDINE"/>
                       <Label
-                        class="myProfileLabel"
+                        class="mylabel"
                         width="100%"
                         id="lblLngDest"
                         text="LONGITUDINE"/>
                       <Label
-                        class="myProfileLabel"
+                        class="mylabel"
                         width="100%"
                         id="lblGeoDest"
                         text="DESTINAZIONE"/>
@@ -239,9 +239,15 @@
             <content>
               <Panel
                 class="myPanelProfile">
-                <html:div id="imageEditFAB" class="myFABEditImage btn btn-primary">
+                <html:div id="imageEditFAB" class="myFABEditImage btn btn-primary" onclick="sap.ui.controller('sap.ui.easytravel.home.Home').onFABClick()">
                     <html:img src="../Images/edit.png" alt="Edit" />
                     <html:input id="imagePicker" type="file" class="upload" onchange="sap.ui.controller('sap.ui.easytravel.home.Home').onEditImage()" />
+                </html:div>
+                <html:div id="btnBackToList" class="myFABBackBtn btn btn-primary" onclick="sap.ui.controller('sap.ui.easytravel.home.Home').onBtnBackToList()">
+                    <html:img src="../Images/back2.png" alt="Edit" />
+                </html:div>
+                <html:div id="btnBackToMap2" class="myFABBackBtn btn btn-primary" onclick="sap.ui.controller('sap.ui.easytravel.home.Home').onBtnBackToMap2()">
+                  <html:img src="../Images/back2.png" alt="Edit" />
                 </html:div>
                 <ImageContent
                   class="myProfileImage"
@@ -254,40 +260,61 @@
                   class="myProfileText">
                   <FlexBox>
                     <Label
-                      class="myProfileLabel"
-                      text="Nome: "/>
-                    <Label
-                      class="myProfileLabel"
+                      class="mylabelprofilename"
                       id="lblNome"
                       text="NOME"/>
-                  </FlexBox>
-                  <FlexBox>
                     <Label
-                      class="myProfileLabel"
-                      text="Cognome: "/>
-                    <Label
-                      class="myProfileLabel"
+                      class="mylabelprofilesurname"
                       id="lblCognome"
                       text="COGNOME"/>
                   </FlexBox>
                   <FlexBox>
                     <Label
-                      class="myProfileLabel"
-                      text="Tel: "/>
-                    <Label
-                      class="myProfileLabel"
-                      id="lblMobile"
-                      text="NUMERO TELEFONO"/>
+                      class="mylabel"
+                      id="lblBio"
+                      text="BIOGRAFIA"/>
                   </FlexBox>
                 </FlexBox>
+                <html:div style="width:100%; margin:0; padding:0; background-color:#b71c1c;float:left;border-top:1px black solid;">
+                  <html:table style="width:100%;">
+                    <html:tr>
+                      <html:td style="width:50%;">
+                        <FlexBox>
+                          <Label
+                            class="mylabelprofiletel"
+                            text="Tel: "/>
+                          <Label
+                            class="mylabelprofiletel2"
+                            id="lblMobile"
+                            text="NUMERO TELEFONO"/>
+                        </FlexBox>
+                      </html:td>
+                    </html:tr>
+                    <html:tr>
+                      <html:td>
+                        <FlexBox>
+                          <Label
+                            class="mylabelprofiletel"
+                            textAlign="End"
+                            text="Mail: "/>
+                          <Label
+                            class="mylabelprofiletel2"
+                            textAlign="End"
+                            id="lblMail"
+                            text="E-MAIL"/>
+                        </FlexBox>
+                      </html:td>
+                    </html:tr>
+                  </html:table>
+                </html:div>
                 <Button
-                  id="btnBackToList"
+                  id="btnBackToList2"
                   width="100%"
                   text="Torna alla lista"
                   press="onBtnBackToList"
                   class="myHidden"/>
                 <Button
-                  id="btnBackToMap2"
+                  id="btnBackToMap3"
                   width="100%"
                   text="Torna alla mappa"
                   press="onBtnBackToMap2"
@@ -304,7 +331,7 @@
                   <html:tr>
                     <html:td style="width:30%">
                       <Label
-                        class="myProfileLabel"
+                        class="mylabel"
                         width="100%"
                         textAlign="Center"
                         text="Range:"/>
@@ -321,7 +348,7 @@
                   <html:tr>
                     <html:td style="width:30%">
                       <Label
-                        class="myProfileLabel"
+                        class="mylabel"
                         width="100%"
                         textAlign="Center"
                         text="Password vecchia:"/>
@@ -337,7 +364,7 @@
                   <html:tr>
                     <html:td style="width:30%">
                       <Label
-                        class="myProfileLabel"
+                        class="mylabel"
                         width="100%"
                         textAlign="Center"
                         text="Password nuova:"/>
@@ -353,7 +380,7 @@
                   <html:tr>
                     <html:td style="width:30%">
                       <Label
-                        class="myProfileLabel"
+                        class="mylabel"
                         width="100%"
                         textAlign="Center"
                         text="Conferma password:"/>

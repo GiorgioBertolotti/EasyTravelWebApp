@@ -62,7 +62,7 @@ namespace EasyTravel.Controllers
                 {
                     var values = new NameValueCollection();
                     values["api_method"] = "User_Type";
-                    values["api_data"] = JsonConvert.SerializeObject(new { mobile = model.Mobile, Latitude = model.Type });
+                    values["api_data"] = JsonConvert.SerializeObject(new { mobile = model.Mobile, type = model.Type });
                     var response = client.UploadValues(model.ip, values);
                     var responseString = Encoding.Default.GetString(response);
                     dynamic result = JsonConvert.DeserializeObject(responseString);

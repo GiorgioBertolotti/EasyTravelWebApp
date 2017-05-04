@@ -30,17 +30,75 @@
     overflow: visible !important;
     position:static !important;
 }
-.myProfileLabel{
+.mylabel{
     color:black;
     margin-top: 5px;
     font-size: 12pt;
     white-space: normal;
+    font-family:MyFontFutura;
 }
+.mylabelprofilename{
+    color:black;
+    margin-top: 5px;
+    font-size: 14pt;
+    white-space: normal;
+    font-weight:bold;
+    /*margin-right:3px;*/
+    font-family:MyFontFutura;
+}
+.mylabelprofilesurname{
+    color:black;
+    margin-top: 5px;
+    font-size: 14pt;
+    white-space: normal;
+    font-family:MyFontFutura;
+}
+.mylabelprofiletel{
+    color:white;
+    margin-left: 7px;
+    margin-top: 6px;
+    font-size: 14pt;
+    white-space: normal;
+    font-weight:bold;
+    font-family:MyFontFutura;
+}
+.mylabelprofiletel2{
+    color:white;
+    margin-top: 6px;
+    font-size: 14pt;
+    white-space: normal;
+    font-family:MyFontFutura;
+    margin-right:25%;
+}   
 .myTitleLabel{
     color:black;
     margin-top: 5px;
     font-size: 16pt;
     white-space: normal;
+}
+.myFABBackBtn img{
+    width: 25px;
+    margin-left: 7px;
+}
+.myFABBackBtn input.upload {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+	font-size: 20px;
+    z-index:-1;
+	cursor: pointer;
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+.myFABBackBtn .sapMBtnHoverable:hover{
+    border-radius:100%;
+    outline:none !important;
+}
+.myFABBackBtn .sapMBtnActive{
+    border-radius:100%;
+    outline:none !important;
 }
 .myFABEditImage img{
     width: 25px;
@@ -53,6 +111,7 @@
 	margin: 0;
 	padding: 0;
 	font-size: 20px;
+    z-index:-1;
 	cursor: pointer;
 	opacity: 0;
 	filter: alpha(opacity=0);
@@ -107,7 +166,7 @@
 @media (max-width: 800px) {
     .myProfileText{
         margin-top: 15px;
-        border: 1px solid black;
+        /*border: 1px solid black;*/
         float: left;
         padding: 15px;
         border-radius: 15px;
@@ -126,8 +185,26 @@
         height:200px;
         width:200px;
         max-height:none;
-        border: 1px solid black;
+        border-radius:100%;
+        /*border: 1px solid black;*/
         margin:auto;
+    }
+    .myFABBackBtn{
+        background-color:#cf0000;
+        width:40px;
+        height:40px;
+        border-radius:100%;
+        border:none;
+        color:#FFF;
+        font-size:36px;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        transition:.3s;  
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        padding:0px;
+        position: absolute;
+        top: 15px;
+        outline:none !important;
+        left: 6%;
     }
     .myFABEditImage{
         background-color:#cf0000;
@@ -153,8 +230,8 @@
         left: -o-calc(50% + 90px);
         top: -o-calc(4% + 211px);
         /* Standard */
-        left: calc(50% + 90px);
-        top: calc(4% + 211px);
+        left: calc(50% + 60px);
+        top: calc(4% + 170px);
     }
     .myLogo{
         width: 300px;
@@ -179,6 +256,10 @@
         margin: auto;
         margin-top: 4%;
         float: none !important;
+    }
+    .myPanelProfile .sapMPanelContent{
+        padding: 0;
+        overflow:hidden;
     }
     .myImageDialog{
         width: 256px;
@@ -216,19 +297,24 @@
 /*DESKTOP*/
 @media (min-width: 801px) {
     .myProfileText{
-        margin-top: 15px;
-        border: 1px solid black;
-        float: left;
+        /*margin-top: 15px;*/
+        /*border: 1px solid black;*/
+        /*float: left;*/
         padding: 15px;
-        border-radius: 15px;
+        /*background-color: white;*/
+        /*border-radius: 15px;*/
+        right: 0;
+        padding-right: 0;
+        margin-right: 0;
     }
     .myProfileImage{
         position:static;
         height:200px;
         width:200px;
         margin-top:15px;
-        margin-right:15px;
-        margin-left:1px;
+        margin:auto;
+        /*margin-right:15px;*/
+        /*margin-left:1px;*/
         float:left;
     }
     .myProfileImage img{
@@ -236,7 +322,31 @@
         height:200px;
         width:200px;
         max-height:none;
-        border: 1px solid black;
+        border-right: 1px solid black;
+    }
+    .myFABBackBtn{
+        background-color:#cf0000;
+        width:40px;
+        height:40px;
+        border-radius:100%;
+        border:none;
+        color:#FFF;
+        font-size:36px;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        transition:.3s;  
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        padding:0px;
+        position: absolute;
+        top: 10px;
+        outline:none !important;
+        /* Firefox */
+        left: -moz-calc(25% + 200px);
+        /* WebKit */
+        left: -webkit-calc(25% + 200px);
+        /* Opera */
+        left: -o-calc(25% + 200px);
+        /* Standard */
+        left: calc(25%);
     }
     .myFABEditImage{
         background-color:#cf0000;
@@ -251,7 +361,7 @@
         -webkit-tap-highlight-color: rgba(0,0,0,0);
         padding:0px;
         position: absolute;
-        top: 230px;
+        top: 200px;
         outline:none !important;
         /* Firefox */
         left: -moz-calc(25% + 200px);
@@ -283,6 +393,10 @@
         width:50% !important;
         margin: auto;
         float: none !important;
+    }
+    .myPanelProfile .sapMPanelContent{
+        padding: 0;
+        overflow:hidden;
     }
     .myImageDialog{
         width: 368px;
@@ -350,7 +464,7 @@
 .mySpinner {
   width: 60px;
   height: 60px;
-  margin: 60px;
+  margin: 30px;
   animation: rotate 1.4s infinite ease-in-out, background 1.4s infinite ease-in-out alternate;
 }
 
@@ -417,4 +531,8 @@
 .sapMPanelContent:not(.sapMPanelBGTransparent) {
     border: 0px !important;
     border-radius: 5px !important;
+}
+@font-face {
+    font-family: "MyFontFutura";
+    src: url(futuralightbt.ttf) format("truetype");
 }

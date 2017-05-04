@@ -90,6 +90,11 @@
         //
         // PROFILO
         //
+        onFABClick: function () {
+            var viewId = oView.getId();
+            var imgpicker = document.getElementById(viewId + "--imagePicker");
+            imgpicker.click();
+        },
         onEditImage: function () {
             var viewId = oView.getId();
             var imgpicker = document.getElementById(viewId + "--imagePicker");
@@ -245,6 +250,7 @@
                                 oView.byId("lblLatDest").setText(LatLngDest.lat());
                                 oView.byId("lblLngDest").setText(LatLngDest.lng());
                                 oView.byId("lblGeoDest").setText("(" + dest + ")");
+                                var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
                                 var oModel = sap.ui.getCore().getModel("user");
                                 var mobile = oModel.getData().Mobile;
                                 var input_data = {
@@ -357,6 +363,7 @@
                                                     oView.byId("lblNome").setText(marker.customInfo.Name);
                                                     oView.byId("lblCognome").setText(marker.customInfo.Surname);
                                                     oView.byId("lblMobile").setText(marker.customInfo.Mobile);
+                                                    oView.byId("lblMail").setText(marker.customInfo.Mail);
                                                     var profileimg = oView.byId("imgProfile");
                                                     profileimg.setSrc(marker.customInfo.Base64);
                                                     var viewId = oView.getId();
@@ -481,6 +488,7 @@
                         oView.byId("lblNome").setText(autostoppista.Name);
                         oView.byId("lblCognome").setText(autostoppista.Surname);
                         oView.byId("lblMobile").setText(autostoppista.Mobile);
+                        oView.byId("lblMail").setText(autostoppista.Mail);
                         var profileimg = oView.byId("imgProfile");
                         profileimg.setSrc(autostoppista.Base64);
                         var viewId = oView.getId();
@@ -548,6 +556,7 @@
                 case 31: {
                     if (newstate == 31)
                         break;
+                    var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
                     var oModel = sap.ui.getCore().getModel("user");
                     var mobile = oModel.getData().Mobile;
                     var input_data = {
@@ -587,6 +596,7 @@
                 case 40: case 41: case 42: {
                     if (newstate == 40 || newstate == 41 || newstate == 42)
                         break;
+                    var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
                     var oModel = sap.ui.getCore().getModel("user");
                     var mobile = oModel.getData().Mobile;
                     var input_data = {
@@ -725,6 +735,7 @@
                     oView.byId("lblNome").setText(oModel.getData().Name);
                     oView.byId("lblCognome").setText(oModel.getData().Surname);
                     oView.byId("lblMobile").setText(oModel.getData().Mobile);
+                    oView.byId("lblMail").setText(oModel.getData().Mail);
                     var profileimg = oView.byId("imgProfile");
                     profileimg.setSrc(oModel.getData().Base64);
                     var viewId = oView.getId();
@@ -756,6 +767,7 @@
                 }
                 case "autista": {
                     sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(40);
+                    var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
                     var oModel = sap.ui.getCore().getModel("user");
                     var mobile = oModel.getData().Mobile;
                     var input_data = {
@@ -774,7 +786,7 @@
                             }
                         },
                         error: function (response) {
-                            console.log('Error: ', error);
+                            console.log('Error: ', response);
                         }
                     });
                     break;
@@ -836,6 +848,7 @@
                 oView.byId("lblNome").setText(oModel.getData().Name);
                 oView.byId("lblCognome").setText(oModel.getData().Surname);
                 oView.byId("lblMobile").setText(oModel.getData().Mobile);
+                oView.byId("lblMail").setText(oModel.getData().Mail);
                 var profileimg = oView.byId("imgProfile");
                 profileimg.setSrc(oModel.getData().Base64);
                 var ppc = sap.ui.controller("sap.ui.easytravel.login.Login").eraseCookie("ProfilePicChanged");
