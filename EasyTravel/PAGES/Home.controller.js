@@ -203,12 +203,12 @@
                             if (status === 'OK') {
                                 if (results[0]) {
                                     contentString = '<div id="content">' +
-                                        '<h1 id="firstHeading" class="firstHeading">Your position.</h1>' +
+                                        '<h1 id="firstHeading" class="firstHeading">La tua posizione.</h1>' +
                                         '<p>'+results[0].formatted_address+'</p>' +
                                         '</div>';
                                 } else if (results[1]) {
                                     contentString = '<div id="content">' +
-                                        '<h1 id="firstHeading" class="firstHeading">Your position.</h1>' +
+                                        '<h1 id="firstHeading" class="firstHeading">La tua posizione.</h1>' +
                                         '<p>' + results[1].formatted_address + '</p>' +
                                         '</div>';
                                 } else
@@ -501,31 +501,25 @@
                     width: "100%"
                 }), new sap.m.FlexBox({
                     items: [
-                        new sap.m.FlexBox({
-                            items: [
-                                new sap.m.Label({
-                                    text: "Tel: "
-                                }),
-                                new sap.m.Link({
-                                    text: autostoppista.Mobile,
-                                    press: function (oEvent) {
-                                        sap.m.URLHelper.triggerTel(autostoppista.Mobile);
-                                    }
-                                })]
-                        }),
-                        new sap.m.FlexBox({
-                            items: [
-                                new sap.m.Label({
-                                    text: "E-mail: "
-                                }),
-                                new sap.m.Link({
-                                    text: autostoppista.Mail,
-                                    press: function (oEvent) {
-                                        sap.m.URLHelper.triggerEmail(autostoppista.Mail, "Info Request");
-                                    }
-                                })]
+                        new sap.m.Button({
+                            text: autostoppista.Mobile,
+                            type: "Emphasized",
+                            icon: "sap-icon://call",
+                            press: function () {
+                                sap.m.URLHelper.triggerTel(autostoppista.Mobile);
+                            },
+                            width: "150px"
+                        }), new sap.m.Button({
+                            text: autostoppista.Mail,
+                            type: "Emphasized",
+                            icon: "sap-icon://email",
+                            press: function () {
+                                sap.m.URLHelper.triggerEmail(autostoppista.Mail);
+                            },
+                            width: "150px"
                         })],
-                    direction: "Column"
+                    alignItems:"Start",
+					justifyContent:"SpaceBetween"
                 })],
                 beginButton: new sap.m.Button({
                     text: 'Close',
@@ -852,6 +846,12 @@
                 var profileimg = oView.byId("imgProfile");
                 profileimg.setSrc(oModel.getData().Base64);
                 var ppc = sap.ui.controller("sap.ui.easytravel.login.Login").eraseCookie("ProfilePicChanged");
+                var viewId = oView.getId();
+                setTimeout(function () {
+                    document.getElementById(viewId + '--btnBackToList').style.display = 'none';
+                    document.getElementById(viewId + '--btnBackToMap2').style.display = 'none';
+                    document.getElementById(viewId + '--imageEditFAB').style.visibility = 'visible';
+                }, 250);
             }
             else {
                 sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(20);

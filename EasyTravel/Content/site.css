@@ -1,25 +1,4 @@
-﻿.sapMBtnInner {
-    outline:none !important;
-}
-#homePage header {
-    background: #b71c1c !important;
-    border-bottom: 1px solid #500d0d;
-    z-index:2;
-}
-#homePage header label {
-    color: white !important;
-    font-family: Calibri;
-    font-size: 25px !important;
-    font-weight: bold !important;
-    text-shadow: 1px 1px 1px black !important;
-    width:80%;
-    text-align:center !important;
-    position:absolute;
-    left: 0;
-    right: 0;
-    margin: auto;
-}
-.myHidden{
+﻿.myHidden{
     /*visibility:hidden;*/
     display:none;
 }
@@ -124,43 +103,33 @@
     border-radius:100%;
     outline:none !important;
 }
-#homePage header .sapMImageContent{
-    width:45px;
-    outline:none !important;
+.mySpinner {
+  width: 60px;
+  height: 60px;
+  margin: 30px;
+  animation: rotate 1.4s infinite ease-in-out, background 1.4s infinite ease-in-out alternate;
 }
-#homePage .sapTntNavLIItem {
-    background: #900000;
-    border-bottom: 1px solid #500d0d;
-    text-shadow: 1px 1px 1px black;
+@keyframes rotate {
+  0% {
+    transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: perspective(120px) rotateX(-180deg) rotateY(0deg);
+  }
+  100% {
+    transform: perspective(120px) rotateX(-180deg) rotateY(-180deg);
+  }
 }
-#homePage .sapTntNavLIItem:hover {
-    background: #7b0808;
-}
-#homePage .sapTntNavLIItemSelected .sapTntNavLIItem {
-    background: #5d0c0c !important;
-}
-#homePage .sapTntSideNavigation{
-    background-color: #900000 !important;
-    /*border-right:1px solid black;*/
-}
-#homePage .sapTntNavLIGroup>.sapUiIcon {
-    color: #ffffff !important;
-}
-#homePage .sapTntNavLIText {
-    color: white !important;
-}
-#homePage #homePage-intHeader{
-    display:none !important;
-}
-#homePage .sapTntToolPageMain header{
-    display:none !important;
-}
-:not(.sapMBtnDisabled)>.sapMBtnTransparent.sapMBtnActive{
-    background-color: #5d0c0c !important;
-    border-color: #5d0c0c !important;
-}
-.sapMPage>.sapMPageHeader + section, .sapMPage>.sapMPageSubHeader + section, .sapMPage>.sapMPageHeader + .sapUiHiddenPlaceholder + section{
-    top:0px !important;
+@keyframes background {
+  0% {
+  background-color: #a30000;
+  }
+  50% {
+    background-color: #8c1a1a;
+  }
+  100% {
+    background-color: #c0392b;
+  }
 }
 /*SMARTPHONE*/
 @media (max-width: 800px) {
@@ -190,6 +159,7 @@
         margin:auto;
     }
     .myFABBackBtn{
+        cursor: pointer;
         background-color:#cf0000;
         width:40px;
         height:40px;
@@ -207,6 +177,7 @@
         left: 6%;
     }
     .myFABEditImage{
+        cursor: pointer;
         background-color:#cf0000;
         width:40px;
         height:40px;
@@ -247,6 +218,9 @@
         width:85% !important;
         margin: auto;
         float: none !important;
+    }
+    .myPanel4{
+        display:none;
     }
     .myPanel1{
         margin-top: 4%;
@@ -325,6 +299,7 @@
         border-right: 1px solid black;
     }
     .myFABBackBtn{
+        cursor: pointer;
         background-color:#cf0000;
         width:40px;
         height:40px;
@@ -349,6 +324,7 @@
         left: calc(25%);
     }
     .myFABEditImage{
+        cursor: pointer;
         background-color:#cf0000;
         width:40px;
         height:40px;
@@ -385,7 +361,7 @@
     .myPanel1, .myPanel2{
         width:47% !important;
     }
-    .myPanel3{
+    .myPanel3, .myPanel4{
         width:96% !important;
     }
     .myPanelProfile, .myPanelSettings{
@@ -438,6 +414,58 @@
         border-radius: 50%;
     }
 }
+/*PAGINE*/
+/*HOME*/
+#homePage header {
+    background: #b71c1c !important;
+    border-bottom: 1px solid #500d0d;
+    z-index:2;
+}
+#homePage header label {
+    color: white !important;
+    font-family: Calibri;
+    font-size: 25px !important;
+    font-weight: bold !important;
+    text-shadow: 1px 1px 1px black !important;
+    width:80%;
+    text-align:center !important;
+    position:absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+#homePage header .sapMImageContent{
+    width:45px;
+    outline:none !important;
+}
+#homePage .sapTntNavLIItem {
+    background: #900000;
+    border-bottom: 1px solid #500d0d;
+    text-shadow: 1px 1px 1px black;
+}
+#homePage .sapTntNavLIItem:hover {
+    background: #7b0808;
+}
+#homePage .sapTntNavLIItemSelected .sapTntNavLIItem {
+    background: #5d0c0c !important;
+}
+#homePage .sapTntSideNavigation{
+    background-color: #900000 !important;
+    /*border-right:1px solid black;*/
+}
+#homePage .sapTntNavLIGroup>.sapUiIcon {
+    color: #ffffff;
+}
+#homePage .sapTntNavLIText {
+    color: white !important;
+}
+#homePage #homePage-intHeader{
+    display:none !important;
+}
+#homePage .sapTntToolPageMain header{
+    display:none !important;
+}
+/*LOGIN*/
 #loginPage .sapMBtnIcon {
     color: #666 !important;
 }
@@ -455,40 +483,23 @@
     margin-right: auto !important;
     color: #b71c1c !important;
 }
+/*REGISTRAZIONE*/
 #registerPage header {
     background: #b71c1c !important;
 }
 #registerPage section {
     margin-top: 60px !important;
 }
-.mySpinner {
-  width: 60px;
-  height: 60px;
-  margin: 30px;
-  animation: rotate 1.4s infinite ease-in-out, background 1.4s infinite ease-in-out alternate;
+/*MODIFICHE UI5*/
+.sapMBtnInner {
+    outline:none !important;
 }
-
-@keyframes rotate {
-  0% {
-    transform: perspective(120px) rotateX(0deg) rotateY(0deg);
-  }
-  50% {
-    transform: perspective(120px) rotateX(-180deg) rotateY(0deg);
-  }
-  100% {
-    transform: perspective(120px) rotateX(-180deg) rotateY(-180deg);
-  }
+:not(.sapMBtnDisabled)>.sapMBtnTransparent.sapMBtnActive{
+    background-color: #5d0c0c !important;
+    border-color: #5d0c0c !important;
 }
-@keyframes background {
-  0% {
-  background-color: #a30000;
-  }
-  50% {
-    background-color: #8c1a1a;
-  }
-  100% {
-    background-color: #c0392b;
-  }
+.sapMPage>.sapMPageHeader + section, .sapMPage>.sapMPageSubHeader + section, .sapMPage>.sapMPageHeader + .sapUiHiddenPlaceholder + section{
+    top:0px !important;
 }
 :not(.sapMBtnDisabled)>.sapMBtnDefault.sapMBtnInner.sapMBtnActive{
     background-color: #ad1c1c !important;

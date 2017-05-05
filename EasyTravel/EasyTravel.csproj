@@ -111,6 +111,7 @@
   <ItemGroup>
     <Content Include="Content\site.css" />
     <Content Include="Global.asax" />
+    <Content Include="Images\back2.png" />
     <Content Include="Images\backgroundlogin.png" />
     <Content Include="Images\edit.png" />
     <Content Include="Images\ic_user.png" />
@@ -7440,6 +7441,7 @@
     <Content Include="scripts\resources\sap\uxap\themes\sap_hcb\library.source.less" />
     <Content Include="scripts\resources\sap\uxap\themes\sap_hcb\resources.json" />
     <Content Include="PAGES\MenuItemEventing.fragment.xml" />
+    <Content Include="Content\futuralightbt.ttf" />
     <None Include="Properties\PublishProfiles\EasyTravel.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

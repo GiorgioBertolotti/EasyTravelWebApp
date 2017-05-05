@@ -169,6 +169,13 @@
                   </tileContent>
                 </GenericTile>
               </Panel>
+              <Panel
+                class="myPanel4">
+                <FormattedText
+                  class="mylabel"
+                  width="100%"
+                  htmlText="&lt;strong&gt;NB: Si consiglia l'utilizzo dell'applicazione web su dispositivi dotati di GPS per una corretta visualizzazione della propria posizione.&lt;/strong&gt;"/>
+                </Panel>
             </content>
           </Page>
           <!-- CHIEDI PASSAGGIO / AUTOSTOPPISTA -->
@@ -185,7 +192,7 @@
                 <Label
                   class="myTitleLabel"
                   width="100%"
-                  text="Attendi che un autista ti contatti."
+                  text="Attendi che un autista ti contatti..."
                   textAlign="Center" />
                 <html:table width="100%" style="margin-top:15px;">
                   <html:tr>
@@ -209,16 +216,20 @@
                         width="100%"
                         id="lblGeoDest"
                         text="DESTINAZIONE"/>
-                    </html:td>
+                      </html:td>
                     <html:td align="right">
                       <html:div class="mySpinner"></html:div>
                     </html:td>
                   </html:tr>
                 </html:table>
+                <FormattedText
+                    class="mylabel"
+                    width="100%"
+			              htmlText='&lt;strong&gt;NB: Ricorda di premere sul tasto qua sotto una volta che avrai concordato un passaggio con un autista.&lt;/strong&gt;'/>
                 <Button
                   id="btnBackToMap"
                   width="100%"
-                  text="Annulla"
+                  text="Ferma ricerca"
                   press="onBtnBackToMap"/>
               </Panel>
             </content>
@@ -329,14 +340,16 @@
                 class="myPanelSettings">
                 <html:table width="100%" style="margin-top:15px;">
                   <html:tr>
-                    <html:td style="width:30%">
+                    <html:th colspan="2">
                       <Label
-                        class="mylabel"
+                        class="myTitleLabel"
                         width="100%"
                         textAlign="Center"
-                        text="Range:"/>
-                    </html:td>
-                    <html:td style="width:70%">
+                        text="Range ricerca autostoppisti (km)"/>
+                    </html:th>
+                  </html:tr>
+                  <html:tr>
+                    <html:td style="width:20%">
                       <Slider
                         id="rangePicker"
                         value="0"
@@ -346,51 +359,39 @@
                     </html:td>
                   </html:tr>
                   <html:tr>
-                    <html:td style="width:30%">
+                    <html:th colspan="2">
                       <Label
-                        class="mylabel"
+                        class="myTitleLabel"
                         width="100%"
                         textAlign="Center"
-                        text="Password vecchia:"/>
-                    </html:td>
-                    <html:td style="width:70%">
+                        text="Cambio Password"/>
+                    </html:th>
+                  </html:tr>
+                  <html:tr>
+                    <html:td colspan="2">
                       <Input
                         id="txtOldPassword"
                         type="Text"
                         width="100%"
-                        placeholder="Password vecchia"/>
+                        placeholder="Vecchia password"/>
                     </html:td>
                   </html:tr>
                   <html:tr>
-                    <html:td style="width:30%">
-                      <Label
-                        class="mylabel"
-                        width="100%"
-                        textAlign="Center"
-                        text="Password nuova:"/>
-                    </html:td>
-                    <html:td style="width:70%">
+                    <html:td colspan="2">
                       <Input
                         id="txtNewPassword"
                         type="Text"
                         width="100%"
-                        placeholder="Password nuova"/>
+                        placeholder="Nuova password"/>
                     </html:td>
                   </html:tr>
                   <html:tr>
-                    <html:td style="width:30%">
-                      <Label
-                        class="mylabel"
-                        width="100%"
-                        textAlign="Center"
-                        text="Conferma password:"/>
-                    </html:td>
-                    <html:td style="width:70%">
+                    <html:td colspan="2">
                       <Input
                         id="txtConfirmPassword"
                         type="Text"
                         width="100%"
-                        placeholder="Conferma password"/>
+                        placeholder="Conferma nuova password"/>
                     </html:td>
                   </html:tr>
                 </html:table>
