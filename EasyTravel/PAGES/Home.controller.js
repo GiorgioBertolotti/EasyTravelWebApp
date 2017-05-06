@@ -185,7 +185,102 @@
                         center: position,
                         fullscreenControl: false
                     });
-                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUserPosition();
+                    var input = document.getElementById(viewId + '--mapSearchBox-inner');
+                    var searchBox = new google.maps.places.SearchBox(input);
+                    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+                    input.style.width = "60%";
+                    input.style.marginTop = "5px";
+                    map.addListener('bounds_changed', function() {
+                        searchBox.setBounds(map.getBounds());
+                    });
+                    searchBox.addListener('places_changed', function() {
+                        var places = searchBox.getPlaces();
+                        if (places.length == 0) {
+                            return;
+                        }
+                        var bounds = new google.maps.LatLngBounds();
+                        places.forEach(function (place) {
+                            if (stato == 30) {
+                                if (markerdest)
+                                    markerdest.setMap(null);
+                                geocoder.geocode({ 'location': place.geometry.location }, function (results, status) {
+                                    if (status === 'OK') {
+                                        if (results[0]) {
+                                            dest = results[0].formatted_address;
+                                            sap.m.MessageToast.show(results[0].formatted_address);
+                                        } else if (results[1]) {
+                                            dest = results[1].formatted_address;
+                                            sap.m.MessageToast.show(results[1].formatted_address);
+                                        }
+                                    }
+                                });
+                                var markernew = new google.maps.Marker({
+                                    position: place.geometry.location,
+                                    map: map,
+                                    icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                                });
+                                markernew.addListener('click', function () {
+                                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(31);
+                                    LatLngDest = this.position;
+                                    oView.byId("lblLatDest").setText(LatLngDest.lat());
+                                    oView.byId("lblLngDest").setText(LatLngDest.lng());
+                                    oView.byId("lblGeoDest").setText("(" + dest + ")");
+                                    var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
+                                    var oModel = sap.ui.getCore().getModel("user");
+                                    var mobile = oModel.getData().Mobile;
+                                    var input_data = {
+                                        "ip": ip,
+                                        "Mobile": mobile,
+                                        "Type": "Autostoppista"
+                                    };
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: '/api/Home/setUserType',
+                                        data: input_data,
+                                        success: function (response) {
+                                            var json = JSON.parse(response);
+                                            if (json.isError) {
+                                                sap.m.MessageToast.show(json.errorMessage);
+                                            }
+                                        },
+                                        error: function (response) {
+                                            console.log('Error: ', error);
+                                        }
+                                    });
+                                    input_data = {
+                                        "ip": ip,
+                                        "Mobile": mobile,
+                                        "Latitude": LatLngDest.lat(),
+                                        "Longitude": LatLngDest.lng()
+                                    };
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: '/api/Home/setUserDestination',
+                                        data: input_data,
+                                        success: function (response) {
+                                            var json = JSON.parse(response);
+                                            if (json.isError) {
+                                                sap.m.MessageToast.show(json.errorMessage);
+                                            }
+                                        },
+                                        error: function (response) {
+                                            console.log('Error: ', error);
+                                        }
+                                    });
+                                });
+                                markerdest = markernew;
+                            }
+                            if (place.geometry.viewport) {
+                                // Only geocodes have viewport.
+                                bounds.union(place.geometry.viewport);
+                            } else {
+                                bounds.extend(place.geometry.location);
+                            }
+                        });
+                        map.fitBounds(bounds);
+                        setTimeout(function () { map.setZoom(12); }, 250);
+                    });
+                    sap.ui.controller("sap.ui.easytravel.home.Home").setUserPosition(position);
                     setInterval(sap.ui.controller("sap.ui.easytravel.home.Home").updateUserPosition, 60000);
                     isFirstMapLoad = false;
                 } else {
@@ -408,6 +503,23 @@
         },
         onBtnBackToMap2: function () {
             sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(50);
+        },
+        setUserPosition: function (position) {
+            var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
+            var oModel = sap.ui.getCore().getModel("user");
+            var mobile = oModel.getData().Mobile;
+            input_data = { ip: ip, mobile: mobile, Latitude: position.lat, Longitude: position.lng };
+            $.ajax({
+                type: 'POST',
+                url: '/api/Home/updateUserPosition',
+                data: input_data,
+                success: function (response) {
+                    console.log('User position updated: { ip: ' + input_data.ip + ', mobile: ' + input_data.mobile + ', Latitude: ' + input_data.Latitude + ', Longitude: ' + input_data.Longitude + '}');
+                },
+                error: function (response) {
+                    console.log('Error: ', error);
+                }
+            });
         },
         updateUserPosition: function () {
             var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');

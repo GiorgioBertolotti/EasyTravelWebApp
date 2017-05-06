@@ -181,6 +181,11 @@
           <!-- CHIEDI PASSAGGIO / AUTOSTOPPISTA -->
           <Page id="detailMap" class="myPage">
             <content>
+              <Input
+                id="mapSearchBox"
+                type="Text"
+                width="60%"
+                placeholder="Search Box"/>
               <html:div id="map" class="myMap"></html:div>
             </content>
           </Page>
