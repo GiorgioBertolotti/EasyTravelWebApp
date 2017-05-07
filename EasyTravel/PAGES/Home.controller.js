@@ -7,6 +7,7 @@
     var markers = [];
     return Controller.extend("sap.ui.easytravel.home.Home", {
         onInit: function () {
+            isFirstMapLoad = true;
             oView = this.getView();
             sap.ui.controller("sap.ui.easytravel.home.Home").initializeItems();
         },
@@ -454,7 +455,7 @@
                                         google.maps.event.addListener(newmarker, 'click', (function (newmarker, boxText, infowindow) {
                                             google.maps.event.addDomListener(boxText, 'click', (function (marker) {
                                                 return function () {
-                                                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(42);
+                                                    sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(51);
                                                     oView.byId("lblNome").setText(marker.customInfo.Name);
                                                     oView.byId("lblCognome").setText(marker.customInfo.Surname);
                                                     oView.byId("lblMobile").setText(marker.customInfo.Mobile);
@@ -467,6 +468,43 @@
                                                         document.getElementById(viewId + '--btnBackToList').style.display = 'none';
                                                     }, 250);
                                                     document.getElementById(viewId + '--imageEditFAB').style.visibility = 'hidden';
+                                                    var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
+                                                    var input_data = {
+                                                        "ip": ip,
+                                                        "Mobile": marker.customInfo.Mobile
+                                                    };
+                                                    $.ajax({
+                                                        type: 'POST',
+                                                        url: '/api/Home/countRides',
+                                                        data: input_data,
+                                                        success: function (response) {
+                                                            var json = JSON.parse(response);
+                                                            if (json.isError) {
+                                                                sap.m.MessageToast.show(json.errorMessage);
+                                                            } else {
+                                                                oView.byId("lblCountRides").setText(json.errorMessage);
+                                                            }
+                                                        },
+                                                        error: function (response) {
+                                                            console.log('Error: ', response);
+                                                        }
+                                                    });
+                                                    $.ajax({
+                                                        type: 'POST',
+                                                        url: '/api/Home/countContacts',
+                                                        data: input_data,
+                                                        success: function (response) {
+                                                            var json = JSON.parse(response);
+                                                            if (json.isError) {
+                                                                sap.m.MessageToast.show(json.errorMessage);
+                                                            } else {
+                                                                oView.byId("lblCountContacts").setText(json.errorMessage);
+                                                            }
+                                                        },
+                                                        error: function (response) {
+                                                            console.log('Error: ', response);
+                                                        }
+                                                    });
                                                 }
                                             })(newmarker));
                                             return function () {
@@ -609,6 +647,43 @@
                             document.getElementById(viewId + '--btnBackToList').style.display = 'inline';
                         }, 250);
                         document.getElementById(viewId + '--imageEditFAB').style.visibility = 'hidden';
+                        var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
+                        var input_data = {
+                            "ip": ip,
+                            "Mobile": autostoppista.Mobile
+                        };
+                        $.ajax({
+                            type: 'POST',
+                            url: '/api/Home/countRides',
+                            data: input_data,
+                            success: function (response) {
+                                var json = JSON.parse(response);
+                                if (json.isError) {
+                                    sap.m.MessageToast.show(json.errorMessage);
+                                } else {
+                                    oView.byId("lblCountRides").setText(json.errorMessage);
+                                }
+                            },
+                            error: function (response) {
+                                console.log('Error: ', response);
+                            }
+                        });
+                        $.ajax({
+                            type: 'POST',
+                            url: '/api/Home/countContacts',
+                            data: input_data,
+                            success: function (response) {
+                                var json = JSON.parse(response);
+                                if (json.isError) {
+                                    sap.m.MessageToast.show(json.errorMessage);
+                                } else {
+                                    oView.byId("lblCountContacts").setText(json.errorMessage);
+                                }
+                            },
+                            error: function (response) {
+                                console.log('Error: ', response);
+                            }
+                        });
                     },
                     width: "100%"
                 }), new sap.m.FlexBox({
@@ -618,6 +693,29 @@
                             type: "Emphasized",
                             icon: "sap-icon://call",
                             press: function () {
+                                var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
+                                var oModel = sap.ui.getCore().getModel("user");
+                                var mobile = oModel.getData().Mobile;
+                                var input_data = {
+                                    "ip": ip,
+                                    "caller":mobile,
+                                    "receiver":autostoppista.Mobile,
+                                    "type":"Mobile"
+                                };
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/api/Home/addContact',
+                                    data: input_data,
+                                    success: function (response) {
+                                        var json = JSON.parse(response);
+                                        if (json.isError) {
+                                            sap.m.MessageToast.show(json.errorMessage);
+                                        }
+                                    },
+                                    error: function (response) {
+                                        console.log('Error: ', response);
+                                    }
+                                });
                                 sap.m.URLHelper.triggerTel(autostoppista.Mobile);
                             },
                             width: "150px"
@@ -626,6 +724,29 @@
                             type: "Emphasized",
                             icon: "sap-icon://email",
                             press: function () {
+                                var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
+                                var oModel = sap.ui.getCore().getModel("user");
+                                var mobile = oModel.getData().Mobile;
+                                var input_data = {
+                                    "ip": ip,
+                                    "caller": mobile,
+                                    "receiver": autostoppista.Mobile,
+                                    "type": "Mail"
+                                };
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/api/Home/addContact',
+                                    data: input_data,
+                                    success: function (response) {
+                                        var json = JSON.parse(response);
+                                        if (json.isError) {
+                                            sap.m.MessageToast.show(json.errorMessage);
+                                        }
+                                    },
+                                    error: function (response) {
+                                        console.log('Error: ', response);
+                                    }
+                                });
                                 sap.m.URLHelper.triggerEmail(autostoppista.Mail);
                             },
                             width: "150px"
@@ -669,20 +790,6 @@
                         "ip": ip,
                         "Mobile": mobile
                     };
-                    $.ajax({
-                        type: 'POST',
-                        url: '/api/Home/unsetUserDestination',
-                        data: input_data,
-                        success: function (response) {
-                            var json = JSON.parse(response);
-                            if (json.isError) {
-                                sap.m.MessageToast.show(json.errorMessage);
-                            }
-                        },
-                        error: function (response) {
-                            console.log('Error: ', error);
-                        }
-                    });
                     $.ajax({
                         type: 'POST',
                         url: '/api/Home/unsetUserType',
@@ -761,7 +868,7 @@
                     oView.byId("lblPageTitle").setText("Impostazioni");
                     break;
                 }
-                case 22: case 42: {
+                case 22: case 42: case 51: {
                     detailPage = "detailProfile";
                     sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--" + detailPage);
                     oView.byId("lblPageTitle").setText("Profilo utente");
@@ -848,6 +955,44 @@
                     document.getElementById(viewId + '--btnBackToList').style.display = 'none';
                     document.getElementById(viewId + '--btnBackToMap2').style.display = 'none';
                     document.getElementById(viewId + '--imageEditFAB').style.visibility = 'visible';
+                    var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
+                    var mobile = oModel.getData().Mobile;
+                    var input_data = {
+                        "ip": ip,
+                        "Mobile": mobile
+                    };
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/Home/countRides',
+                        data: input_data,
+                        success: function (response) {
+                            var json = JSON.parse(response);
+                            if (json.isError) {
+                                sap.m.MessageToast.show(json.errorMessage);
+                            } else {
+                                oView.byId("lblCountRides").setText(json.errorMessage);
+                            }
+                        },
+                        error: function (response) {
+                            console.log('Error: ', response);
+                        }
+                    });
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/Home/countContacts',
+                        data: input_data,
+                        success: function (response) {
+                            var json = JSON.parse(response);
+                            if (json.isError) {
+                                sap.m.MessageToast.show(json.errorMessage);
+                            } else {
+                                oView.byId("lblCountContacts").setText(json.errorMessage);
+                            }
+                        },
+                        error: function (response) {
+                            console.log('Error: ', response);
+                        }
+                    });
                     break;
                 }
                 case "Impostazioni": {
@@ -940,7 +1085,6 @@
         // INIT
         //
         initializeItems: function () {
-            isFirstMapLoad = true;
             this.model.setData(this.data);
             oView.setModel(this.model);
             sap.ui.controller("sap.ui.easytravel.home.Home")._setToggleButtonTooltip(!sap.ui.Device.system.desktop);
@@ -957,6 +1101,44 @@
                 oView.byId("lblMail").setText(oModel.getData().Mail);
                 var profileimg = oView.byId("imgProfile");
                 profileimg.setSrc(oModel.getData().Base64);
+                var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
+                var mobile = oModel.getData().Mobile;
+                var input_data = {
+                    "ip": ip,
+                    "Mobile": mobile
+                };
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/Home/countRides',
+                    data: input_data,
+                    success: function (response) {
+                        var json = JSON.parse(response);
+                        if (json.isError) {
+                            sap.m.MessageToast.show(json.errorMessage);
+                        } else {
+                            oView.byId("lblCountRides").setText(json.errorMessage);
+                        }
+                    },
+                    error: function (response) {
+                        console.log('Error: ', response);
+                    }
+                });
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/Home/countContacts',
+                    data: input_data,
+                    success: function (response) {
+                        var json = JSON.parse(response);
+                        if (json.isError) {
+                            sap.m.MessageToast.show(json.errorMessage);
+                        } else {
+                            oView.byId("lblCountContacts").setText(json.errorMessage);
+                        }
+                    },
+                    error: function (response) {
+                        console.log('Error: ', response);
+                    }
+                });
                 var ppc = sap.ui.controller("sap.ui.easytravel.login.Login").eraseCookie("ProfilePicChanged");
                 var viewId = oView.getId();
                 setTimeout(function () {

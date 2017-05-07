@@ -287,8 +287,20 @@
                   <FlexBox>
                     <Label
                       class="mylabel"
-                      id="lblBio"
-                      text="BIOGRAFIA"/>
+                      text="Passaggi richiesti: "/>
+                    <Label
+                      class="mylabel"
+                      id="lblCountRides"
+                      text="0"/>
+                  </FlexBox>
+                  <FlexBox>
+                    <Label
+                      class="mylabel"
+                      text="Volte che ha contattato altri utenti: "/>
+                    <Label
+                      class="mylabel"
+                      id="lblCountContacts"
+                      text="0"/>
                   </FlexBox>
                 </FlexBox>
                 <html:div style="width:100%; margin:0; padding:0; background-color:#b71c1c;float:left;border-top:1px black solid;">

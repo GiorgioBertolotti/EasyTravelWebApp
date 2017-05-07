@@ -85,4 +85,11 @@ namespace EasyTravel.Models
         public string ip { get; set; }
         public string Mobile { get; set; }
     }
+    public class UserContact
+    {
+        public string ip { get; set; }
+        public string caller { get; set; }
+        public string receiver { get; set; }
+        public string type { get; set; }
+    }
 }

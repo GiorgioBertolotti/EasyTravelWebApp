@@ -22,6 +22,102 @@ namespace EasyTravel.Controllers
         public bool isError { get; set; }
         public string errorMessage { get; set; }
         [HttpPost]
+        public string countContacts(UserMobile model)
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    var values = new NameValueCollection();
+                    values["api_method"] = "countContacts";
+                    values["api_data"] = JsonConvert.SerializeObject(new { mobile = model.Mobile });
+                    var response = client.UploadValues(model.ip, values);
+                    var responseString = Encoding.Default.GetString(response);
+                    dynamic result = JsonConvert.DeserializeObject(responseString);
+                    if (!(bool)result.IsError)
+                    {
+                        this.isError = false;
+                        this.errorMessage = result.Message;
+                    }
+                    else
+                    {
+                        this.isError = true;
+                        this.errorMessage = result.Message;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.isError = true;
+                this.errorMessage = e.Message;
+            }
+            return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
+        }
+        [HttpPost]
+        public string countRides(UserMobile model)
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    var values = new NameValueCollection();
+                    values["api_method"] = "countRides";
+                    values["api_data"] = JsonConvert.SerializeObject(new { mobile = model.Mobile });
+                    var response = client.UploadValues(model.ip, values);
+                    var responseString = Encoding.Default.GetString(response);
+                    dynamic result = JsonConvert.DeserializeObject(responseString);
+                    if (!(bool)result.IsError)
+                    {
+                        this.isError = false;
+                        this.errorMessage = result.Message;
+                    }
+                    else
+                    {
+                        this.isError = true;
+                        this.errorMessage = result.Message;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.isError = true;
+                this.errorMessage = e.Message;
+            }
+            return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
+        }
+        [HttpPost]
+        public string addContact(UserContact model)
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    var values = new NameValueCollection();
+                    values["api_method"] = "addContact";
+                    values["api_data"] = JsonConvert.SerializeObject(new { caller = model.caller,receiver=model.receiver,type=model.type });
+                    var response = client.UploadValues(model.ip, values);
+                    var responseString = Encoding.Default.GetString(response);
+                    dynamic result = JsonConvert.DeserializeObject(responseString);
+                    if (!(bool)result.IsError)
+                    {
+                        this.isError = false;
+                        this.errorMessage = result.Message;
+                    }
+                    else
+                    {
+                        this.isError = true;
+                        this.errorMessage = result.Message;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.isError = true;
+                this.errorMessage = e.Message;
+            }
+            return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
+        }
+        [HttpPost]
         public string unsetUserType(UserMobile model)
         {
             try
@@ -63,38 +159,6 @@ namespace EasyTravel.Controllers
                     var values = new NameValueCollection();
                     values["api_method"] = "User_Type";
                     values["api_data"] = JsonConvert.SerializeObject(new { mobile = model.Mobile, type = model.Type });
-                    var response = client.UploadValues(model.ip, values);
-                    var responseString = Encoding.Default.GetString(response);
-                    dynamic result = JsonConvert.DeserializeObject(responseString);
-                    if (!(bool)result.IsError)
-                    {
-                        this.isError = false;
-                        this.errorMessage = result.Message;
-                    }
-                    else
-                    {
-                        this.isError = true;
-                        this.errorMessage = result.Message;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                this.isError = true;
-                this.errorMessage = e.Message;
-            }
-            return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
-        }
-        [HttpPost]
-        public string unsetUserDestination(UserMobile model)
-        {
-            try
-            {
-                using (var client = new WebClient())
-                {
-                    var values = new NameValueCollection();
-                    values["api_method"] = "removeUser_Destination";
-                    values["api_data"] = JsonConvert.SerializeObject(new { mobile = model.Mobile });
                     var response = client.UploadValues(model.ip, values);
                     var responseString = Encoding.Default.GetString(response);
                     dynamic result = JsonConvert.DeserializeObject(responseString);
