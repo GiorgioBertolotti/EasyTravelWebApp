@@ -184,7 +184,7 @@
               <Input
                 id="mapSearchBox"
                 type="Text"
-                width="60%"
+                width="170px"
                 placeholder="Search Box"/>
               <html:div id="map" class="myMap"></html:div>
             </content>

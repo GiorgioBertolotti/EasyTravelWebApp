@@ -3,7 +3,7 @@
    "sap/m/MessageToast"
 ], function (Controller, MessageToast) {
     "use strict";
-    var oView, stato, isFirstMapLoad, map, markerpos, markerdest, geocoder, LatLngDest, targetAutostoppista, directionsDisplay, bounds;
+    var oView, stato, isFirstMapLoad, map, markerpos, markerdest, geocoder, LatLngDest, targetAutostoppista, directionsDisplay, bounds, ws;
     var markers = [];
     return Controller.extend("sap.ui.easytravel.home.Home", {
         onInit: function () {
@@ -189,7 +189,7 @@
                     var input = document.getElementById(viewId + '--mapSearchBox-inner');
                     var searchBox = new google.maps.places.SearchBox(input);
                     map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-                    input.style.width = "60%";
+                    input.style.width = "170px";
                     input.style.marginTop = "5px";
                     map.addListener('bounds_changed', function() {
                         searchBox.setBounds(map.getBounds());
@@ -717,6 +717,13 @@
                                     }
                                 });
                                 sap.m.URLHelper.triggerTel(autostoppista.Mobile);
+                                if (ws) {
+                                    var msg = {};
+                                    msg.Type = "Call";
+                                    msg.Caller = mobile;
+                                    msg.Receiver = autostoppista.Mobile;
+                                    ws.send(JSON.stringify(msg));
+                                }
                             },
                             width: "150px"
                         }), new sap.m.Button({
@@ -748,6 +755,13 @@
                                     }
                                 });
                                 sap.m.URLHelper.triggerEmail(autostoppista.Mail);
+                                if (ws) {
+                                    var msg = {};
+                                    msg.Type = "E-Mail";
+                                    msg.Caller = mobile;
+                                    msg.Receiver = autostoppista.Mobile;
+                                    ws.send(JSON.stringify(msg));
+                                }
                             },
                             width: "150px"
                         })],
@@ -905,8 +919,8 @@
                         oModel.attachRequestSent(function () {
                             sap.ui.core.BusyIndicator.show();
                         });
-                        //var input_data = { "ip": ip, "mobile": mobile, "lat": pos.coords.latitude, "lon": pos.coords.longitude, "range": range };
-                        var input_data = { "ip": ip, "mobile": mobile, "lat": "45.6424541", "lon": "9.586026", "range": range };
+                        var input_data = { "ip": ip, "mobile": mobile, "lat": pos.coords.latitude, "lon": pos.coords.longitude, "range": range };
+                        //var input_data = { "ip": ip, "mobile": mobile, "lat": "45.6424541", "lon": "9.586026", "range": range };
                         oModel.loadData("/api/Home/getAutostoppisti", input_data);
                         oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.home.Home").onGetAutostoppistiComplete);
                     };
@@ -1094,7 +1108,6 @@
             var ppc = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie("ProfilePicChanged");
             if (ppc) {
                 sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(22);
-                var oModel = sap.ui.getCore().getModel("user");
                 oView.byId("lblNome").setText(oModel.getData().Name);
                 oView.byId("lblCognome").setText(oModel.getData().Surname);
                 oView.byId("lblMobile").setText(oModel.getData().Mobile);
@@ -1150,6 +1163,59 @@
             else {
                 sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(20);
             }
+            ws = new WebSocket("wss://192.168.200.160:8001/");
+            ws.onopen = function (event) {
+                var msg = {};
+                msg.Type = "Pair";
+                msg.Mobile = oModel.getData().Mobile;
+                msg.Name = oModel.getData().Name;
+                msg.Surname = oModel.getData().Surname;
+                ws.send(JSON.stringify(msg));
+            };
+            ws.onmessage = function (event) {
+                var data = JSON.parse(event.data);
+                if (data.Type != null) {
+                    switch (data.Type) {
+                        case "Result": {
+                            console.log("Result: " + data.Message);
+                            break;
+                        }
+                        case "Error": {
+                            console.log("Error: " + data.Message);
+                            break;
+                        }
+                        case "Call": case "E-Mail": {
+                            var dialog = new sap.m.Dialog({
+                                title: "Contatto da "+data.Name,
+                                content: [new sap.m.Text({
+                                    text: "Sei stato contattato da "+data.Name+" "+data.Surname+"."
+                                }),
+                                new sap.m.Text({
+                                    text: "Se riceverai un passaggio da questo utente clicca su OK, altrimenti Cancel."
+                                })],
+                                beginButton: new sap.m.Button({
+                                    text: 'OK',
+                                    press: function () {
+                                        dialog.close();
+                                    }
+                                }),
+                                endButton: new sap.m.Button({
+                                    text: 'Cancel',
+                                    press: function () {
+                                        dialog.close();
+                                    }
+                                }),
+                                afterClose: function () {
+                                    dialog.destroy();
+                                }
+                            });
+                            dialog.addStyleClass("myDialog");
+                            dialog.open();
+                            break;
+                        }
+                    }
+                }
+            }
         },
         //
         // AJAX CALLS COMPLETE
@@ -1186,6 +1252,9 @@
                 sap.m.MessageToast.show(data.errorMessage);
             } else {
                 sap.ui.controller("sap.ui.easytravel.login.Login").eraseCookie("authenticationToken");
+                if (ws) {
+                    ws.close();
+                }
                 var app = sap.ui.getCore().byId("EasyTravel");
                 app.to("loginPage");
             }
