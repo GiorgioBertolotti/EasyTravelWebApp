@@ -19,6 +19,7 @@ namespace EasyTravel.Models
         public int? Type { get; set; }
         public int Range { get; set; }
         public byte[] Image { get; set; }
+        public float Rating { get; set; }
         public string Base64
         {
             get
@@ -91,5 +92,7 @@ namespace EasyTravel.Models
         public string caller { get; set; }
         public string receiver { get; set; }
         public string type { get; set; }
+        public bool received { get; set; }
+        public int rating { get; set; }
     }
 }

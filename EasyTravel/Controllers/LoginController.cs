@@ -11,6 +11,8 @@ using System.Text;
 using System.Collections.Specialized;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
+
 namespace EasyTravel.Controllers
 {
     public class LoginController : ApiController
@@ -43,6 +45,7 @@ namespace EasyTravel.Controllers
                         loggedUser.Range = Convert.ToInt32(result.Message[0].Range.Value);
                         loggedUser.Image = Encoding.Default.GetBytes(result.Message[0].Image.Value);
                         loggedUser.Token = result.Message[0].Token.Value;
+                        loggedUser.Rating = float.Parse(result.Message[0].Rating.Value);
                         this.isError = false;
                         this.errorMessage = "";
                     }
@@ -86,6 +89,7 @@ namespace EasyTravel.Controllers
                         loggedUser.Range = Convert.ToInt32(result.Message[0].Range.Value);
                         loggedUser.Image = Encoding.Default.GetBytes(result.Message[0].Image.Value);
                         loggedUser.Token = token;
+                        loggedUser.Rating = float.Parse(result.Message[0].Rating.Value, CultureInfo.InvariantCulture);
                         this.isError = false;
                         this.errorMessage = "";
                     }

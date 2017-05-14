@@ -94,9 +94,10 @@ namespace EasyTravel.Controllers
                 {
                     var values = new NameValueCollection();
                     values["api_method"] = "addContact";
-                    values["api_data"] = JsonConvert.SerializeObject(new { caller = model.caller,receiver=model.receiver,type=model.type });
+                    values["api_data"] = JsonConvert.SerializeObject(new { caller = model.caller,receiver=model.receiver,type=model.type, received = (model.received)?true:false,rating=(int)model.rating });
                     var response = client.UploadValues(model.ip, values);
                     var responseString = Encoding.Default.GetString(response);
+                    this.errorMessage = responseString;
                     dynamic result = JsonConvert.DeserializeObject(responseString);
                     if (!(bool)result.IsError)
                     {
@@ -113,7 +114,7 @@ namespace EasyTravel.Controllers
             catch (Exception e)
             {
                 this.isError = true;
-                this.errorMessage = e.Message;
+                this.errorMessage += e.Message;
             }
             return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
         }
@@ -263,7 +264,7 @@ namespace EasyTravel.Controllers
                         attivi = new List<ActiveUser>();
                         foreach (var atmp in result.Message)
                         {
-                            ActiveUser tmp = new ActiveUser() { Name = atmp.Name, Surname = atmp.Surname, Mail = atmp.Mail, Mobile = atmp.Mobile, Type = atmp.Type_id, Range = atmp.Range, Latitude = atmp.Latitude, Longitude = atmp.Longitude, Date = atmp.Date };
+                            ActiveUser tmp = new ActiveUser() { Name = atmp.Name, Surname = atmp.Surname, Mail = atmp.Mail, Mobile = atmp.Mobile, Type = atmp.Type_id, Range = atmp.Range, Latitude = atmp.Latitude, Longitude = atmp.Longitude, Date = atmp.Date, Rating=atmp.Rating };
                             tmp.Image = Encoding.Default.GetBytes(atmp.Image.Value);
                             attivi.Add(tmp);
                         }
@@ -304,7 +305,7 @@ namespace EasyTravel.Controllers
                         autostoppisti = new List<Autostoppista>();
                         foreach (var atmp in result.Message)
                         {
-                            Autostoppista tmp = new Autostoppista() { Name = atmp.Name, Surname = atmp.Surname, Mail = atmp.Mail, Mobile = atmp.Mobile, Type = 1, Range = atmp.Range, Destlat = atmp.Destlat, Destlon = atmp.Destlon, Latitude = atmp.Latitude, Longitude = atmp.Longitude, Date = atmp.Date };
+                            Autostoppista tmp = new Autostoppista() { Name = atmp.Name, Surname = atmp.Surname, Mail = atmp.Mail, Mobile = atmp.Mobile, Type = 1, Range = atmp.Range, Destlat = atmp.Destlat, Destlon = atmp.Destlon, Latitude = atmp.Latitude, Longitude = atmp.Longitude, Date = atmp.Date, Rating=atmp.Rating };
                             tmp.evaluateDestination();
                             tmp.Image = Encoding.Default.GetBytes(atmp.Image.Value);
                             autostoppisti.Add(tmp);

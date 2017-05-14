@@ -460,6 +460,7 @@
                                                     oView.byId("lblCognome").setText(marker.customInfo.Surname);
                                                     oView.byId("lblMobile").setText(marker.customInfo.Mobile);
                                                     oView.byId("lblMail").setText(marker.customInfo.Mail);
+                                                    oView.byId("rtgindProfile").setValue(marker.customInfo.Rating);
                                                     var profileimg = oView.byId("imgProfile");
                                                     profileimg.setSrc(marker.customInfo.Base64);
                                                     var viewId = oView.getId();
@@ -639,6 +640,7 @@
                         oView.byId("lblCognome").setText(autostoppista.Surname);
                         oView.byId("lblMobile").setText(autostoppista.Mobile);
                         oView.byId("lblMail").setText(autostoppista.Mail);
+                        oView.byId("rtgindProfile").setValue(autostoppista.Rating);
                         var profileimg = oView.byId("imgProfile");
                         profileimg.setSrc(autostoppista.Base64);
                         var viewId = oView.getId();
@@ -693,34 +695,12 @@
                             type: "Emphasized",
                             icon: "sap-icon://call",
                             press: function () {
-                                var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
                                 var oModel = sap.ui.getCore().getModel("user");
-                                var mobile = oModel.getData().Mobile;
-                                var input_data = {
-                                    "ip": ip,
-                                    "caller":mobile,
-                                    "receiver":autostoppista.Mobile,
-                                    "type":"Mobile"
-                                };
-                                $.ajax({
-                                    type: 'POST',
-                                    url: '/api/Home/addContact',
-                                    data: input_data,
-                                    success: function (response) {
-                                        var json = JSON.parse(response);
-                                        if (json.isError) {
-                                            sap.m.MessageToast.show(json.errorMessage);
-                                        }
-                                    },
-                                    error: function (response) {
-                                        console.log('Error: ', response);
-                                    }
-                                });
                                 sap.m.URLHelper.triggerTel(autostoppista.Mobile);
                                 if (ws) {
                                     var msg = {};
                                     msg.Type = "Call";
-                                    msg.Caller = mobile;
+                                    msg.Caller = oModel.getData().Mobile;
                                     msg.Receiver = autostoppista.Mobile;
                                     ws.send(JSON.stringify(msg));
                                 }
@@ -963,6 +943,7 @@
                     oView.byId("lblCognome").setText(oModel.getData().Surname);
                     oView.byId("lblMobile").setText(oModel.getData().Mobile);
                     oView.byId("lblMail").setText(oModel.getData().Mail);
+                    oView.byId("rtgindProfile").setValue(oModel.getData().Rating);
                     var profileimg = oView.byId("imgProfile");
                     profileimg.setSrc(oModel.getData().Base64);
                     var viewId = oView.getId();
@@ -1112,6 +1093,7 @@
                 oView.byId("lblCognome").setText(oModel.getData().Surname);
                 oView.byId("lblMobile").setText(oModel.getData().Mobile);
                 oView.byId("lblMail").setText(oModel.getData().Mail);
+                oView.byId("rtgindProfile").setValue(oModel.getData().Rating);
                 var profileimg = oView.byId("imgProfile");
                 profileimg.setSrc(oModel.getData().Base64);
                 var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
@@ -1191,17 +1173,71 @@
                                     text: "Sei stato contattato da "+data.Name+" "+data.Surname+"."
                                 }),
                                 new sap.m.Text({
-                                    text: "Se riceverai un passaggio da questo utente clicca su OK, altrimenti Cancel."
+                                    text: "Se ti sei accordato per ricevere un passaggio puoi dare un feedback dell'utente e cliccare su OK, altrimenti premi su Cancel."
+                                }),
+                                new sap.m.RatingIndicator({
+                                    id: "myRatingIndicator",
+                                    maxValue: 5,
+                                    value: 1
                                 })],
                                 beginButton: new sap.m.Button({
                                     text: 'OK',
                                     press: function () {
+                                        var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
+                                        var oModel = sap.ui.getCore().getModel("user");
+                                        var ratingind=sap.ui.getCore().byId("myRatingIndicator");
+                                        var input_data = {
+                                            "ip": ip,
+                                            "caller": data.Caller,
+                                            "receiver": oModel.getData().Mobile,
+                                            "type": data.Type,
+                                            "received": true,
+                                            "rating": ratingind.getValue()
+                                        };
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: '/api/Home/addContact',
+                                            data: input_data,
+                                            success: function (response) {
+                                                var json = JSON.parse(response);
+                                                if (json.isError) {
+                                                    sap.m.MessageToast.show(json.errorMessage);
+                                                }
+                                            },
+                                            error: function (response) {
+                                                console.log('Error: ', response);
+                                            }
+                                        });
                                         dialog.close();
                                     }
                                 }),
                                 endButton: new sap.m.Button({
                                     text: 'Cancel',
                                     press: function () {
+                                        var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
+                                        var oModel = sap.ui.getCore().getModel("user");
+                                        var input_data = {
+                                            "ip": ip,
+                                            "caller": data.Caller,
+                                            "receiver": oModel.getData().Mobile,
+                                            "type": data.Type,
+                                            "received": false,
+                                            "rating": 0
+                                        };
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: '/api/Home/addContact',
+                                            data: input_data,
+                                            success: function (response) {
+                                                var json = JSON.parse(response);
+                                                if (json.isError) {
+                                                    sap.m.MessageToast.show(json.errorMessage);
+                                                }
+                                            },
+                                            error: function (response) {
+                                                console.log('Error: ', response);
+                                            }
+                                        });
                                         dialog.close();
                                     }
                                 }),
