@@ -988,6 +988,22 @@
                             console.log('Error: ', response);
                         }
                     });
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/Home/getRating',
+                        data: input_data,
+                        success: function (response) {
+                            var json = JSON.parse(response);
+                            if (json.isError) {
+                                sap.m.MessageToast.show(json.errorMessage);
+                            } else {
+                                oView.byId("rtgindProfile").setValue(parseFloat(json.errorMessage));
+                            }
+                        },
+                        error: function (response) {
+                            console.log('Error: ', response);
+                        }
+                    });
                     break;
                 }
                 case "Impostazioni": {
@@ -1086,6 +1102,7 @@
             var oModel = sap.ui.getCore().getModel("user");
             var profileimg = oView.byId("imgProfileMini");
             profileimg.setSrc(oModel.getData().Base64);
+            var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
             var ppc = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie("ProfilePicChanged");
             if (ppc) {
                 sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(22);
@@ -1096,7 +1113,6 @@
                 oView.byId("rtgindProfile").setValue(oModel.getData().Rating);
                 var profileimg = oView.byId("imgProfile");
                 profileimg.setSrc(oModel.getData().Base64);
-                var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
                 var mobile = oModel.getData().Mobile;
                 var input_data = {
                     "ip": ip,
@@ -1134,6 +1150,22 @@
                         console.log('Error: ', response);
                     }
                 });
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/Home/getRating',
+                    data: input_data,
+                    success: function (response) {
+                        var json = JSON.parse(response);
+                        if (json.isError) {
+                            sap.m.MessageToast.show(json.errorMessage);
+                        } else {
+                            oView.byId("rtgindProfile").setValue(parseFloat(json.errorMessage));
+                        }
+                    },
+                    error: function (response) {
+                        console.log('Error: ', response);
+                    }
+                });
                 var ppc = sap.ui.controller("sap.ui.easytravel.login.Login").eraseCookie("ProfilePicChanged");
                 var viewId = oView.getId();
                 setTimeout(function () {
@@ -1145,7 +1177,9 @@
             else {
                 sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(20);
             }
-            ws = new WebSocket("wss://192.168.200.160:8001/");
+            var a = document.createElement('a')
+            a.href = ip;
+            ws = new WebSocket("wss://"+a.hostname+":8001/");
             ws.onopen = function (event) {
                 var msg = {};
                 msg.Type = "Pair";
@@ -1169,16 +1203,25 @@
                         case "Call": case "E-Mail": {
                             var dialog = new sap.m.Dialog({
                                 title: "Contatto da "+data.Name,
-                                content: [new sap.m.Text({
-                                    text: "Sei stato contattato da "+data.Name+" "+data.Surname+"."
-                                }),
-                                new sap.m.Text({
-                                    text: "Se ti sei accordato per ricevere un passaggio puoi dare un feedback dell'utente e cliccare su OK, altrimenti premi su Cancel."
-                                }),
-                                new sap.m.RatingIndicator({
-                                    id: "myRatingIndicator",
-                                    maxValue: 5,
-                                    value: 1
+                                content: [
+                                    new sap.m.FlexBox({
+                                        items: [
+                                            new sap.m.Text({
+                                                text: "Sei stato contattato da " + data.Name + " " + data.Surname + "."
+                                            }),
+                                            new sap.m.Text({
+                                                text: "Se ti sei accordato per ricevere un passaggio puoi dare un feedback dell'utente e cliccare su OK, altrimenti premi su Cancel."
+                                            }),
+                                            new sap.m.RatingIndicator({
+                                                id: "myRatingIndicator",
+                                                maxValue: 5,
+                                                value: 1
+                                            })
+                                        ],
+                                        direction: "Column",
+                                        alignItems: "Start",
+                                        justifyItems: "Start",
+                                        justifyContent:"SpaceBetween"
                                 })],
                                 beginButton: new sap.m.Button({
                                     text: 'OK',

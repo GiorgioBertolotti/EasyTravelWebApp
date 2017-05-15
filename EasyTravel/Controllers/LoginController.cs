@@ -45,7 +45,7 @@ namespace EasyTravel.Controllers
                         loggedUser.Range = Convert.ToInt32(result.Message[0].Range.Value);
                         loggedUser.Image = Encoding.Default.GetBytes(result.Message[0].Image.Value);
                         loggedUser.Token = result.Message[0].Token.Value;
-                        loggedUser.Rating = float.Parse(result.Message[0].Rating.Value);
+                        loggedUser.Rating = float.Parse(result.Message[0].Rating.Value, CultureInfo.InvariantCulture);
                         this.isError = false;
                         this.errorMessage = "";
                     }
