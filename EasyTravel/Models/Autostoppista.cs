@@ -1,7 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Xml;
 using System.Xml.Linq;
@@ -12,11 +16,20 @@ namespace EasyTravel.Models
     {
         public void evaluateDestination()
         {
-            XmlDocument xDoc = new XmlDocument();
-            xDoc.Load("https://maps.googleapis.com/maps/api/geocode/xml?latlng=" + this.Latitude + "," + this.Longitude + "&location_type=ROOFTOP&result_type=street_address&key=AIzaSyDkRH6z8BJwNkijUKOUODvzvaja_6D0l3w");
-            XmlNodeList xNodelst = xDoc.GetElementsByTagName("result");
-            XmlNode xNode = xNodelst.Item(0);
-            this.Destination = xNode.SelectSingleNode("formatted_address").InnerText;
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + this.Destlat + "," + this.Destlon + "&result_type=street_address&key=AIzaSyDkRH6z8BJwNkijUKOUODvzvaja_6D0l3w");
+            request.Method = "GET";
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                Stream dataStream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(dataStream);
+                dynamic result = JsonConvert.DeserializeObject(reader.ReadToEnd());
+                reader.Close();
+                dataStream.Close();
+                if (result.status=="OK")
+                    this.Destination = result.results[0].formatted_address;
+                else
+                    this.Destination = this.Destlat + ", " + this.Destlon;
+            }
         }
         public string Destlat { get; set; }
         public string Destlon { get; set; }

@@ -91,8 +91,28 @@ namespace EasyTravel.Models
         public string ip { get; set; }
         public string caller { get; set; }
         public string receiver { get; set; }
+        public string datetime { get; set; }
         public string type { get; set; }
         public bool received { get; set; }
         public int rating { get; set; }
+    }
+    public class UnseenContact
+    {
+        public string mobile { get; set; }
+        public string name { get; set; }
+        public string surname { get; set; }
+        private DateTime _datetime { get; set; }
+        public string datetime
+        {
+            get
+            {
+                return _datetime.ToString("yyyy-MM-dd HH:mm:ss");
+            }
+            set
+            {
+                _datetime = DateTime.Parse(value);
+            }
+        }
+        public string type { get; set; }
     }
 }

@@ -9,6 +9,9 @@
     overflow: visible !important;
     position:static !important;
 }
+.myLabelSpace{
+    margin-right:5px;
+}
 .mylabel{
     color:black;
     margin-top: 5px;
@@ -509,6 +512,9 @@
     font-weight: normal !important;
     color: #333333 !important;
     text-shadow: none !important;
+}
+.myDialog label {
+    margin-right:5px;
 }
 .sapMBtnIcon {
     color: #fff !important;

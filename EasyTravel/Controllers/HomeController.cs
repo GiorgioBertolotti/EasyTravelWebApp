@@ -19,8 +19,81 @@ namespace EasyTravel.Controllers
     {
         public List<Autostoppista> autostoppisti;
         public List<ActiveUser> attivi;
+        public List<UnseenContact> nuovicontatti;
         public bool isError { get; set; }
         public string errorMessage { get; set; }
+        [HttpPost]
+        public string updateFeedback(UserContact model)
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    var values = new NameValueCollection();
+                    values["api_method"] = "updateFeedback";
+                    values["api_data"] = JsonConvert.SerializeObject(new { caller = model.caller, receiver = model.receiver, datetime = model.datetime, feedback = model.rating });
+                    var response = client.UploadValues(model.ip, values);
+                    var responseString = Encoding.Default.GetString(response);
+                    dynamic result = JsonConvert.DeserializeObject(responseString);
+                    if (!(bool)result.IsError)
+                    {
+                        this.isError = false;
+                        this.errorMessage = result.Message;
+                    }
+                    else
+                    {
+                        this.isError = true;
+                        this.errorMessage = result.Message;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.isError = true;
+                this.errorMessage = e.Message;
+            }
+            return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
+        }
+        [HttpGet]
+        public string getNewContacts(string ip, string mobile)
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    var values = new NameValueCollection();
+                    values["api_method"] = "getNewContacts";
+                    values["api_data"] = JsonConvert.SerializeObject(new { mobile = mobile });
+                    var response = client.UploadValues(ip, values);
+                    var responseString = Encoding.Default.GetString(response);
+                    dynamic result = JsonConvert.DeserializeObject(responseString);
+                    if (!(bool)result.IsError)
+                    {
+                        nuovicontatti = new List<UnseenContact>();
+                        foreach (var tmp in result.Message)
+                        {
+                            UnseenContact utmp = new UnseenContact() { mobile = tmp.Mobile, name = tmp.Name, surname=tmp.Surname, datetime = tmp.Datetime, type = tmp.Type };
+                            nuovicontatti.Add(utmp);
+                        }
+                        this.isError = false;
+                        this.errorMessage = "";
+                    }
+                    else
+                    {
+                        this.isError = true;
+                        this.errorMessage = result.Message;
+                        return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.isError = true;
+                this.errorMessage = e.Message;
+                return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
+            }
+            return JsonConvert.SerializeObject(nuovicontatti);
+        }
         [HttpPost]
         public string getRating(UserMobile model)
         {
@@ -126,7 +199,7 @@ namespace EasyTravel.Controllers
                 {
                     var values = new NameValueCollection();
                     values["api_method"] = "addContact";
-                    values["api_data"] = JsonConvert.SerializeObject(new { caller = model.caller,receiver=model.receiver,type=model.type, received = (model.received)?true:false,rating=(int)model.rating });
+                    values["api_data"] = JsonConvert.SerializeObject(new { caller = model.caller,receiver=model.receiver,type=model.type});
                     var response = client.UploadValues(model.ip, values);
                     var responseString = Encoding.Default.GetString(response);
                     this.errorMessage = responseString;
