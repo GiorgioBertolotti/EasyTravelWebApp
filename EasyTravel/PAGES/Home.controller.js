@@ -116,6 +116,38 @@
                 }
             });
         },
+        onDeleteNotification: function (oEvent) {
+            var oList = oEvent.getSource(),
+				oItem = oEvent.getParameter("listItem"),
+				sPath = oItem.getBindingContext().getPath();
+            var riga = this.getModel().getProperty(sPath);
+            var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
+            var oModel = sap.ui.getCore().getModel("user");
+            var input_data = {
+                "ip": ip,
+                "receiver": oModel.getData().Mobile,
+                "datetime": riga.datetime.replace(".", ":"),
+                "caller": riga.mobile
+            };
+            $.ajax({
+                type: 'POST',
+                url: '/api/Home/deleteContact',
+                data: input_data,
+                success: function (response) {
+                    var json = JSON.parse(response);
+                    if (json.isError) {
+                        sap.m.MessageToast.show(json.errorMessage);
+                    }
+                    oModel = sap.ui.getCore().getModel("nuovicontatti");
+                    var index = oModel.getData().indexOf(riga);
+                    oModel.getData().splice(index, 1);
+                    oModel.refresh();
+                },
+                error: function (response) {
+                    console.log('Error: ', response);
+                }
+            });
+        },
         //
         // PROFILO
         //
@@ -464,14 +496,14 @@
                                             var newmarker = new google.maps.Marker({
                                                 position: { lat: parseFloat(data[a].Latitude), lng: parseFloat(data[a].Longitude) },
                                                 map: map,
-                                                icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                                                icon: 'http://wfarm1.dataknet.com/static/resources/icons/set147/c8a61aeb.png',
                                                 customInfo: data[a]
                                             });
                                         } else {
                                             var newmarker = new google.maps.Marker({
                                                 position: { lat: parseFloat(data[a].Latitude), lng: parseFloat(data[a].Longitude) },
                                                 map: map,
-                                                icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+                                                icon: 'https://d2bbtvgnhux6eq.cloudfront.net/assets/thumbsup-32-f9c73d1c29adffccbcd50a17055dee0f.png',
                                                 customInfo: data[a]
                                             });
                                         }
@@ -886,8 +918,6 @@
                     detailPage = "detailMain";
                     sap.ui.getCore().byId(viewId + "--pageContainer").to(viewId + "--" + detailPage);
                     oView.byId("lblPageTitle").setText("Home");
-                    var oPage = oView.byId("detailMain");
-                    oPage.scrollTo(0, 0);
                     break;
                 }
                 case 21: {
@@ -1111,6 +1141,22 @@
             var eDock = sap.ui.core.Popup.Dock;
             this._menu.open(this._bKeyboard, oButton, eDock.BeginTop, eDock.BeginBottom, oButton);
         },
+        onBtnNotifications: function (oEvent) {
+            var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
+            var oModel = sap.ui.getCore().getModel("user");
+            var mobile = oModel.getData().Mobile;
+            var input_data = {
+                "ip": ip,
+                "Mobile": mobile
+            };
+            oModel = new sap.ui.model.json.JSONModel();
+            sap.ui.getCore().setModel(oModel, "nuovicontatti");
+            oModel.attachRequestSent(function () {
+                sap.ui.core.BusyIndicator.show();
+            });
+            oModel.loadData("/api/Home/getNewContacts", input_data);
+            oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.home.Home").onGetNewContactsComplete);
+        },
         onToggleMenu: function () {
             var viewId = this.getView().getId();
             var toolPage = sap.ui.getCore().byId(viewId + "--toolPage");
@@ -1218,13 +1264,52 @@
                 "ip": ip,
                 "Mobile": mobile
             };
-            oModel = new sap.ui.model.json.JSONModel();
-            sap.ui.getCore().setModel(oModel, "nuovicontatti");
-            oModel.attachRequestSent(function () {
-                sap.ui.core.BusyIndicator.show();
+            $.ajax({
+                type: 'GET',
+                url: '/api/Home/checkContacts',
+                data: input_data,
+                success: function (response) {
+                    var json = JSON.parse(response);
+                    if (json.isError) {
+                        sap.m.MessageToast.show(json.errorMessage);
+                    } else {
+                        var viewId = oView.getId();
+                        var counter = document.getElementById(viewId + "--countNotifications");
+                        if (json.errorMessage == "0") {
+                            counter.style.visibility = "hidden";
+                        }
+                        counter.innerHTML = json.errorMessage;
+                    }
+                },
+                error: function (response) {
+                    console.log('Error: ', response);
+                }
             });
-            oModel.loadData("/api/Home/getNewContacts", input_data);
-            oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.home.Home").onGetNewContactsComplete);
+            setInterval(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/Home/checkContacts',
+                    data: input_data,
+                    success: function (response) {
+                        var json = JSON.parse(response);
+                        if (json.isError) {
+                            sap.m.MessageToast.show(json.errorMessage);
+                        } else {
+                            var viewId = oView.getId();
+                            var counter = document.getElementById(viewId + "--countNotifications");
+                            if (json.errorMessage == "0") {
+                                counter.style.visibility = "hidden";
+                            } else {
+                                counter.innerHTML = json.errorMessage;
+                                counter.style.visibility = "visible";
+                            }
+                        }
+                    },
+                    error: function (response) {
+                        console.log('Error: ', response);
+                    }
+                });
+            }, 10000);
         },
         //
         // AJAX CALLS COMPLETE
@@ -1235,18 +1320,16 @@
             var data = JSON.parse(oModel.getData());
             oModel.setData(data);
             if (data.isError){
-                if (data.errorMessage != "Nessun nuovo contatto") {
-                    sap.m.MessageToast.show(data.errorMessage);
-                }
+                sap.m.MessageToast.show(data.errorMessage);
             } else {
                 var dialog = new sap.m.Dialog({
                     title: "Nuovi contatti",
                     content: [
+                        new sap.m.Text({text:"Sei stato contattato da qualcuno, per favore dai un feedback sull'utente. Se non viene assegnata nessuna stella il giudizio non influira sul rating dell'utente."}),
                         new sap.m.List({
-                            id: "listNewContacts", culomns: [
-                                new sap.m.Column({}),
-                                new sap.m.Column({})
-                            ]
+                            id: "listNewContacts",
+                            mode: "Delete",
+                            delete: sap.ui.controller("sap.ui.easytravel.home.Home").onDeleteNotification
                         })
                     ],
                     beginButton: new sap.m.Button({
@@ -1278,6 +1361,31 @@
                     ]
                 }));
                 list.setModel(oModel);
+                var viewId = oView.getId();
+                var counter = document.getElementById(viewId + "--countNotifications");
+                counter.style.visibility = "hidden";
+                counter.innerHTML = "0";
+                var oModel = sap.ui.getCore().getModel("user");
+                var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
+                var mobile = oModel.getData().Mobile;
+                var input_data = {
+                    "ip": ip,
+                    "Mobile": mobile
+                };
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/Home/notificationSeen',
+                    data: input_data,
+                    success: function (response) {
+                        var json = JSON.parse(response);
+                        if (json.isError) {
+                            sap.m.MessageToast.show(json.errorMessage);
+                        }
+                    },
+                    error: function (response) {
+                        console.log('Error: ', response);
+                    }
+                });
             }
             sap.ui.core.BusyIndicator.hide();
             oModel.detachRequestCompleted(sap.ui.controller("sap.ui.easytravel.home.Home").onGetAutostoppistiComplete);
@@ -1289,6 +1397,8 @@
             oModel.setData(data);
             if (data.isError) {
                 sap.m.MessageToast.show(data.errorMessage);
+                var list = oView.byId("listAutostoppisti");
+                list.removeAllItems();
             } else {
                 var list = oView.byId("listAutostoppisti");
                 list.removeAllItems();
