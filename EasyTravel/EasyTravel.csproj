@@ -114,6 +114,7 @@
     <Content Include="Images\back2.png" />
     <Content Include="Images\backgroundlogin.png" />
     <Content Include="Images\edit.png" />
+    <Content Include="Images\icona.png" />
     <Content Include="Images\ic_user.png" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\slide1.jpg" />

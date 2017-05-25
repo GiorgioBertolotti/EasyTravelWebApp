@@ -10,6 +10,10 @@
             isFirstMapLoad = true;
             oView = this.getView();
             sap.ui.controller("sap.ui.easytravel.home.Home").initializeItems();
+            document.addEventListener('DOMContentLoaded', function () {
+                if (Notification.permission !== "granted")
+                    Notification.requestPermission();
+            });
         },
         //
         // IMPOSTAZIONI
@@ -1297,11 +1301,27 @@
                         } else {
                             var viewId = oView.getId();
                             var counter = document.getElementById(viewId + "--countNotifications");
-                            if (json.errorMessage == "0") {
-                                counter.style.visibility = "hidden";
-                            } else {
+                            if (json.errorMessage != "0") {
                                 counter.innerHTML = json.errorMessage;
                                 counter.style.visibility = "visible";
+                                if (!Notification) {
+                                    alert('Desktop notifications not available in your browser. Try Chromium.');
+                                    return;
+                                } else {
+                                    if (Notification.permission !== "granted")
+                                        Notification.requestPermission();
+                                    else {
+                                        var notification = new Notification('EasyTravel', {
+                                            icon: '/../Images/icona.png',
+                                            body: "Sei stato contattato!",
+                                        });
+                                        notification.onclick = function (x) {
+                                            sap.ui.controller("sap.ui.easytravel.home.Home").onBtnNotifications();
+                                            window.focus();
+                                            notification.close();
+                                        };
+                                    }
+                                }
                             }
                         }
                     },
@@ -1329,10 +1349,49 @@
                         new sap.m.List({
                             id: "listNewContacts",
                             mode: "Delete",
+                            noDataText: "Non ci sono nuovi contatti.",
                             delete: sap.ui.controller("sap.ui.easytravel.home.Home").onDeleteNotification
                         })
                     ],
                     beginButton: new sap.m.Button({
+                        text: 'Delete all',
+                        type: "Reject",
+                        press: function () {
+                            var list = sap.ui.getCore().byId("listNewContacts");
+                            var modeltmp = list.getModel();
+                            var bindeditems = modeltmp.getData();
+                            for (var a in bindeditems) {
+                                var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
+                                var oModel = sap.ui.getCore().getModel("user");
+                                var input_data = {
+                                    "ip": ip,
+                                    "receiver": oModel.getData().Mobile,
+                                    "datetime": bindeditems[a].datetime.replace(".", ":"),
+                                    "caller": bindeditems[a].mobile
+                                };
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/api/Home/deleteContact',
+                                    data: input_data,
+                                    success: function (response) {
+                                        var json = JSON.parse(response);
+                                        if (json.isError) {
+                                            sap.m.MessageToast.show(json.errorMessage);
+                                        }
+                                        oModel = sap.ui.getCore().getModel("nuovicontatti");
+                                        var index = oModel.getData().indexOf(bindeditems[a]);
+                                        oModel.getData().splice(index, 1);
+                                        oModel.refresh();
+                                    },
+                                    error: function (response) {
+                                        console.log('Error: ', response);
+                                    }
+                                });
+                                dialog.close();
+                            }
+                        }
+                    }),
+                    endButton: new sap.m.Button({
                         text: 'Close',
                         press: function () {
                             dialog.close();
@@ -1365,27 +1424,6 @@
                 var counter = document.getElementById(viewId + "--countNotifications");
                 counter.style.visibility = "hidden";
                 counter.innerHTML = "0";
-                var oModel = sap.ui.getCore().getModel("user");
-                var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
-                var mobile = oModel.getData().Mobile;
-                var input_data = {
-                    "ip": ip,
-                    "Mobile": mobile
-                };
-                $.ajax({
-                    type: 'POST',
-                    url: '/api/Home/notificationSeen',
-                    data: input_data,
-                    success: function (response) {
-                        var json = JSON.parse(response);
-                        if (json.isError) {
-                            sap.m.MessageToast.show(json.errorMessage);
-                        }
-                    },
-                    error: function (response) {
-                        console.log('Error: ', response);
-                    }
-                });
             }
             sap.ui.core.BusyIndicator.hide();
             oModel.detachRequestCompleted(sap.ui.controller("sap.ui.easytravel.home.Home").onGetAutostoppistiComplete);
