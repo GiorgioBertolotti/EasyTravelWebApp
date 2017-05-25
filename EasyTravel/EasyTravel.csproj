@@ -110,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\site.css" />
+    <Content Include="sw.js" />
     <Content Include="Global.asax" />
     <Content Include="Images\back2.png" />
     <Content Include="Images\backgroundlogin.png" />

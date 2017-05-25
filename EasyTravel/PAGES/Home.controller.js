@@ -236,7 +236,7 @@
             geocoder = new google.maps.Geocoder;
             var options = {
                 enableHighAccuracy: true,
-                timeout: 5000
+                timeout: 10000
             };
             function success(pos) {
                 if (stato == 41)
@@ -961,7 +961,7 @@
                     var range = oModel.getData().Range;
                     var options = {
                         enableHighAccuracy: true,
-                        timeout:5000
+                        timeout:10000
                     };
                     function success(pos) {
                         oModel = new sap.ui.model.json.JSONModel();
