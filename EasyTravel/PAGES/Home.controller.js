@@ -657,18 +657,7 @@
                 }
             };
             function error(err) {
-                input_data = { ip: ip, mobile: mobile, Latitude: 0, Longitude: 0 };
-                $.ajax({
-                    type: 'POST',
-                    url: '/api/Home/updateUserPosition',
-                    data: input_data,
-                    success: function (response) {
-                        console.log('User position updated: { ip: ' + input_data.ip + ', mobile: ' + input_data.mobile + ', Latitude: ' + input_data.Latitude + ', Longitude: ' + input_data.Longitude + '}');
-                    },
-                    error: function (response) {
-                        console.log('Error: ', error);
-                    }
-                });
+                console.log('Error: ', err);
             };
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(success, error, options);
@@ -832,6 +821,29 @@
             });
             dialog.addStyleClass("myDialog");
             dialog.open();
+            var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
+            var oModel = sap.ui.getCore().getModel("user");
+            var mobile = oModel.getData().Mobile;
+            var input_data = {
+                "ip": ip,
+                "caller": mobile,
+                "receiver": autostoppista.Mobile,
+                "type" : "none"
+            };
+            $.ajax({
+                type: 'POST',
+                url: '/api/Home/selectedAutostoppista',
+                data: input_data,
+                success: function (response) {
+                    var json = JSON.parse(response);
+                    if (json.isError) {
+                        sap.m.MessageToast.show(json.errorMessage);
+                    }
+                },
+                error: function (response) {
+                    console.log('Error: ', response);
+                }
+            });
         },
         onBtnBackToMap: function (oEvent) {
             sap.ui.controller("sap.ui.easytravel.home.Home").updateUI(30);

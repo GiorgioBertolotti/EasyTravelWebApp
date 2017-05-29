@@ -110,10 +110,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\site.css" />
-    <Content Include="sw.js" />
     <Content Include="Global.asax" />
     <Content Include="Images\back2.png" />
     <Content Include="Images\backgroundlogin.png" />
+    <Content Include="Images\bellicon.png" />
     <Content Include="Images\edit.png" />
     <Content Include="Images\icona.png" />
     <Content Include="Images\ic_user.png" />
@@ -7444,11 +7444,13 @@
     <Content Include="scripts\resources\sap\uxap\themes\sap_hcb\resources.json" />
     <Content Include="PAGES\MenuItemEventing.fragment.xml" />
     <Content Include="Content\futuralightbt.ttf" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\EasyTravel.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Content Include="scripts\resources\sap\ui\core\messagebundle_it_IT.properties" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

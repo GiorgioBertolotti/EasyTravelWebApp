@@ -23,6 +23,39 @@ namespace EasyTravel.Controllers
         public bool isError { get; set; }
         public string errorMessage { get; set; }
         [HttpPost]
+        public string selectedAutostoppista(UserContact model)
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    var values = new NameValueCollection();
+                    values["api_method"] = "selectAutostoppista";
+                    values["api_data"] = JsonConvert.SerializeObject(new { caller = model.caller, receiver = model.receiver });
+                    var response = client.UploadValues(model.ip, values);
+                    var responseString = Encoding.Default.GetString(response);
+                    this.errorMessage = responseString;
+                    dynamic result = JsonConvert.DeserializeObject(responseString);
+                    if (!(bool)result.IsError)
+                    {
+                        this.isError = false;
+                        this.errorMessage = result.Message;
+                    }
+                    else
+                    {
+                        this.isError = true;
+                        this.errorMessage = result.Message;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.isError = true;
+                this.errorMessage += e.Message;
+            }
+            return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
+        }
+        [HttpPost]
         public string deleteContact(UserContact model)
         {
             try
