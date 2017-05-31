@@ -17,13 +17,13 @@
         type="Tel"
         width="268px"
         placeholder="Numero di telefono"
-        value="3290358217"/>
+        value=""/>
       <Input
         id="txtPassword"
         type="Password"
         width="268px"
         placeholder="Password"
-        value="prova"/>
+        value=""/>
       <Button
         id="btnLogin"
         width="268px"

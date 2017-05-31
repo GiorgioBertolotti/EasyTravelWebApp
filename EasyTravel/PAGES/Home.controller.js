@@ -152,6 +152,16 @@
                 }
             });
         },
+        onDownloadApp: function () {
+            var file_path = '../Content/EasyTravel.apk';
+            var a = document.createElement('A');
+            a.href = file_path;
+            a.download = file_path.substr(file_path.lastIndexOf('/') + 1);
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            //window.location = "../Content/EasyTravel.apk";
+        },
         //
         // PROFILO
         //

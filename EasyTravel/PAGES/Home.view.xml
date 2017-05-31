@@ -2,6 +2,7 @@
   controllerName="sap.ui.easytravel.home.Home"
   xmlns="sap.m"
   xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core"
   xmlns:mvc="sap.ui.core.mvc"
   xmlns:tnt="sap.tnt"
   xmlns:html="http://www.w3.org/1999/xhtml"
@@ -114,11 +115,21 @@
               </Panel>
               <Panel
                 class="myPanel3">
-                <Label
-                  class="myTitleLabel"
-                  width="100%"
-                  textAlign="Left"
-                  text="About Android App."/>
+                <FlexBox
+                  justifyContent="SpaceBetween"
+                  alignContent="Center"
+                  alignItems="Center">
+                  <Label
+                    class="myTitleLabel"
+                    width="100%"
+                    textAlign="Left"
+                    text="About Android App."/>
+                    <Button id="androidAppDownload"
+                      icon="sap-icon://download"
+                      type="Transparent"
+                      press="onDownloadApp"
+			                class="myDownloadBtn" />
+                </FlexBox>
                 <GenericTile
                   id="tile1"
                   backgroundImage="Images/slide1.png"
