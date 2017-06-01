@@ -87,8 +87,40 @@ namespace EasyTravel.Controllers
             }
             return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
         }
-        [HttpGet]
-        public string checkContacts(string ip, string mobile)
+        [HttpPost]
+        public string getUnseenContactsCount(UserMobile model)
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    var values = new NameValueCollection();
+                    values["api_method"] = "getUnseenContactsCount";
+                    values["api_data"] = JsonConvert.SerializeObject(new { mobile = model.Mobile });
+                    var response = client.UploadValues(model.ip, values);
+                    var responseString = Encoding.Default.GetString(response);
+                    dynamic result = JsonConvert.DeserializeObject(responseString);
+                    if (!(bool)result.IsError)
+                    {
+                        this.isError = false;
+                        this.errorMessage = result.Message;
+                    }
+                    else
+                    {
+                        this.isError = true;
+                        this.errorMessage = result.Message;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.isError = true;
+                this.errorMessage = e.Message;
+            }
+            return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
+        }
+        [HttpPost]
+        public string checkContacts(UserMobile model)
         {
             try
             {
@@ -96,8 +128,8 @@ namespace EasyTravel.Controllers
                 {
                     var values = new NameValueCollection();
                     values["api_method"] = "checkContacts";
-                    values["api_data"] = JsonConvert.SerializeObject(new { mobile = mobile });
-                    var response = client.UploadValues(ip, values);
+                    values["api_data"] = JsonConvert.SerializeObject(new { mobile = model.Mobile });
+                    var response = client.UploadValues(model.ip, values);
                     var responseString = Encoding.Default.GetString(response);
                     dynamic result = JsonConvert.DeserializeObject(responseString);
                     if (!(bool)result.IsError)
@@ -152,7 +184,7 @@ namespace EasyTravel.Controllers
             return JsonConvert.SerializeObject(new { isError = this.isError, errorMessage = this.errorMessage });
         }
         [HttpGet]
-        public string getNewContacts(string ip, string mobile)
+        public string getContacts(string ip, string mobile)
         {
             try
             {

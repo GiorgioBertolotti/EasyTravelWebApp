@@ -1180,8 +1180,8 @@
             oModel.attachRequestSent(function () {
                 sap.ui.core.BusyIndicator.show();
             });
-            oModel.loadData("/api/Home/getNewContacts", input_data);
-            oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.home.Home").onGetNewContactsComplete);
+            oModel.loadData("/api/Home/getContacts", input_data);
+            oModel.attachRequestCompleted(sap.ui.controller("sap.ui.easytravel.home.Home").onGetContactsComplete);
         },
         onToggleMenu: function () {
             var viewId = this.getView().getId();
@@ -1291,16 +1291,17 @@
                 "Mobile": mobile
             };
             $.ajax({
-                type: 'GET',
-                url: '/api/Home/checkContacts',
+                type: 'POST',
+                url: '/api/Home/getUnseenContactsCount',
                 data: input_data,
                 success: function (response) {
                     var json = JSON.parse(response);
+                    var viewId = oView.getId();
+                    var counter = document.getElementById(viewId + "--countNotifications");
                     if (json.isError) {
                         sap.m.MessageToast.show(json.errorMessage);
+                        counter.style.visibility = "hidden";
                     } else {
-                        var viewId = oView.getId();
-                        var counter = document.getElementById(viewId + "--countNotifications");
                         if (json.errorMessage == "0") {
                             counter.style.visibility = "hidden";
                         }
@@ -1313,7 +1314,7 @@
             });
             setInterval(function () {
                 $.ajax({
-                    type: 'GET',
+                    type: 'POST',
                     url: '/api/Home/checkContacts',
                     data: input_data,
                     success: function (response) {
@@ -1321,11 +1322,15 @@
                         if (json.isError) {
                             sap.m.MessageToast.show(json.errorMessage);
                         } else {
-                            var viewId = oView.getId();
-                            var counter = document.getElementById(viewId + "--countNotifications");
                             if (json.errorMessage != "0") {
-                                counter.innerHTML = json.errorMessage;
-                                counter.style.visibility = "visible";
+                                var viewId = oView.getId();
+                                var counter = document.getElementById(viewId + "--countNotifications");
+                                if (counter.style.visibility == "visible") {
+                                    counter.innerHTML = parseInt(counter.innerHTML) + parseInt(json.errorMessage);
+                                } else {
+                                    counter.innerHTML = json.errorMessage;
+                                    counter.style.visibility = "visible";
+                                }
                                 if (!Notification) {
                                     alert('Desktop notifications not available in your browser. Try Chromium.');
                                     return;
@@ -1356,7 +1361,7 @@
         //
         // AJAX CALLS COMPLETE
         //
-        onGetNewContactsComplete: function () {
+        onGetContactsComplete: function () {
             sap.ui.core.BusyIndicator.hide();
             var oModel = sap.ui.getCore().getModel("nuovicontatti");
             var data = JSON.parse(oModel.getData());

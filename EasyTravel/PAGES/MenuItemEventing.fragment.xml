@@ -4,6 +4,11 @@
 	xmlns:u="sap.ui.unified">
   <u:Menu>
     <u:MenuItem
+      text="Notifiche"
+      startsSection="true"
+      select="onBtnNotifications"
+      icon="sap-icon://notification-2" />
+    <u:MenuItem
       text="Visualizza profilo"
       select="handleMenuItemPress"
       icon="sap-icon://person-placeholder"/>

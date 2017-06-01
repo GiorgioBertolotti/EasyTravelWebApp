@@ -1,0 +1,6 @@
+0 = contatto non avvenuto
+1 = da notificare
+2 = notificato
+3 = visto
+4 = cancellato
+5 = valutato

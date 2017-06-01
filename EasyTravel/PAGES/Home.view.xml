@@ -32,12 +32,6 @@
         </ToolbarSpacer>
         <html:p id="countNotifications" class="myNotificationsCounter btn btn-primary"></html:p>
         <ImageContent
-          id="imgNotifications"
-		      src="../Images/bellicon.png"
-		      description="Feedback notifications"
-		      press="onBtnNotifications">
-        </ImageContent>
-        <ImageContent
           id="imgProfileMini"
 		      src="../Images/ic_user.png"
 		      description="Profile image"
