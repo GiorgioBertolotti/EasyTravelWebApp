@@ -11,7 +11,8 @@ using System.Text;
 using System.Collections.Specialized;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
+using System.Net.Http.Headers;
+using System.Web;
 
 namespace EasyTravel.Controllers
 {
@@ -22,6 +23,25 @@ namespace EasyTravel.Controllers
         public List<UnseenContact> nuovicontatti;
         public bool isError { get; set; }
         public string errorMessage { get; set; }
+        [HttpGet]
+        public HttpResponseMessage DownloadAPK()
+        {
+            var fstream = File.OpenRead(HttpContext.Current.Request.PhysicalApplicationPath+ "/Content/EasyTravel.apk");
+            var stream = new MemoryStream();
+            fstream.CopyTo(stream);
+            var result = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new ByteArrayContent(stream.ToArray())
+            };
+            result.Content.Headers.ContentDisposition =
+                new ContentDispositionHeaderValue("attachment")
+                {
+                    FileName = "EasyTravel.apk"
+                };
+            result.Content.Headers.ContentType =
+                new MediaTypeHeaderValue("application/octet-stream");
+            return result;
+        }
         [HttpPost]
         public string selectedAutostoppista(UserContact model)
         {

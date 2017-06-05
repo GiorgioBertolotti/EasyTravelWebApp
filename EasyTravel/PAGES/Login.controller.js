@@ -12,7 +12,7 @@
             if (token) {
                 var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
                 if (ip == null || ip == "") {
-                    ip = "http://192.168.200.160:8080/pcws/index.php";
+                    ip = "http://192.168.200.160/pcws/index.php";
                     sap.ui.controller("sap.ui.easytravel.login.Login").createCookie('ip', ip, 30);
                 }
                 var oModel = new sap.ui.model.json.JSONModel();
@@ -31,7 +31,7 @@
             var md5 = CryptoJS.MD5(password).toString();
             var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
             if (ip == null || ip == "") {
-                ip = "http://192.168.200.160:8080/pcws/index.php";
+                ip = "http://192.168.200.160/pcws/index.php";
                 sap.ui.controller("sap.ui.easytravel.login.Login").createCookie('ip', ip, 30);
             }
             var oModel = new sap.ui.model.json.JSONModel();
@@ -50,7 +50,7 @@
         onBtnIP: function (oEvent) {
             var ip = sap.ui.controller("sap.ui.easytravel.login.Login").readCookie('ip');
             if (ip == null || ip == "") {
-                ip = "http://192.168.200.160:8080/pcws/index.php";
+                ip = "http://192.168.200.160/pcws/index.php";
                 sap.ui.controller("sap.ui.easytravel.login.Login").createCookie('ip', ip, 30);
             }
             var dialog = new sap.m.Dialog({

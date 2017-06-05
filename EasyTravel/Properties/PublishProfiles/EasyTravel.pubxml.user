@@ -19,16 +19,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/04/2017 09:58:24</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>05/31/2017 09:31:12</publishTime>
+      <publishTime>06/05/2017 23:30:51</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>05/31/2017 09:31:12</publishTime>
+      <publishTime>06/05/2017 23:30:51</publishTime>
     </File>
     <File Include="bin/EasyTravel.dll">
-      <publishTime>05/31/2017 09:30:51</publishTime>
+      <publishTime>06/05/2017 23:30:27</publishTime>
     </File>
     <File Include="bin/EasyTravel.pdb">
-      <publishTime>05/31/2017 09:30:51</publishTime>
+      <publishTime>06/05/2017 23:30:27</publishTime>
     </File>
     <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
       <publishTime>05/04/2017 09:59:39</publishTime>
@@ -102,14 +102,17 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/System.Web.Http.WebHost.dll">
       <publishTime>05/04/2017 09:59:40</publishTime>
     </File>
+    <File Include="Content/EasyTravel.apk">
+      <publishTime>06/05/2017 22:55:37</publishTime>
+    </File>
     <File Include="Content/futuralightbt.ttf">
-      <publishTime>05/25/2017 20:20:49</publishTime>
+      <publishTime>05/31/2017 09:34:34</publishTime>
     </File>
     <File Include="Content/Settings.json">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Content/site.css">
-      <publishTime>05/31/2017 09:20:01</publishTime>
+      <publishTime>01/06/2017 11:45:25</publishTime>
     </File>
     <File Include="Controllers/HomeController.cs">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -181,34 +184,34 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/04/2017 09:58:24</publishTime>
     </File>
     <File Include="PAGES/Component.js">
-      <publishTime>05/25/2017 20:20:49</publishTime>
+      <publishTime>05/31/2017 09:34:34</publishTime>
     </File>
     <File Include="PAGES/Home.controller.js">
-      <publishTime>05/31/2017 09:29:37</publishTime>
+      <publishTime>06/05/2017 23:27:30</publishTime>
     </File>
     <File Include="PAGES/Home.view.xml">
-      <publishTime>05/31/2017 09:18:19</publishTime>
+      <publishTime>01/06/2017 11:46:04</publishTime>
     </File>
     <File Include="PAGES/Login.controller.js">
-      <publishTime>05/25/2017 20:20:49</publishTime>
+      <publishTime>06/05/2017 23:29:07</publishTime>
     </File>
     <File Include="PAGES/Login.view.xml">
-      <publishTime>05/31/2017 09:03:57</publishTime>
+      <publishTime>01/06/2017 11:38:26</publishTime>
     </File>
     <File Include="PAGES/MenuItemEventing.fragment.xml">
-      <publishTime>05/25/2017 20:20:49</publishTime>
+      <publishTime>01/06/2017 11:43:36</publishTime>
     </File>
     <File Include="PAGES/Register.controller.js">
-      <publishTime>05/25/2017 20:20:49</publishTime>
+      <publishTime>05/31/2017 09:34:34</publishTime>
     </File>
     <File Include="PAGES/Register.view.xml">
-      <publishTime>05/25/2017 20:20:49</publishTime>
+      <publishTime>05/31/2017 09:34:34</publishTime>
     </File>
     <File Include="PAGES/sw.js">
       <publishTime>05/25/2017 18:39:46</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>05/31/2017 09:31:08</publishTime>
+      <publishTime>06/05/2017 23:30:47</publishTime>
     </File>
     <File Include="scripts/ai.0.15.0-build58334.js">
       <publishTime>05/04/2017 09:58:25</publishTime>
@@ -22063,10 +22066,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/25/2017 18:39:46</publishTime>
     </File>
     <File Include="Views/index.html">
-      <publishTime>05/25/2017 20:20:49</publishTime>
+      <publishTime>06/05/2017 23:29:07</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>05/31/2017 09:30:55</publishTime>
+      <publishTime>06/05/2017 23:29:57</publishTime>
     </File>
   </ItemGroup>
 </Project>

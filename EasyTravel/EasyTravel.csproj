@@ -7444,6 +7444,7 @@
     <Content Include="scripts\resources\sap\uxap\themes\sap_hcb\resources.json" />
     <Content Include="PAGES\MenuItemEventing.fragment.xml" />
     <Content Include="Content\futuralightbt.ttf" />
+    <Content Include="Content\EasyTravel.apk" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\EasyTravel.pubxml" />
     <None Include="Properties\Settings.settings">

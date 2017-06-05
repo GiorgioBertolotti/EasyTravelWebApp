@@ -40,7 +40,7 @@
         if (token) {
             var ip = readCookie('ip');
             if (ip == null || ip == "") {
-                ip = "http://192.168.200.160:8080/pcws/index.php";
+                ip = "http://192.168.200.160/pcws/index.php";
                 sap.ui.controller("sap.ui.easytravel.login.Login").createCookie('ip', ip, 30);
             }
             var input_data = { "ip": ip, "token": token };
